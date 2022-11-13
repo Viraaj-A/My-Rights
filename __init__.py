@@ -6,6 +6,8 @@ def init_app():
     """Construct core Flask application with embedded Dash app."""
     app = Flask(__name__, instance_relative_config=False)
 
+    app.config['SECRET_KEY'] = 'any secret string'
+
     with app.app_context():
         # Import Dash application
 
