@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section-container-spacer text-center">
+  <h1 class="h2">A : TEXT SEARCH</h1>
+</div>
+<div class="container">
+    <div class="col-xs-6 col-md-offset-1">
+        <div class="form-group">
+          <form action="{{ url_for('results') }}" method="post">
+          <input type="search" id="form1" name="searched"  class="form-control" placeholder="Search"/>
+          </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
