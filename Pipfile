@@ -16,6 +16,8 @@ psycopg2-binary = "*"
 sqlacodegen = "*"
 flask-sqlalchemy = "*"
 dash = "*"
+gunicorn = "*"
+wtforms = "*"
 
 [dev-packages]
 
