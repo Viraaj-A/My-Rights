@@ -41,8 +41,7 @@ def text_search(search: str):
         """
     sql_tuple = (search,)
     cursor.execute(sql_query, sql_tuple)
-    #The result structure is tuple with multiple elements, nested within a list with
-    # the search results nested within another list of one element
+    #The result structure is a list of tuples
     results = [cursor.fetchall()]
     return results
 
