@@ -63,20 +63,68 @@ def init_dashboard(server):
 
     bar_fig = px.bar(df_time_series, y='Count', x='articles', color='articles')
 
+    # Helper functions for dropdowns and slider
+    def create_dropdown_options(series):
+        options = [{'label': i, 'value': i} for i in series.sort_values().unique()]
+        return options
+
+    def create_dropdown_value(series):
+        value = series.sort_values().unique().tolist()
+        return value
+
     # App layout
-    dash_app.layout = html.Div(children=[
-        # First Row of Graphs
-        dcc.Graph(id='importance-graph'),
-        html.Label("Separate Opinion Delivered"),
-        dcc.Dropdown(df.separate_opinion.unique(), value=df['separate_opinion'], id='opinion-checklist'),
-
-        # Second row of graphs
-        html.Div([dcc.Graph(id='world_map', figure=map_fig)]),
-
-
-        # Third row of graphs
-        html.Div([dcc.Graph(id='article_line', figure=bar_fig)])
-        ])
+    dash_app.layout = html.Div(className='container',
+                          children=[
+                              # First Row
+                              html.Div(className='row',
+                                       children=[
+                                           # First Row First Column
+                                           html.Div(className="col-xs-5",
+                                                    children=[
+                                                        html.Label("Total Graphs"),
+                                                        dcc.Graph(),  # Total Graphs
+                                                        html.Label("Human Rights/Articles"),
+                                                        dcc.Dropdown(multi=True,
+                                                                     options=create_dropdown_options(
+                                                                         df_time_series['articles']
+                                                                     ),
+                                                                     value=create_dropdown_value(
+                                                                         df_time_series['articles']
+                                                                     )),
+                                                        html.Label("Country"),
+                                                        dcc.Dropdown(multi=True,
+                                                                     options=create_dropdown_options(
+                                                                         df_country_group['respondent']
+                                                                     ),
+                                                                     value=create_dropdown_value(
+                                                                         df_country_group['respondent']
+                                                                     )),
+                                                        html.Label("Importance"),
+                                                        dcc.Dropdown(multi=True,
+                                                                     options=create_dropdown_options(
+                                                                         df_country_group['importance_number']
+                                                                     ),
+                                                                     value=create_dropdown_value(
+                                                                         df_country_group['importance_number']
+                                                                     )),
+                                                    ]
+                                                    ),
+                                           html.Div(className="col-xs-7",
+                                                    children=[
+                                                        dcc.Graph(id='importance-graph',
+                                                                  config={'displayModeBar': False}),
+                                                        html.Label("Separate Opinion Delivered"),
+                                                        dcc.Dropdown(df.separate_opinion.unique(),
+                                                                     value=df['separate_opinion'],
+                                                                     id='opinion-checklist'),
+                                                        dcc.Graph(id='world_map', figure=map_fig,
+                                                                  config={'displayModeBar': False}),
+                                                        dcc.Graph(id='article_line', figure=bar_fig,
+                                                                  config={'displayModeBar': False})
+                                                    ])
+                                       ])
+                          ]
+                          )
 
 
     @dash_app.callback(

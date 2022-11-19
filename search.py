@@ -1,4 +1,5 @@
 import psycopg2
+from autocorrect import Speller
 
 development = False
 
@@ -31,18 +32,37 @@ def connect_psql():
 
 
 def text_search(search: str):
-    sql_query = """
-    SELECT item_id, requests_url, ts_headline('english', entire_text, query, 'StartSel = <em>, StopSel = </em>, ShortWord = 1') as entire_text_highlights
-    FROM (SELECT item_id, requests_url, entire_text, ts_rank_cd(textsearchable_index_col, query) AS rank, query
-    FROM processed_judgment_html, websearch_to_tsquery('english', %s) AS query
-    WHERE textsearchable_index_col @@ query
-    ORDER BY rank DESC
-    LIMIT 10) AS query_results;
-        """
-    sql_tuple = (search,)
-    cursor.execute(sql_query, sql_tuple)
-    #The result structure is a list of tuples
-    results = [cursor.fetchall()]
-    return results
+    corrected = (spell(search))
+    if corrected == search:
+        sql_query = """
+        SELECT item_id, requests_url, ts_headline('english', entire_text, query, 'StartSel = <em>, StopSel = </em>, ShortWord = 1') as entire_text_highlights
+        FROM (SELECT item_id, requests_url, entire_text, ts_rank_cd(textsearchable_index_col, query) AS rank, query
+        FROM processed_judgment_html, websearch_to_tsquery('english', %s) AS query
+        WHERE textsearchable_index_col @@ query
+        ORDER BY rank DESC
+        LIMIT 10) AS query_results;
+            """
+        sql_tuple = (search,)
+        cursor.execute(sql_query, sql_tuple)
+        # The result structure is a list of tuples
+        results = [cursor.fetchall()]
+        return results
+    else:
+        search = spell(search)
+        sql_query = """
+        SELECT item_id, requests_url, ts_headline('english', entire_text, query, 'StartSel = <em>, StopSel = </em>, ShortWord = 1') as entire_text_highlights
+        FROM (SELECT item_id, requests_url, entire_text, ts_rank_cd(textsearchable_index_col, query) AS rank, query
+        FROM processed_judgment_html, websearch_to_tsquery('english', %s) AS query
+        WHERE textsearchable_index_col @@ query
+        ORDER BY rank DESC
+        LIMIT 10) AS query_results;
+            """
+        sql_tuple = (search,)
+        cursor.execute(sql_query, sql_tuple)
+        # The result structure is a list of tuples
+        results = [cursor.fetchall()]
+        return results
+
 
 cursor, conn = connect_psql()
+spell = Speller()

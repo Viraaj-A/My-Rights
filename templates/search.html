@@ -1,16 +1,48 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="section-container-spacer text-center">
-  <h1 class="h2">A : TEXT SEARCH</h1>
-</div>
 <div class="container">
-    <div class="col-xs-6 col-md-offset-1">
-        <div class="form-group">
-          <form action="{{ url_for('results') }}" method="post">
-          <input type="search" id="form1" name="searched"  class="form-control" placeholder="Search"/>
-          </form>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="section-container-spacer text-center">
+        <h1 class="h2">3 : TEXT SEARCH</h1>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-md-10 col-md-offset-1">
+            <div action="" class="reveal-content">
+                <div class="row">
+                    <div class="col-md-7 border">
+                        <div class="form-group">
+                            <form action="{{ url_for('results') }}" method="post">
+                            <input type="search" id="form1" name="searched"  class="form-control" placeholder="Search">
+                        </div>
+                        <div class = "form-inline">
+                            <div class="form-group">
+                                {{ form.end_date.label }}: {{ form.end_date() }}
+                            </div>
+                                <div class="form-group">
+                                {{ form.start_date.label }}: {{ form.start_date() }}
+                            </div>
+                        </div>
+                        <div class = "form-inline">
+                            <div class="form-group">
+                                {{ form.importance.label }}: {{ form.importance(size="1") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.respondent.label }}: {{ form.respondent(size="1") }}
+                            </div>
+                        </div>
+                        <div class = "form-inline">
+                            <div class="form-group">
+                                {{ form.submit }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock %}

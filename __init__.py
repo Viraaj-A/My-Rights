@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template
 from webforms import SearchForm
 from search import text_search
 
@@ -9,9 +9,7 @@ def init_app():
     app.config['SECRET_KEY'] = 'any secret string'
 
     with app.app_context():
-        # Import Dash application
-
-        from plotly_dash.__init__ import init_dashboard
+        # Importing Routes
         @app.route('/')
         def index():
             return render_template('index.html')
@@ -22,14 +20,18 @@ def init_app():
 
         @app.route('/search/')
         def search():
-            return render_template('search.html', form=search)
+            form = SearchForm()
+            return render_template('search.html', form=form)
 
         @app.route('/results', methods=['GET', 'POST'])
         def results():
             form = SearchForm()
             case = text_search(form.searched.data)[0]
-            return render_template('results.html', form=form, searched=case)
+            search_term = form.searched.data
+            return render_template('results.html', form=form, searched=case, term=search_term)
 
+        #Importing Dash Application
+        from plotly_dash.__init__ import init_dashboard
         app = init_dashboard(app)
 
 

@@ -1,57 +1,59 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="row">
-      <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
-        <div class="text-center">
-          <h1 class="h2">1 : Home</h1>
-          <p>Explore the European Court of Human Right's Judgments Your Way</p>
-        </div>
-      </div>
-      <div class="col-md-12">
-      <div id="myCarousel" class="carousel slide projects-carousel">
-        <!-- Carousel items -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <a href="./work.html" title="" class="black-image-project-hover">
-                      <img src="{{ url_for('static', filename='assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
-                    </a>
-                    <div class="card-container card-container-lg">
-                      <h4>A</h4>
-                      <h3>TEXT SEARCH</h3>
-                      <p>Input keywords to view the most relevant judgments to you</p>
-                      <a href="./work.html" title="" class="btn btn-default">Discover</a>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <a href="./work.html" title="" class="black-image-project-hover">
-                      <img src="{{ url_for('static', filename='assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
-                    </a>
-                    <div class="card-container card-container-lg">
-                      <h4>B</h4>
-                      <h3>QUESTIONNAIRE</h3>
-                      <p>Answer a series of questions to identify which of your rights are relevant</p>
-                      <a href="./work.html" title="" class="btn btn-default">Discover</a>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <a href="./work.html" title="" class="black-image-project-hover">
-                      <img src="{{ url_for('static', filename='assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
-                    </a>
-                    <div class="card-container card-container-lg">
-                      <h4>C</h4>
-                      <h3>DATA VISUALISATION</h3>
-                      <p>View graphical representations of judgment information</p>
-                      <a href="./work.html" title="" class="btn btn-default">Discover</a>
-                    </div>
-                    </div>
-                </div>
-                <!--/row-->
+<div class="container">
+    <div class="row">
+          <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+            <div class="text-center">
+              <h1 class="h2">1 : Home</h1>
+              <p>Explore the European Court of Human Right's Judgments Your Way</p>
             </div>
+          </div>
+          <div class="col-md-12">
+          <div id="myCarousel" class="carousel slide projects-carousel">
+            <!-- Carousel items -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <a href="./work.html" title="" class="black-image-project-hover">
+                          <img src="{{ url_for('static', filename='assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
+                        </a>
+                        <div class="card-container card-container-lg">
+                          <h4>A</h4>
+                          <h3>TEXT SEARCH</h3>
+                          <p>Input keywords to view the most relevant judgments to you</p>
+                          <a href="./work.html" title="" class="btn btn-default">Discover</a>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <a href="./work.html" title="" class="black-image-project-hover">
+                          <img src="{{ url_for('static', filename='assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
+                        </a>
+                        <div class="card-container card-container-lg">
+                          <h4>B</h4>
+                          <h3>QUESTIONNAIRE</h3>
+                          <p>Answer a series of questions to identify which of your rights are relevant</p>
+                          <a href="./work.html" title="" class="btn btn-default">Discover</a>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <a href="./work.html" title="" class="black-image-project-hover">
+                          <img src="{{ url_for('static', filename='assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
+                        </a>
+                        <div class="card-container card-container-lg">
+                          <h4>C</h4>
+                          <h3>DATA VISUALISATION</h3>
+                          <p>View graphical representations of judgment information</p>
+                          <a href="./work.html" title="" class="btn btn-default">Discover</a>
+                        </div>
+                        </div>
+                    </div>
+                    <!--/row-->
+                </div>
+            </div>
+         </div>
+        <!--/myCarousel-->
         </div>
-     </div>
-    <!--/myCarousel-->
-    </div>
-    </div>
+        </div>
+<div class="container">
 {% endblock %}

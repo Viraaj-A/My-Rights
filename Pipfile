@@ -18,6 +18,10 @@ flask-sqlalchemy = "*"
 dash = "*"
 gunicorn = "*"
 wtforms = "*"
+textblob = "*"
+autocorrect = "*"
+setuptools = "*"
+wheel = "*"
 
 [dev-packages]
 

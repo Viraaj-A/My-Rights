@@ -36,7 +36,7 @@
         <ul class="nav navbar-nav ">
           <li><a href="{{ url_for('index') }}" title="">1 : Home</a></li>
           <li><a href="{{ url_for('search') }}" title="">A : Text Search</a></li>
-          <li><a href="./questionnaire.html" title="">B : Questionnaire`</a></li>
+          <li><a href="./questionnaire.html" title="">B : Questionnaire</a></li>
           <li><a href="/visualisation" title="">C : Data Visualisation</a></li>
           <li><a href="./about.html" title="">5 : About</a></li>
         </ul>
@@ -46,10 +46,8 @@
 </header>
 
 <div class="section-container">
-  <div class="container">
       {% block content %}
       {% endblock %}
-  </div>
 </div>
 
 <footer class="footer-container text-center">
