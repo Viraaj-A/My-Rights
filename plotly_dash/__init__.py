@@ -115,7 +115,7 @@ def init_dashboard(server):
                                                                   config={'displayModeBar': False}),
                                                         html.Label("Separate Opinion Delivered"),
                                                         dcc.Dropdown(df.separate_opinion.unique(),
-                                                                     value=df['separate_opinion'],
+                                                                         value=df['separate_opinion'],
                                                                      id='opinion-checklist'),
                                                         dcc.Graph(id='world_map', figure=map_fig,
                                                                   config={'displayModeBar': False}),

@@ -14,6 +14,10 @@ def init_app():
         def index():
             return render_template('index.html')
 
+        @app.route('/questionnaire/')
+        def questionnaire():
+            return render_template('questionnaire.html')
+
         @app.route('/about/')
         def about():
             return render_template('about.html')
@@ -26,9 +30,8 @@ def init_app():
         @app.route('/results', methods=['GET', 'POST'])
         def results():
             form = SearchForm()
-            case = text_search(form.searched.data)[0]
-            search_term = form.searched.data
-            return render_template('results.html', form=form, searched=case, term=search_term)
+            case = text_search(form.data)[0] #Passing user query into search function
+            return render_template('results.html', form=form, searched=case, query=form.data)
 
         #Importing Dash Application
         from plotly_dash.__init__ import init_dashboard

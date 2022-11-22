@@ -22,6 +22,7 @@ textblob = "*"
 autocorrect = "*"
 setuptools = "*"
 wheel = "*"
+contextualspellcheck = "*"
 
 [dev-packages]
 

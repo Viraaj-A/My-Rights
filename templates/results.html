@@ -1,33 +1,56 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
-	<div class="section-container-spacer text-center">
-	  <h1 class="h2">A : TEXT SEARCH</h1>
-	</div>
-	<div class="container">
-		<br/>
-		<br/>
-		<div class="col-xs-6">
-			<div class="form-group">
-			  <form action="{{ url_for('results') }}" method="post">
-			  <input type="search" id="form1" name="searched"  class="form-control" placeholder={{term}}>
-			  </form>
-			</div>
-		</div>
-	</div>
-	<div>
-		<br/>
-			<h3>You Searched For: </h3>
-		<br/>
-		{% for result in searched%}
-		<div class="container">
-			<div class="row border">
-					<p><a href="{{ result[1]}}" title="">{{ result[0]}}</a></p>
-					{{ result[2]|safe}}
-			</div>
-		</div>
-		<br/>
-		{% endfor %}
-	</div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="section-container-spacer text-center">
+        <h1 class="h2">4 : TEXT SEARCH</h1>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 border">
+        <div class="form-group">
+            <form action="{{ url_for('results') }}" method="post">
+            <input type="search" id="form1" name="searched"  class="form-control" placeholder="{{  query['searched']  }}">
+        </div>
+        <div class = "form-inline">
+            <div class="form-group">
+                {{ form.end_date.label }}: {{ form.end_date() }}
+            </div>
+            <div class="form-group">
+                {{ form.start_date.label }}: {{ form.start_date() }}
+            </div>
+        </div>
+        <div class = "form-inline">
+            <div class="form-group">
+                {{ form.importance.label }}: {{ form.importance(size="1") }}
+            </div>
+            <div class="form-group">
+                {{ form.respondent.label }}: {{ form.respondent(size="1") }}
+            </div>
+        </div>
+        <div class = "form-inline">
+            <div class="form-group">
+                {{ form.submit }}
+            </div>
+        </div>
+    </div>
+  </div>
+    <div>
+        {% for result in searched %}
+        <div class="container ">
+            <div class = "row border">
+                <ul id="result_list">
+                    <li class="horizontal"><a href="{{result[1]}}"><b>{{result[2]}}</b></a></li>
+                    <li class="horizontal">Importance Rating: <b>{{result[3]}} </b></li>
+                    <li class="horizontal first">Delivered On: <b>{{result[4]}} </b></li>
+                </ul>
+            {{result[5]|safe}}
+            </div>
+        </div>
+        <br/>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

@@ -37,9 +37,9 @@ html_layout = """
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav ">
           <li><a href="/" title="">1 : Home</a></li>
-          <li><a href="/search" title="">A : Text Search</a></li>
-          <li><a href="/questionnaire.html" title="">B : Questionnaire</a></li>
-          <li><a href="/visualisation" title="">C : Data Visualisation</a></li>
+          <li><a href="/questionnaire" title="">2 : Questionnaire</a></li>
+          <li><a href="/visualisation.html" title="">3 : Data Visualisation</a></li>
+          <li><a href="/search" title="">4 : Text Search</a></li>
           <li><a href="/about.html" title="">5 : About</a></li>
         </ul>
       </div>
