@@ -114,9 +114,10 @@ def init_dashboard(server):
                                                         dcc.Graph(id='importance-graph',
                                                                   config={'displayModeBar': False}),
                                                         html.Label("Separate Opinion Delivered"),
-                                                        dcc.Dropdown(df.separate_opinion.unique(),
-                                                                         value=df['separate_opinion'],
-                                                                     id='opinion-checklist'),
+                                                        dcc.Dropdown(options=['Yes', 'No'],
+                                                                         value=['Yes', 'No'],
+                                                                     id='opinion-checklist',
+                                                                     multi=True),
                                                         dcc.Graph(id='world_map', figure=map_fig,
                                                                   config={'displayModeBar': False}),
                                                         dcc.Graph(id='article_line', figure=bar_fig,
@@ -132,7 +133,7 @@ def init_dashboard(server):
         Input('opinion-checklist', 'value')
     )
     def update_graph(opinion_value):
-        df1 = df[df['separate_opinion'] == opinion_value]
+        df1 = df[df['separate_opinion'].isin(opinion_value)]
 
         fig = px.histogram(df1, x="importance_number", color="importance_number",
                            labels={"importance_number": "Importance Rating"})
