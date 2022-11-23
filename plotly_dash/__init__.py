@@ -81,8 +81,6 @@ def init_dashboard(server):
                                            # First Row First Column
                                            html.Div(className="col-xs-5",
                                                     children=[
-                                                        html.Label("Total Graphs"),
-                                                        dcc.Graph(),  # Total Graphs
                                                         html.Label("Human Rights/Articles"),
                                                         dcc.Dropdown(multi=True,
                                                                      options=create_dropdown_options(
@@ -107,17 +105,18 @@ def init_dashboard(server):
                                                                      value=create_dropdown_value(
                                                                          df_country_group['importance_number']
                                                                      )),
-                                                    ]
+                                                        html.Label("Separate Opinion"),
+                                                        dcc.Dropdown(options=['Yes', 'No'],
+                                                                     value=['Yes', 'No'],
+                                                                     id='opinion-checklist',
+                                                                     multi=True),
+                                                        ]
                                                     ),
                                            html.Div(className="col-xs-7",
                                                     children=[
                                                         dcc.Graph(id='importance-graph',
                                                                   config={'displayModeBar': False}),
                                                         html.Label("Separate Opinion Delivered"),
-                                                        dcc.Dropdown(options=['Yes', 'No'],
-                                                                         value=['Yes', 'No'],
-                                                                     id='opinion-checklist',
-                                                                     multi=True),
                                                         dcc.Graph(id='world_map', figure=map_fig,
                                                                   config={'displayModeBar': False}),
                                                         dcc.Graph(id='article_line', figure=bar_fig,
@@ -135,11 +134,11 @@ def init_dashboard(server):
     def update_graph(opinion_value):
         df1 = df[df['separate_opinion'].isin(opinion_value)]
 
-        fig = px.histogram(df1, x="importance_number", color="importance_number",
+        histogram = px.histogram(df1, x="importance_number", color="importance_number",
                            labels={"importance_number": "Importance Rating"})
 
-        fig.update_layout(transition_duration=500)
+        histogram.update_layout(transition_duration=500)
 
-        return fig
+        return histogram
 
     return dash_app.server
