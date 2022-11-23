@@ -38,9 +38,9 @@ html_layout = """
         <ul class="nav navbar-nav ">
           <li><a href="/" title="">1 : Home</a></li>
           <li><a href="/questionnaire" title="">2 : Questionnaire</a></li>
-          <li><a href="/visualisation.html" title="">3 : Data Visualisation</a></li>
+          <li><a href="/visualisation" title="">3 : Data Visualisation</a></li>
           <li><a href="/search" title="">4 : Text Search</a></li>
-          <li><a href="/about.html" title="">5 : About</a></li>
+          <li><a href="/about" title="">5 : About</a></li>
         </ul>
       </div>
     </div>
