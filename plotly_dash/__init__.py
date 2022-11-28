@@ -11,7 +11,7 @@ def init_dashboard(server):
 
     # ********************* DATA IMPORT *********************
     df_country_group = discrete_data_df()
-    # choropleth_df = choropleth_df(df_country_group)
+    choropleth = choropleth_df(df_country_group)
     time_series = time_series_df(df_country_group)
     geojson = geojson_data()
 
@@ -170,6 +170,7 @@ def init_dashboard(server):
                      n_clicks):
         filtered_df = df_country_group.copy()
         df_time_series = time_series.copy()
+        df_choropleth = choropleth.copy()
 
         # Article values formed into a list to enable the isin functionality/checkbox functionality
         article_value = ('|'.join(articles_values))
@@ -177,43 +178,44 @@ def init_dashboard(server):
         if n_clicks is not None:
             if len(respondent_value) > 0:
                 filtered_df = filtered_df[filtered_df['respondent'].isin(respondent_value)]
-                df_time_series = exploded_df(filtered_df)
+                # df_time_series = exploded_df(filtered_df)
             elif len(respondent_value) == 0:
                 raise PreventUpdate
 
             if len(articles_values) > 0:
                 filtered_df['articles_considered'] = filtered_df['articles_considered'].apply(', '.join)
                 filtered_df = filtered_df[filtered_df['articles_considered'].str.contains(f'\b{article_value}\b')]
-                df_time_series = df_time_series[
-                    df_time_series['articles_considered'].str.contains(f'\b{article_value}\b')]
+                # df_time_series = df_time_series[df_time_series['articles_considered'].str.contains(f'\b{article_value}\b')]
             elif len(articles_values) == 0:
                 raise PreventUpdate
 
             if len(importance_value) > 0:
                 filtered_df = filtered_df[filtered_df['importance_number'].isin(importance_value)]
-                df_time_series = exploded_df(filtered_df)
+                # df_time_series = exploded_df(filtered_df)
             elif len(importance_value) == 0:
                 raise PreventUpdate
 
             if len(opinion_value) > 0:
                 filtered_df = filtered_df[filtered_df['separate_opinion'].isin(opinion_value)]
-                df_time_series = exploded_df(filtered_df)
+                # df_time_series = exploded_df(filtered_df)
             elif len(opinion_value) == 0:
                 raise PreventUpdate
 
             if len(court_value) > 0:
                 filtered_df = filtered_df[filtered_df['court'].isin(court_value)]
-                df_time_series = exploded_df(filtered_df)
+                # df_time_series = exploded_df(filtered_df)
             elif len(court_value) == 0:
                 raise PreventUpdate
 
             if len(year_value) > 0:
-                filtered_df = filtered_df[
-                    filtered_df['judgment_date'].isin(list(range(year_value[0], year_value[1], 1)))]
-                df_time_series = df_time_series[
-                    df_time_series['judgment_date'].isin(list(range(year_value[0], year_value[1], 1)))]
+                filtered_df = filtered_df[filtered_df['judgment_date'].isin(list(range(year_value[0], year_value[1], 1)))]
+                # df_time_series = df_time_series[df_time_series['judgment_date'].isin(list(range(year_value[0], year_value[1], 1)))]
             elif len(year_value) == 0:
                 raise PreventUpdate
+
+            df_choropleth = choropleth_df(filtered_df)
+            df_time_series = exploded_df(filtered_df)
+
 
         # Updating Importance Graph
         importance_graph = px.histogram(filtered_df, x="importance_number", color="importance_number",
@@ -224,12 +226,12 @@ def init_dashboard(server):
         importance_graph.update_traces(showlegend=False)
 
         # World Map
-        world_map = px.choropleth_mapbox(filtered_df, geojson=geojson, locations="code",
+        world_map = px.choropleth_mapbox(df_choropleth, geojson=geojson, locations="code",
                                          color="code",
                                          # hover_name="code", # column to add to hover information
                                          color_continuous_scale=px.colors.sequential.Plasma,
                                          featureidkey="properties.ISO3",
-                                         hover_name="articles_considered",
+                                         hover_name="Number of Cases",
                                          mapbox_style="open-street-map",
                                          zoom=1.5,
                                          center={"lat": 57.3785, "lon": 14.9706},
