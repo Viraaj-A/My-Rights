@@ -7,7 +7,22 @@
         <h1 class="h2">2 : Questionnaire</h1>
       </div>
       <div>
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfflOvHDPRfb-bdBW8vhijj4mgPPJPjCJu3XXywNPrLY5Rx0Q/viewform?embedded=true" width="640" height="420" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+
+
+        <turbo-frame id="message_1">
+          <h1>My message title</h1>
+          <p>My message content</p>
+          <a href="/messages/1/edit">Edit this message</a>
+        </turbo-frame>
+
+        <turbo-frame id="comments">
+          <div id="comment_1">One comment</div>
+          <div id="comment_2">Two comments</div>
+
+          <form action="/messages/comments">...</form>
+        </turbo-frame>
+
+
       </div>
     </div>
   </div>

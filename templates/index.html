@@ -4,8 +4,8 @@
     <div class="row">
           <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
             <div class="text-center">
-              <h1 class="h2">1 : Home</h1>
-              <h4>Explore the European Court of Human Right's Judgments Your Way</h4>
+              <h1 class="h2">Home</h1>
+              <h3>Explore the European Court of Human Right's Judgments Your Way</h3>
             </div>
           </div>
           <div class="col-md-12">
@@ -15,38 +15,35 @@
                 <div class="item active">
                     <div class="row">
                       <div class="col-sm-4">
-                        <a href="./work.html" title="" class="black-image-project-hover">
-                          <img src="{{ url_for('static', filename='assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
-                        </a>
-                        <div class="card-container card-container-lg">
-                          <h4>A</h4>
-                          <h3>TEXT SEARCH</h3>
-                          <p>Input keywords to view the most relevant judgments to you</p>
-                          <a href="./work.html" title="" class="btn btn-default">Discover</a>
-                        </div>
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="./work.html" title="" class="black-image-project-hover">
+                        <a href="{{ url_for('questionnaire') }}" title="" class="black-image-project-hover">
                           <img src="{{ url_for('static', filename='assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
                         </a>
                         <div class="card-container card-container-lg">
-                          <h4>B</h4>
-                          <h3>QUESTIONNAIRE</h3>
-                          <p>Answer a series of questions to identify which of your rights are relevant</p>
-                          <a href="./work.html" title="" class="btn btn-default">Discover</a>
+                          <h3>1</h3>
+                          <h4>Find what rights are relevant to you by answering a maximum of 5 yes or no questions</h4>
+                          <a href="{{ url_for('questionnaire') }}" title="" class="btn btn-default">Questionnaire</a>
                         </div>
                       </div>
                       <div class="col-sm-4">
-                        <a href="./work.html" title="" class="black-image-project-hover">
+                        <a href="./visualisation" title="" class="black-image-project-hover">
                           <img src="{{ url_for('static', filename='assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
                         </a>
                         <div class="card-container card-container-lg">
-                          <h4>C</h4>
-                          <h3>DATA VISUALISATION</h3>
-                          <p>View graphical representations of judgment information</p>
-                          <a href="./work.html" title="" class="btn btn-default">Discover</a>
+                          <h3>2</h3>
+                          <h4>Use visualisations to find judgments that are relevant to you</h4>
+                          <a href="./visualisation" title="" class="btn btn-default">Data Visualisation</a>
                         </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <a href="{{ url_for('questionnaire') }}" title="" class="black-image-project-hover">
+                          <img src="{{ url_for('static', filename='assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
+                        </a>
+                        <div class="card-container card-container-lg">
+                          <h3>3</h3>
+                          <h4>Enter search terms to find the judgments that are important to you</h4>
+                          <a href="{{ url_for('search') }}" title="" class="btn btn-default">Text Search</a>
                         </div>
+                      </div>
                     </div>
                     <!--/row-->
                 </div>

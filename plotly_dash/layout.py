@@ -36,11 +36,11 @@ html_layout = """
 
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav ">
-          <li><a href="/" title="">1 : Home</a></li>
-          <li><a href="/questionnaire" title="">2 : Questionnaire</a></li>
-          <li><a href="/visualisation" title="">3 : Data Visualisation</a></li>
-          <li><a href="/search" title="">4 : Text Search</a></li>
-          <li><a href="/about" title="">5 : About</a></li>
+          <li><a href="/" title="">Home</a></li>
+          <li><a href="/questionnaire" title="">1 : Questionnaire</a></li>
+          <li><a href="/visualisation" title="">2 : Data Visualisation</a></li>
+          <li><a href="/search" title="">3 : Text Search</a></li>
+          <li><a href="/about" title="">About</a></li>
         </ul>
       </div>
     </div>
