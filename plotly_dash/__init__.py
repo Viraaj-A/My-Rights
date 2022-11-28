@@ -3,13 +3,101 @@ from dash.exceptions import PreventUpdate
 import plotly.express as px
 import pandas as pd
 from plotly_dash.layout import html_layout
-from plotly_dash.dash_data import discrete_data_df, time_series_df, exploded_df, choropleth_df, geojson_data
+from sqlalchemy import create_engine
+from sqlalchemy.pool import NullPool
+import json
 
 development = False
+
+
+#Connecting with psycopg2/SQLAlchemy
+if development == True:
+    connection_string = 'postgres:password@localhost/restore_Oct_13'
+else:
+    connection_string = 'doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/defaultdb'
+
+engine = create_engine(
+    f'postgresql+psycopg2://{connection_string}',
+    poolclass=NullPool)
 
 def init_dashboard(server):
 
     # ********************* DATA IMPORT *********************
+    def discrete_data_df():
+        df_english_raw = pd.read_sql('Select * from processed_english_case_detail', engine,
+                                     parse_dates=["judgment_date"])
+        df_french_raw = pd.read_sql('Select * from processed_french_case_detail', engine, parse_dates=["judgment_date"])
+        df = pd.concat([df_french_raw, df_english_raw]).drop_duplicates(subset='ecli', keep="first")
+        del df_french_raw, df_english_raw
+        df_country_codes = pd.read_csv('data/map/country_iso_codes.csv')
+        df_country_group = pd.merge(df, df_country_codes, on='respondent', how='inner')
+        del df
+        df_country_group = df_country_group.drop(
+            columns=['strasbourg', 'keywords', 'application_number', 'item_id', 'id'])
+        df_country_group['judgment_date'] = df_country_group['judgment_date'].dt.year
+        df_country_group['articles_considered'] = df_country_group['articles_considered'].str.replace(';', ',',
+                                                                                                      regex=False)
+        df_country_group['articles_considered'] = df_country_group.articles_considered.replace(regex=['-.'], value='')
+        df_country_group['articles_considered'] = df_country_group.articles_considered.replace(regex=['more…'],
+                                                                                               value='')
+        df_country_group['articles_considered'] = df_country_group.articles_considered.replace(r'[^a-zA-Z0-9]', ',',
+                                                                                               regex=True)
+        del df_country_codes
+        return df_country_group
+
+    def time_series_df(dataframe):
+        def create_article_list():
+            articles = []
+            for i in range(1, 57):
+                articles.append(str(i))
+            for j in range(1, 13):
+                articles.append(f'P{j}')
+            return articles
+
+        article_list = create_article_list()
+        df_index = dataframe
+        df_index['articles_considered'] = df_index['articles_considered'].str.rstrip(',').str.split(',')
+        df_index = df_index.explode('articles_considered').reset_index(drop=True)
+        df_index = df_index.replace(r'^s*$', float('NaN'), regex=True)
+        df_index.dropna(inplace=True)
+        df_index = df_index.drop_duplicates(subset=['ecli', 'articles_considered'], keep='first')
+        df_index = df_index[df_index.articles_considered.isin(article_list) == True]
+        df_time_series = df_index.groupby(['articles_considered', 'judgment_date']).size().reset_index(name='Count')
+        return df_time_series
+
+    def exploded_df(dataframe):
+        def create_article_list():
+            articles = []
+            for i in range(1, 57):
+                articles.append(str(i))
+            for j in range(1, 13):
+                articles.append(f'P{j}')
+            return articles
+
+        article_list = create_article_list()
+        df_index = dataframe
+        df_index = df_index.explode('articles_considered').reset_index(drop=True)
+        df_index = df_index.replace(r'^s*$', float('NaN'), regex=True)
+        df_index.dropna(inplace=True)
+        df_index = df_index.drop_duplicates(subset=['ecli', 'articles_considered'],
+                                            keep='first')  # removes duplicates arising from subarticles
+        df_index = df_index[df_index.articles_considered.isin(article_list) == True]
+        df_time_series = df_index.groupby(['articles_considered', 'judgment_date']).size().reset_index(name='Count')
+        del df_index
+        return df_time_series
+
+    def choropleth_df(df_country_group):
+        df_choropleth = df_country_group.groupby(['code'], sort=False)['code'].count().reset_index(
+            name='Number of Cases')
+        return df_choropleth
+
+    def geojson_data():
+        # loading GeoJSON
+        handle = open('data/map/europe.geojson')
+        geojson = json.load(handle)
+        return geojson
+
+
     df_country_group = discrete_data_df()
     choropleth = choropleth_df(df_country_group)
     time_series = time_series_df(df_country_group)
@@ -219,7 +307,8 @@ def init_dashboard(server):
 
         # Updating Importance Graph
         importance_graph = px.histogram(filtered_df, x="importance_number", color="importance_number",
-                                        labels={"importance_number": "Importance Rating", "color": 'Number of Cases'})
+                                        labels={"importance_number": "Importance Rating", "color": 'Number of Cases'},
+                                        height=400, width=600)
 
         importance_graph.update_layout(transition_duration=500)
 
@@ -235,14 +324,16 @@ def init_dashboard(server):
                                          mapbox_style="open-street-map",
                                          zoom=1.5,
                                          center={"lat": 57.3785, "lon": 14.9706},
-                                         opacity=0.5
+                                         opacity=0.5,
+                                         height=400
                                          )
 
         world_map.update_layout(transition_duration=500)
         world_map.update_traces(showlegend=False)
 
         # Country Line Map
-        article_line = px.line(df_time_series, x="judgment_date", y="Count", color='articles_considered')
+        article_line = px.line(df_time_series, x="judgment_date", y="Count", color='articles_considered',
+                               height=400)
 
         return importance_graph, world_map, article_line
 

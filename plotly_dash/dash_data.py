@@ -59,6 +59,7 @@ def time_series_df(dataframe):
     df_time_series = df_index.groupby(['articles_considered','judgment_date']).size().reset_index(name='Count')
     return df_time_series
 
+
 def exploded_df(dataframe):
     def create_article_list():
         articles = []
@@ -78,9 +79,11 @@ def exploded_df(dataframe):
     del df_index
     return df_time_series
 
+
 def choropleth_df(df_country_group):
     df_choropleth = df_country_group.groupby(['code'], sort=False)['code'].count().reset_index(name='Number of Cases')
     return df_choropleth
+
 
 def geojson_data():
     #loading GeoJSON
