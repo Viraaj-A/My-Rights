@@ -49,6 +49,13 @@ html_layout = """
 
 <div class="section-container">
   <div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="section-container-spacer text-center">
+            <h1 class="h2">2 : Data Visualisation</h1>
+          </div>
+        </div>
+    </div>
     {%app_entry%}
   </div>
 </div>
