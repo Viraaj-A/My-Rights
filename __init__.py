@@ -1,7 +1,6 @@
 from flask import Flask, render_template, session
 from webforms import SearchForm, QuestionnaireForm
 from search import text_search
-from turbo_flask import Turbo
 from questionnaire_analysis import return_results
 
 def init_app():
@@ -11,8 +10,6 @@ def init_app():
     app.config['SECRET_KEY'] = 'any secret string'
 
     app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
-
-    turbo = Turbo()
 
     with app.app_context():
         # Importing Routes
@@ -28,18 +25,22 @@ def init_app():
         def search():
             form = SearchForm()
 
-            if session.get("search_rights"):
-                search_rights = session.get("search_rights", None)
-            else:
-                search_rights = f'Enter search, for example, "protection against torture"'
+            search_rights = f'Enter search, for example, "protection against torture"'
 
             return render_template('search.html', form=form, input_search=search_rights)
 
         @app.route('/results/', methods=['GET', 'POST'])
         def results():
             search_form = SearchForm()
-            case = text_search(search_form.data)[0] #Passing user query into search function
-            return render_template('results.html', form=search_form, searched=case, query=search_form.data)
+            if session.get("search_rights"):
+                questionnaire_query = session.get("search_rights", None)
+                questionnaire_query = ' or '.join([str(elem) for elem in questionnaire_query])
+                query = questionnaire_query
+                case = text_search(questionnaire_query)[0]
+            else:
+                query = search_form.data
+                case = text_search(search_form.searched.data)[0] #Passing user query into search function
+            return render_template('results.html', form=search_form, searched=case, query=query)
 
         @app.route('/questionnaire/')
         def questionnaire():
@@ -72,8 +73,5 @@ def init_app():
         #Importing Dash Application
         from plotly_dash.__init__ import init_dashboard
         app = init_dashboard(app)
-
-        #Initialising Turbo for the Questionnaire fragment
-        turbo.init_app(app)
 
         return app

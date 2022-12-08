@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 flask = "*"
-spacy = "*"
 pandas = "*"
 rank-bm25 = "*"
 sqlalchemy = "*"
@@ -23,7 +22,6 @@ autocorrect = "*"
 setuptools = "*"
 wheel = "*"
 contextualspellcheck = "*"
-turbo-flask = "*"
 flask-session = "*"
 
 [dev-packages]

@@ -17,8 +17,6 @@ html_layout = """
   <link href="./assets/favicon.ico" rel="icon">
   <title>My-Rights</title>
   <link rel="stylesheet" type= "text/css" href="assets/main.css">
-
-   {{ turbo() }}
 </head>
     
 <body class="">

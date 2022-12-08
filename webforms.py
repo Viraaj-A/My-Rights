@@ -19,15 +19,6 @@ property_string = "Does the harm relate to property?"
 #Search form
 class SearchForm(FlaskForm):
     searched = StringField("Searched", validators=[InputRequired()])
-    start_date = DateField('Start Date', format='%Y-%m-%d')
-    end_date = DateField('End Date', format='%Y-%m-%d')
-    importance = SelectMultipleField('Importance', choices=[
-                                    ('Key cases', 'Key Case'),
-                                    ('3','3'),
-                                    ('2', '2'),
-                                    ('1', '1')
-                                     ])
-    respondent = SelectMultipleField('Country', choices=respondent_state)
     submit = SubmitField("Submit")
 
 #Questionnaire Form

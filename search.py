@@ -32,16 +32,9 @@ def connect_psql():
 
 
 def text_search(search: str):
-    search_term = search['searched']
-    start_date = search['start_date']
-    end_date = search['end_date']
-    importance = search['importance']
-    respondent = search['respondent']
-
-
-    corrected = (spell(search_term))
-    if corrected == search_term:
-        search_term = search_term
+    corrected = (spell(search))
+    if corrected == search:
+        search_term = search
     else:
         search_term = corrected
     sql_query = """

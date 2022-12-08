@@ -12,27 +12,11 @@
     <div class="col-md-8 col-md-offset-2 border">
         <div class="form-group">
             <form action="{{ url_for('results') }}" method="post">
-            <input type="search" id="form1" name="searched"  class="form-control" placeholder="{{  query['searched']  }}">
+            <input type="search" id="form1" name="searched"  class="form-control" value="{{  query['searched']  }}">
         </div>
         <div class = "form-inline">
-            <div class="form-group">
-                {{ form.end_date.label }}: {{ form.end_date() }}
-            </div>
-            <div class="form-group">
-                {{ form.start_date.label }}: {{ form.start_date() }}
-            </div>
-        </div>
-        <div class = "form-inline">
-            <div class="form-group">
-                {{ form.importance.label }}: {{ form.importance(size="1") }}
-            </div>
-            <div class="form-group">
-                {{ form.respondent.label }}: {{ form.respondent(size="1") }}
-            </div>
-        </div>
-        <div class = "form-inline">
-            <div class="form-group">
-                {{ form.submit }}
+            <div>
+                <input type="submit" id="submit" class="btn btn-default">
             </div>
         </div>
     </div>
