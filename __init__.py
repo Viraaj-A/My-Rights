@@ -30,13 +30,6 @@ def init_app():
 
             if session.get("search_rights"):
                 search_rights = session.get("search_rights", None)
-                print(search_rights)
-                input_search = []
-                for i in search_rights:
-                    print(i)
-                    if i == "Yes":
-                        input_search.append(i)
-                        print(input_search)
 
             return render_template('search.html', form=form, input_search=search_rights)
 
