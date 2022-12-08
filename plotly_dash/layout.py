@@ -18,6 +18,9 @@ html_layout = """
   <title>My-Rights</title>
   <link rel="stylesheet" type= "text/css" href="assets/main.css">
 
+   {{ turbo() }}
+</head>
+    
 <body class="">
 <div id="site-border-left"></div>
 <div id="site-border-right"></div>
@@ -59,6 +62,7 @@ html_layout = """
     {%app_entry%}
   </div>
 </div>
+</body>
 
 <footer class="footer-container text-center">
   <div class="container">

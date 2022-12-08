@@ -23,6 +23,8 @@ autocorrect = "*"
 setuptools = "*"
 wheel = "*"
 contextualspellcheck = "*"
+turbo-flask = "*"
+flask-session = "*"
 
 [dev-packages]
 

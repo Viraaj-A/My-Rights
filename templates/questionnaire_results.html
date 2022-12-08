@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="section-container-spacer text-center">
+                <h1 class="h2">1 : Questionnaire Results</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-2">
+            <h4>Thank you for completing the questionnaire.</h4></br>
+            <h4>Based on your 'Yes' answers, you might want to search the following rights:</h4></br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-1">
+            {% for right in applicable_rights[:10] %}
+                <h4>{{right}}</h4>
+            {% endfor %}
+        </div>
+        <div class="col-xs-4">
+            {% for right in applicable_rights[10:20] %}
+                <h4>{{right}}</h4>
+            {% endfor %}
+        </div>
+        <div class="col-xs-3">
+            {% for right in applicable_rights[21:30] %}
+                <h4>{{right}}</h4>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-2">
+            </br>
+            <h4>If you answered 'Yes' to all the questions, you would also see the following rights:</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-xs-offset-1">
+            {% for right in remaining_rights[:10] %}
+                <h4>{{right}}</h4>
+            {% endfor %}
+        </div>
+        <div class="col-xs-3">
+            {% for right in remaining_rights[10:20] %}
+                <h4>{{right}}</h4>
+            {% endfor %}
+        </div>
+        <div class="col-xs-3">
+            {% for right in remaining_rights[21:30] %}
+                <h4>{{right}}</h4>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-2">
+        <h4>If you would like to search judgments that include your particles please click search below</h4>
+        <a href="{{ url_for('search') }}" title="" class="btn btn-default">Search Your Rights</a>
+    </div>
+</div>
+
+{% endblock %}
