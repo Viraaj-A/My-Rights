@@ -30,6 +30,8 @@ def init_app():
 
             if session.get("search_rights"):
                 search_rights = session.get("search_rights", None)
+            else:
+                search_rights = f'Enter search, for example, "protection against torture"'
 
             return render_template('search.html', form=form, input_search=search_rights)
 
