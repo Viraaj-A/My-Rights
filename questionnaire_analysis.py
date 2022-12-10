@@ -24,8 +24,8 @@ def return_results(procedural_q, physical_q, mental_q, age_q, gender_q, family_q
         rights.append(article_groups.loc[article_groups['Property'] == 'Yes', 'Right'].to_list())
     flat_list = [item for sublist in rights for item in sublist]
     applicable_rights = set(flat_list)
-    all_articles = article_groups.columns.values.tolist()
-    remaining_rights = list(set(all_articles) - set(applicable_rights))
+    all_rights = article_groups['Right'].tolist()
+    remaining_rights = list(set(all_rights) - set(applicable_rights))
     print(remaining_rights)
     applicable_rights = list(applicable_rights)
 

@@ -36,10 +36,10 @@ def init_app():
                 questionnaire_query = session.get("search_rights", None)
                 questionnaire_query = ' or '.join([str(elem) for elem in questionnaire_query])
                 query = questionnaire_query
-                case = text_search(questionnaire_query)[0]
+                case = text_search(query)[0]
             else:
                 query = search_form.data
-                case = text_search(search_form.searched.data)[0] #Passing user query into search function
+                case = text_search(search_form.searched.data)[0]
             return render_template('results.html', form=search_form, searched=case, query=query)
 
         @app.route('/questionnaire/')
