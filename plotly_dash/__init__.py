@@ -185,17 +185,17 @@ def init_dashboard(server):
                                ])
                            ]
                            ),
-                  # RIGT COLUMN OUTPUT GRAPHS
+                  # RIGHT COLUMN OUTPUT GRAPHS
                   html.Div(className="col-xs-7",
                            children=[
                                html.Div(className='row', children=[
                                    html.Div(
-                                       className="col-xs-4 col-xs-offset-1",
+                                       className="col-xs-5 col-xs-offset-1",
                                        children=[
                                            html.H5(
                                                id='total_cases')]),
                                    html.Div(
-                                       className="col-xs-4 col-xs-offset-1",
+                                       className="col-xs-5 col-xs-offset-1",
                                        children=[
                                            html.H5(
                                                id='filtered_cases')])
@@ -293,11 +293,16 @@ def init_dashboard(server):
         df_choropleth = filtered_df.groupby(['code'], sort=False)['code'].count().reset_index(
         name='Number of Cases')
 
+        # Total Cases and Filtered Cases Text output
+        total_cases = f'Total judgments: {len(df_country_group.index)}'
+        filtered_cases = f'Filtered judgments: {len(filtered_df.index)}'
+
         # Updating Importance Graph
         importance_graph = px.histogram(filtered_df, x="importance_number", color="importance_number",
-                                        labels={"importance_number": "Importance Rating", "color": 'Number of Cases'})
+                                        labels={"importance_number": "Importance Rating"})
 
-        importance_graph.update_layout(transition_duration=500, margin=dict(t=20, b=40), height=300, width=600)
+        importance_graph.update_layout(transition_duration=500, margin=dict(t=20, b=40), height=300,
+                                       yaxis_title="Count")
 
         importance_graph.update_traces(showlegend=False)
 
@@ -317,13 +322,10 @@ def init_dashboard(server):
         world_map.update_traces(showlegend=False)
 
         # Country Line Map
-        article_line = px.line(df_time_series, x="judgment_date", y="Count", color='articles_considered')
+        article_line = px.line(df_time_series, x="judgment_date", y="Count", color='articles_considered',
+                               labels={"articles_considered": "Articles Considered"})
 
         article_line.update_layout(transition_duration=50, margin=dict(t=0, b=70), height=400)
-
-        # Total Cases and Filtered Cases Text output
-        total_cases = f'Total judgments: {len(df_country_group.index)}'
-        filtered_cases = f'Filtered judgments: {len(filtered_df.index)}'
 
         # Data Table
         data = filtered_df.to_dict('rows')

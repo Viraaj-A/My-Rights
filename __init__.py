@@ -34,7 +34,9 @@ def init_app():
             search_form = SearchForm()
             if session.get("search_rights"):
                 questionnaire_query = session.get("search_rights", None)
-                questionnaire_query = ' or '.join([str(elem) for elem in questionnaire_query])
+                questionnaire_query = ' or '.join(f'"{w}"' for w in questionnaire_query)
+                questionnaire_query = "'{}'".format(questionnaire_query)
+                print(questionnaire_query)
                 query = questionnaire_query
                 case = text_search(query)[0]
             else:
