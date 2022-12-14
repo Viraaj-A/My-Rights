@@ -61,15 +61,7 @@ html_layout = """
   </div>
 </div>
 </body>
-
-<footer class="footer-container text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <p>[INSERT LOGO REQUIREMENTS]<a href="" title="Beautiful Free Images">[INSERT LOGO REQUIREMENTS]</a></p>
-      </div>
-    </div>
-  </div>
+<footer>
 {%config%}
 {%scripts%}
 {%renderer%}
