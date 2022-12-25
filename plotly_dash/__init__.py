@@ -178,10 +178,12 @@ def init_dashboard(server):
                                        id='year_slider')
                                ]),
                                html.Div([
+                                   html.Br(),
                                    html.Button(
                                        id='submit-button-state',
                                        n_clicks=0,
-                                       children='Submit')
+                                       children='Submit',
+                                       className='btn btn-default')
                                ])
                            ]
                            ),
@@ -207,6 +209,7 @@ def init_dashboard(server):
                                    dcc.Graph(id='importance_graph',
                                              config={
                                                  'displayModeBar': False}),
+                                   html.Br(),
                                    dcc.Graph(id='article_line',
                                              config={
                                                  'displayModeBar': False})
@@ -325,14 +328,23 @@ def init_dashboard(server):
         article_line = px.line(df_time_series, x="judgment_date", y="Count", color='articles_considered',
                                labels={"articles_considered": "Articles Considered"})
 
-        article_line.update_layout(transition_duration=50, margin=dict(t=0, b=70), height=400)
+        article_line.update_layout(transition_duration=50, margin=dict(t=0, b=70), height=400, xaxis_title='Judgment Date')
 
-        # Data Table
+        # Data Table - Concatening two columns to create a hyperlinkable case column - 'case_link'
+        filtered_df['case_link'] = '['+filtered_df['case_title']+']'+'('+filtered_df['document_url']+')'
         data = filtered_df.to_dict('rows')
-        columns = [{"name": 'Case Title', "id": 'case_title'}, {"name": 'Importance', "id": 'importance_number'},
+        columns = [{"name": 'Case Name', "id": 'case_link', 'presentation': 'markdown'},
+                   {"name": 'Importance', "id": 'importance_number'},
                    {"name": 'Articles Considered', "id": 'articles_considered'},
-                   {"name": 'Respondent', "id": 'respondent'}, {"name": 'Date', "id": 'judgment_date'}]
-        data_table = dash_table.DataTable(data=data, columns=columns)
+                   {"name": 'Respondent', "id": 'respondent'},
+                   {"name": 'Date', "id": 'judgment_date'}]
+
+        data_table = dash_table.DataTable(data=data, columns=columns,
+                                          markdown_options={"link_target": "_blank"},
+                                          sort_action="native",
+                                          sort_mode="multi",
+                                          export_format="csv",
+                                          style_cell={'textAlign': 'left'})
 
         return importance_graph, world_map, article_line, total_cases, filtered_cases, data_table
 
