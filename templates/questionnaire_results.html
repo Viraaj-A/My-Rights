@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-xs-4 col-xs-offset-1">
             {% for right in applicable_rights[:10] %}
-                <h4>{{right}}</h4>
+                <p>{{right}}</p>
             {% endfor %}
         </div>
         <div class="col-xs-4">
@@ -39,19 +39,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-3 col-xs-offset-1">
+        <div class="col-xs-4 col-xs-offset-1">
             {% for right in remaining_rights[:10] %}
-                <h4>{{right}}</h4>
+                <h5>{{right}}</h5>
             {% endfor %}
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             {% for right in remaining_rights[10:20] %}
-                <h4>{{right}}</h4>
+                <h5>{{right}}</h5>
             {% endfor %}
         </div>
         <div class="col-xs-3">
             {% for right in remaining_rights[21:30] %}
-                <h4>{{right}}</h4>
+                <h5>{{right}}</h5>
             {% endfor %}
         </div>
     </div>
