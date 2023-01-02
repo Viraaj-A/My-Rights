@@ -69,13 +69,13 @@ def init_app():
 
             session["search_rights"] = applicable_rights
 
-        @app.route('/results/2/', methods=['GET', 'POST'])
-        def navigate_forward():
-            search_form = SearchForm()
-            query = search_form.data
-            page = request.args.get('page', 1, type=int)
-            case = Color.query.paginate(page=page, per_page=5)
-            return render_template('paginated.html', form=search_form, searched=case, query=query)
+        # @app.route('/results/2/', methods=['GET', 'POST'])
+        # def navigate_forward():
+        #     search_form = SearchForm()
+        #     query = search_form.data
+        #     page = request.args.get('page', 1, type=int)
+        #     case = Color.query.paginate(page=page, per_page=5)
+        #     return render_template('paginated.html', form=search_form, searched=case, query=query)
 
 
         #Importing Dash Application

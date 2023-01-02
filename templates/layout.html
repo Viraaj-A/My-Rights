@@ -14,7 +14,9 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
   <link href="./assets/favicon.ico" rel="icon">
   <title>My-Rights</title>
-  <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/main.css') }}"></head>
+  <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/main.css') }}">
+  <script src="{{ url_for('static', filename='main.70a66962.js') }}"></script>
+</head>
 
 <body class="">
 <div id="site-border-left"></div>
@@ -33,13 +35,14 @@
         </button>
 
       <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="nav navbar-nav ">
+        <ul class="nav navbar-nav">
           <li><a href="{{ url_for('index') }}" title="">Home</a></li>
           <li><a href="{{ url_for('questionnaire') }}" title="">1 : Questionnaire</a></li>
           <li><a href="/visualisation" title="">2 : Data Visualisation</a></li>
           <li><a href="{{ url_for('search') }}" title="">3 : Text Search</a></li>
           <li><a href="{{ url_for('about') }}" title="">About</a></li>
         </ul>
+
       </div>
     </div>
   </nav>

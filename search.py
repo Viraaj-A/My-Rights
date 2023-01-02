@@ -19,8 +19,8 @@ def connect_psql():
     if development == False:
         conn = psycopg2.connect(database="defaultdb",
                                 host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                user="doadmin",
-                                password="AVNS_SbC_UqXYG665R47kxY4",
+                                user="user",
+                                password="AVNS_otvyMhYbyrnnLOsVr5U",
                                 port=25060,
                                 sslmode='require')
         cursor = conn.cursor()
