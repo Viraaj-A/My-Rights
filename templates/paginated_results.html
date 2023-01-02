@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="section-container-spacer text-center">
+        <h1 class="h2">3 : Text Search</h1>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 border">
+        <div class="form-group">
+            <form action="{{ url_for('results') }}" method="post">
+                <input type="search" id="form1" name="searched"  class="form-control" value="{{  query  }}"/>
+            </form>
+            </br>
+            <input type="submit" id="submit" class="btn btn-default"/>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <h3>Results:</h3>
+        {% for result in searched %}
+        <div class="container">
+            <div class="row border">
+                <div class = "col-md-11">
+                    <div class="row">
+                        <div class = "col-md-12">
+                            <ul id="result_list">
+                                <li class="horizontal"><a href="{{result[1]}}"><b>{{result[2]}}</b>
+                                        <i class="fa fa-external-link" style="margin-left: 10px;"></i></a></li>
+                                <li class="horizontal">Importance Rating: <b>{{result[3]}} </b></li>
+                                <li class="horizontal first">Delivered On: <b>{{result[4]}} </b></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4><u>SEARCH HIGHLIGHTS</u></h4>
+                            {{result[7]|safe}}
+                        </div>
+                        <div class="col-md-4">
+                            <h4><u>JUDGMENT FACTS</u></h4>
+                            {{result[5]|truncate(255,false,'...')}}
+                        </div>
+                        <div class="col-md-4">
+                            <h4><u>JUDGMENT CONCLUSION</u></h4>
+                            {{result[6]|truncate(255,false,'...')}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <br/>
+        </div>
+        {% endfor %}
+  </div>
+</div>
+{% endblock %}

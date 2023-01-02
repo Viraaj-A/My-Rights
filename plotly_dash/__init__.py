@@ -10,7 +10,7 @@ import json
 development = False
 
 
-#Connecting with psycopg2/SQLAlchemy
+#Connecting with SQLAlchemy
 if development == True:
     connection_string = 'postgres:password@localhost/restore_Oct_13'
 else:

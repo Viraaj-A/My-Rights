@@ -2,6 +2,8 @@ from flask import Flask, render_template, session
 from webforms import SearchForm, QuestionnaireForm
 from search import text_search
 from questionnaire_analysis import return_results
+from paginated_search import pagination
+
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -36,7 +38,6 @@ def init_app():
                 questionnaire_query = session.get("search_rights", None)
                 questionnaire_query = ' or '.join(f'"{w}"' for w in questionnaire_query)
                 questionnaire_query = "'{}'".format(questionnaire_query)
-                print(questionnaire_query)
                 query = questionnaire_query
                 case = text_search(query)[0]
             else:
@@ -68,8 +69,13 @@ def init_app():
 
             session["search_rights"] = applicable_rights
 
-            return render_template('questionnaire_results.html', applicable_rights=applicable_rights,
-                                   remaining_rights=remaining_rights)
+        @app.route('/results/2/', methods=['GET', 'POST'])
+        def navigate_forward():
+            search_form = SearchForm()
+            query = search_form.data
+            page = request.args.get('page', 1, type=int)
+            case = Color.query.paginate(page=page, per_page=5)
+            return render_template('paginated.html', form=search_form, searched=case, query=query)
 
 
         #Importing Dash Application

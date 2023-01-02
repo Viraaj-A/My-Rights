@@ -17,16 +17,12 @@ def connect_psql():
         return cursor, conn
 
     if development == False:
-        try:
-            conn = psycopg2.connect(database="defaultdb",
-                                    host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                    user="doadmin",
-                                    password="AVNS_SbC_UqXYG665R47kxY4",
-                                    port=25060,
-                                    sslmode='require')
-            print("connected")
-        except:
-            print("failed")
+        conn = psycopg2.connect(database="defaultdb",
+                                host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
+                                user="doadmin",
+                                password="AVNS_SbC_UqXYG665R47kxY4",
+                                port=25060,
+                                sslmode='require')
         cursor = conn.cursor()
         return cursor, conn
 

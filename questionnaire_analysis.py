@@ -26,7 +26,6 @@ def return_results(procedural_q, physical_q, mental_q, age_q, gender_q, family_q
     applicable_rights = set(flat_list)
     all_rights = article_groups['Right'].tolist()
     remaining_rights = list(set(all_rights) - set(applicable_rights))
-    print(remaining_rights)
     applicable_rights = list(applicable_rights)
 
     return applicable_rights, remaining_rights
