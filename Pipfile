@@ -23,6 +23,7 @@ setuptools = "*"
 wheel = "*"
 contextualspellcheck = "*"
 flask-session = "*"
+waitress = "*"
 
 [dev-packages]
 

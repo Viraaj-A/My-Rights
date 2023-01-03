@@ -9,64 +9,98 @@
     </div>
   </div>
   <div class="row">
-    <turbo-frame id="message_1">
-          <div class="col-xs-9 col-xs-offset-3">
-            <div class="form-group">
-                <div class="form-group">
-                    <form action="/questionnaire/1/" method="post">
-                        <div class="row inline">
-                            <label for="physical_q">Were you physically hurt, touched or harmed?</label>
-                            <input type="radio" name="physical_q" id="physical_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="physical_q" id="physical_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="procedural_q">Does your problem link with a legal action?</label>
-                            <input type="radio" name="procedural_q" id="procedural_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="procedural_q" id="procedural_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="mental_q">Were you stopped from doing something like speaking or moving?</label>
-                            <input type="radio" name="mental_q" id="mental_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="mental_q" id="mental_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="age_q">Did the harm involve a child, a person under 18 years of age</label>
-                            <input type="radio" name="age_q" id="age_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="age_q" id="age_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="gender_q">Did the harm relate to your gender?</label>
-                            <input type="radio" name="gender_q" id="gender_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="gender_q" id="gender_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="family_q">Did the harm impact a family member (child, parent, sibliing)?</label>
-                            <input type="radio" name="family_q" id="family_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="family_q" id="family_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="community_q">Did the harm affect more than you or your family?</label>
-                            <input type="radio" name="community_q" id="community_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="community_q" id="community_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="nationality_q">Does the harm relate to your nationality or legal status?</label>
-                            <input type="radio" name="nationality_q" id="nationality_q" value="Yes" display="inline"> Yes</input>
-                            <input type="radio" name="nationality_q" id="nationality_q" value="No"> No</input>
-                        </div>
-                        <div class="row inline">
-                            <label for="property_q">Does the harm relate to your property?</label>
-                            <input type="radio" name="property_q" id="property_q" value="Yes"> Yes</input>
-                            <input type="radio" name="property_q" id="property_q" value="No"> No</input>
-                        </div>
-                        <div class="row">
-                            <input type="submit" id="q_submit" class="btn btn-default">
-                        </div>
-                    </form>
+        <div class="form-group">
+            <form action="/questionnaire/1/" method="post">
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="physical_q">Were you physically hurt, touched or harmed?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="physical_q" id="physical_q" value="Yes" display="inline"> Yes</input>
+                        <input type="radio" name="physical_q" id="physical_q" value="No"> No</input>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="procedural_q">Does your problem link with a legal action?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="procedural_q" id="procedural_q" value="Yes" display="inline"> Yes</input>
+                        <input type="radio" name="procedural_q" id="procedural_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="mental_q">Were you stopped from doing something like speaking or moving?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="mental_q" id="mental_q" value="Yes" display="inline"> Yes</input>
+                        <input type="radio" name="mental_q" id="mental_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="age_q">Did the harm involve a child, a person under 18 years of age</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="age_q" id="age_q" value="Yes" display="inline"> Yes</input>
+                        <input type="radio" name="age_q" id="age_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="gender_q">Did the harm relate to your gender?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="gender_q" id="gender_q" value="Yes" display="inline"> Yes</input>
+                    <input type="radio" name="gender_q" id="gender_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="family_q">Did the harm impact a family member (child, parent, sibliing)?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="family_q" id="family_q" value="Yes" display="inline"> Yes</input>
+                        <input type="radio" name="family_q" id="family_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="community_q">Did the harm affect more than you or your family?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="community_q" id="community_q" value="Yes" display="inline"> Yes</input>
+                        <input type="radio" name="community_q" id="community_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="nationality_q">Does the harm relate to your nationality or legal status?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="nationality_q" id="nationality_q" value="Yes" display="inline"> Yes</input>
+                        <input type="radio" name="nationality_q" id="nationality_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <label for="property_q">Does the harm relate to your property?</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="radio" name="property_q" id="property_q" value="Yes"> Yes</input>
+                        <input type="radio" name="property_q" id="property_q" value="No"> No</input>
+                    </div>
+                </div>
+                <div class="row margin-top: 0">
+                    <div class="col-xs-12">
+                      <div class="section-container-spacer text-center">
+                        <input type="submit" id="q_submit" class="btn btn-default">
+                      </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    </turbo-frame>
   </div>
 </div>
 {% endblock %}
