@@ -19,8 +19,8 @@ def connect_psql():
     if development == False:
         conn = psycopg2.connect(database="defaultdb",
                                 host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                user="user",
-                                password="AVNS_otvyMhYbyrnnLOsVr5U",
+                                user="doadmin",
+                                password="AVNS_SbC_UqXYG665R47kxY4",
                                 port=25060,
                                 sslmode='require')
         cursor = conn.cursor()
@@ -35,7 +35,7 @@ def text_search(search: str):
         search_term = corrected
     sql_query = """
         SELECT item_id, url, case_title, importance_number, judgment_date, facts, conclusion, ts_headline('english', entire_text, query, 'StartSel = <b>, StopSel = </b>, ShortWord = 3, MinWords = 50, MaxWords = 60') as entire_text_highlights
-        FROM (SELECT item_id, url, entire_text, case_title, importance_number, judgment_date, facts, conclusion, ts_rank_cd(textsearchable_index_col, query) AS rank, query
+        FROM (SELECT item_id, url, entire_text, case_title, importance_number, judgment_date, facts, conclusion, ts_rank(textsearchable_index_col, query) AS rank, query
         FROM english_search, websearch_to_tsquery('english', %s) AS query
         WHERE textsearchable_index_col @@ query
         ORDER BY rank DESC

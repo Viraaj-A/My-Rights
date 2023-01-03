@@ -304,8 +304,8 @@ def init_dashboard(server):
         importance_graph = px.histogram(filtered_df, x="importance_number", color="importance_number",
                                         labels={"importance_number": "Importance Rating"})
 
-        importance_graph.update_layout(transition_duration=500, margin=dict(t=20, b=40), height=300,
-                                       yaxis_title="Count")
+        importance_graph.update_layout(transition_duration=500, margin=dict(t=20, b=40), height=300, width=710,
+                                       yaxis_title="Number of Cases")
 
         importance_graph.update_traces(showlegend=False)
 
@@ -321,7 +321,7 @@ def init_dashboard(server):
                                          opacity=0.5
                                          )
 
-        world_map.update_layout(transition_duration=50, margin=dict(t=20, b=30), height=300)
+        world_map.update_layout(transition_duration=50, margin=dict(t=20, b=30), height=300, width=710)
         world_map.update_traces(showlegend=False)
 
         # Country Line Map
