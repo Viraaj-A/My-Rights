@@ -16,7 +16,7 @@ html_layout = """
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
   <link href="./assets/favicon.ico" rel="icon">
   <title>My-Rights</title>
-  <link rel="stylesheet" type= "text/css" href="assets/main.css">
+  <link rel="stylesheet" type= "text/css" href="assets/dash.css">
 </head>
     
 <body class="">

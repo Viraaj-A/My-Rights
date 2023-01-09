@@ -10,55 +10,80 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-10 col-xs-offset-2">
-            <h3>Thank you for completing the questionnaire.</h3></br>
-            <h3>Based on your 'Yes' answers, you might want to search the following rights:</h3></br>
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="section-container-spacer text-center text-justify">
+                <results_heading>
+                    <p>Thank you for completing the questionnaire.
+                        Below, you will find out which human rights may apply to you.
+                        If you want further information on what these human rights mean, click the following link:
+                        <a href="https://www.coe.int/en/web/compass/european-convention-on-human-rights" target="_blank">
+                            <i>Simplified Human Rights Summary</i>
+                        </a>
+                    </p>
+                    </br>
+                    <p>Based on your 'Yes' answers, you might want to search for the following rights:</p>
+                </results_heading>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-4 col-xs-offset-1">
-            {% for right in applicable_rights[:10] %}
-                <p>{{right}}</p>
-            {% endfor %}
-        </div>
-        <div class="col-xs-4">
-            {% for right in applicable_rights[10:20] %}
-                <h4>{{right}}</h4>
-            {% endfor %}
-        </div>
-        <div class="col-xs-3">
-            {% for right in applicable_rights[21:30] %}
-                <h4>{{right}}</h4>
-            {% endfor %}
+        <results_body>
+            <div class="col-md-4 col-md-offset-1">
+                {% for right in applicable_rights[:10] %}
+                    <p>{{right}}</p>
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                {% for right in applicable_rights[10:20] %}
+                    <p>{{right}}</p>
+                {% endfor %}
+            </div>
+            <div class="col-md-3">
+                {% for right in applicable_rights[21:30] %}
+                    <p>{{right}}</p>
+                {% endfor %}
+            </div>
+        </results_body>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="section-container-spacer text-center text-justify">
+                <results_heading>
+                        </br>
+                        <p>If you answered 'Yes' to all the questions, then these rights may matter to you:</p>
+                </results_heading>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-10 col-xs-offset-2">
-            </br>
-            <h3>If you answered 'Yes' to all the questions, you would also see the following rights:</h3>
-        </div>
+        <results_body>
+            <div class="col-md-4 col-md-offset-1">
+                {% for right in remaining_rights[:10] %}
+                    <p>{{right}}</p>
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                {% for right in remaining_rights[10:20] %}
+                    <p>{{right}}</p>
+                {% endfor %}
+            </div>
+            <div class="col-md-3">
+                {% for right in remaining_rights[21:30] %}
+                    <p>{{right}}</p>
+                {% endfor %}
+            </div>
+        </results_body>
     </div>
     <div class="row">
-        <div class="col-xs-4 col-xs-offset-1">
-            {% for right in remaining_rights[:10] %}
-                <h5>{{right}}</h5>
-            {% endfor %}
+        <div class="col-xs-12">
+            <div class="section-container-spacer text-center">
+                <results_heading>
+                    </br>
+                    <p>Click below, to see judgments that matter to your answers:</p>
+                    <a href="{{ url_for('questionnaire_cases') }}" title="" class="btn btn-default">Search Your Rights</a>
+                </results_heading>
+            </div>
         </div>
-        <div class="col-xs-4">
-            {% for right in remaining_rights[10:20] %}
-                <h5>{{right}}</h5>
-            {% endfor %}
-        </div>
-        <div class="col-xs-3">
-            {% for right in remaining_rights[21:30] %}
-                <h5>{{right}}</h5>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-10 col-xs-offset-2">
-        <h3>Click below, to see judgments that matter to your answers:</h3>
-        <a href="{{ url_for('results') }}" title="" class="btn btn-default">Search Your Rights</a>
     </div>
     </br></br>
 </div>

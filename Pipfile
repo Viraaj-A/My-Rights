@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 flask = "*"
 pandas = "*"
-rank-bm25 = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
 tqdm = "*"
@@ -17,13 +16,11 @@ flask-sqlalchemy = "*"
 dash = "*"
 gunicorn = "*"
 wtforms = "*"
-textblob = "*"
 autocorrect = "*"
 setuptools = "*"
 wheel = "*"
 contextualspellcheck = "*"
 flask-session = "*"
-waitress = "*"
 
 [dev-packages]
 

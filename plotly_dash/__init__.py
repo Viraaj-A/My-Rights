@@ -9,7 +9,6 @@ import json
 
 development = False
 
-
 #Connecting with SQLAlchemy
 if development == True:
     connection_string = 'postgres:password@localhost/restore_Oct_13'
@@ -27,11 +26,12 @@ def discrete_data_df():
     df_french_raw = pd.read_sql('Select * from processed_french_case_detail', engine, parse_dates=["judgment_date"])
     df = pd.concat([df_french_raw, df_english_raw]).drop_duplicates(subset='ecli', keep="first")
     del df_french_raw, df_english_raw
+    #Associate country iso codes to the respondent information
     df_country_codes = pd.read_csv('data/map/country_iso_codes.csv')
     df_country_group = pd.merge(df, df_country_codes, on='respondent', how='inner')
     del df
-    df_country_group = df_country_group.drop(
-        columns=['strasbourg', 'keywords', 'application_number', 'item_id', 'id'])
+    df_country_group = df_country_group.drop(columns=['strasbourg', 'keywords', 'application_number', 'item_id', 'id'])
+    #Retain only the year information of the cases
     df_country_group['judgment_date'] = df_country_group['judgment_date'].dt.year
     df_country_group['articles_considered'] = df_country_group['articles_considered'].str.replace(';', ',',
                                                                                                   regex=False)
@@ -61,7 +61,7 @@ def create_dropdown_value(series):
     value = series.sort_values().unique().tolist()
     return value
 
-#List of all  convention articles
+#List of all convention articles
 def create_article_list():
     articles = []
     for i in range(1, 57):
@@ -91,11 +91,12 @@ def init_dashboard(server):
      html.Div(className='row',
               children=[
                   # LEFT Column INPUTS
-                  html.Div(className="col-xs-5",
+                  html.Div(className="col-sm-5",
                            children=[
                                html.Div([
                                    html.Label(
-                                       "Choose countries that you are interested in, for example:"),
+                                       "Choose countries that you are interested in, for example:",
+                                        style={'margin-top': 6, 'margin-bottom': 0}),
                                    dcc.Dropdown(
                                        options=create_dropdown_options(
                                            df_country_group[
@@ -104,21 +105,24 @@ def init_dashboard(server):
                                               "Russia", "France",
                                               "United Kingdom"],
                                        id='respondent_dropdown',
-                                       multi=True)
+                                       multi=True,
+                                       style={'margin-bottom': 15})
                                ]),
                                html.Div([
                                    html.Label(
-                                       "Select your human rights"),
+                                       "Select your human rights",
+                                        style={'margin-bottom': 0}),
                                    dcc.Dropdown(
                                        id="articles_dropdown",
                                        multi=True,
                                        options=article_list,
-                                       value=["1"]
-                                       )
+                                       value=["1"],
+                                       style={'margin-bottom': 15})
                                ]),
                                html.Div([
                                    html.Label(
-                                       "Select the importance of the judgment you want to see"),
+                                       "Select the importance of the judgment you want to see",
+                                        style={'margin-bottom': 0}),
                                    dcc.Dropdown(
                                        id="importance_rating",
                                        multi=True,
@@ -127,12 +131,14 @@ def init_dashboard(server):
                                                'importance_number']),
                                        value=create_dropdown_value(
                                            df_country_group[
-                                               'importance_number'])
+                                               'importance_number']),
+                                       style={'margin-bottom': 15}
                                        )
                                ]),
                                html.Div([
                                    html.Label(
-                                       "Choose if you want to see if judges had different opinions"),
+                                       "Choose if you want to see if judges had different opinions",
+                                        style={'margin-bottom': 0}),
                                    dcc.Dropdown(
                                        id="separate_opinion",
                                        multi=True,
@@ -141,12 +147,14 @@ def init_dashboard(server):
                                                'separate_opinion']),
                                        value=create_dropdown_value(
                                            df_country_group[
-                                               'separate_opinion'])
+                                               'separate_opinion']),
+                                       style={'margin-bottom': 15}
                                        )
                                ]),
                                html.Div([
                                    html.Label(
-                                       "Choose the court you want"),
+                                       "Choose the court you want",
+                                        style={'margin-bottom': 0}),
                                    dcc.Dropdown(id="court",
                                                 multi=True,
                                                 options=create_dropdown_options(
@@ -154,12 +162,14 @@ def init_dashboard(server):
                                                         'court']),
                                                 value=create_dropdown_value(
                                                     df_country_group[
-                                                        'court'])
+                                                        'court']),
+                                                style={'margin-bottom': 15}
                                                 )
                                ]),
                                html.Div([
                                    html.Label(
-                                       "Select the years for when judgments were made"),
+                                       "Select the years for when judgments were made",
+                                        style={'margin-bottom': 0}),
                                    dcc.RangeSlider(
                                        min=df_country_group[
                                            'judgment_date'].min(),
@@ -188,7 +198,7 @@ def init_dashboard(server):
                            ]
                            ),
                   # RIGHT COLUMN OUTPUT GRAPHS
-                  html.Div(className="col-xs-7",
+                  html.Div(className="col-sm-7",
                            children=[
                                html.Div(className='row', children=[
                                    html.Div(
@@ -296,7 +306,7 @@ def init_dashboard(server):
         df_choropleth = filtered_df.groupby(['code'], sort=False)['code'].count().reset_index(
         name='Number of Cases')
 
-        # Total Cases and Filtered Cases Text output
+        # Obtain the number for Total Cases and Filtered Cases totals
         total_cases = f'Total judgments: {len(df_country_group.index)}'
         filtered_cases = f'Filtered judgments: {len(filtered_df.index)}'
 
@@ -330,7 +340,8 @@ def init_dashboard(server):
 
         article_line.update_layout(transition_duration=50, margin=dict(t=0, b=70), height=400, xaxis_title='Judgment Date')
 
-        # Data Table - Concatening two columns to create a hyperlinkable case column - 'case_link'
+        # Data Table
+        # Concatening two columns to create a hyperlinkable case column - 'case_link'
         filtered_df['case_link'] = '['+filtered_df['case_title']+']'+'('+filtered_df['document_url']+')'
         data = filtered_df.to_dict('rows')
         columns = [{"name": 'Case Name', "id": 'case_link', 'presentation': 'markdown'},

@@ -2,8 +2,7 @@ from flask import Flask, render_template, session
 from webforms import SearchForm, QuestionnaireForm
 from search import text_search
 from questionnaire_analysis import return_results
-from paginated_search import pagination
-
+from questionnaire_cases import ecli_results
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -34,16 +33,8 @@ def init_app():
         @app.route('/results/', methods=['GET', 'POST'])
         def results():
             search_form = SearchForm()
-            if session.get("search_rights"):
-                questionnaire_query = session.get("search_rights", None)
-                questionnaire_query = ' or '.join(f'"{w}"' for w in questionnaire_query)
-                questionnaire_query = "'{}'".format(questionnaire_query)
-                query = questionnaire_query
-                case = text_search(query)[0]
-            else:
-                query = search_form.data
-                case = text_search(search_form.searched.data)[0]
-            return render_template('results.html', form=search_form, searched=case, query=query)
+            case = text_search(search_form.searched.data)[0]
+            return render_template('results.html', form=search_form, searched=case, query=search_form.searched.data)
 
         @app.route('/questionnaire/')
         def questionnaire():
@@ -69,13 +60,15 @@ def init_app():
 
             session["search_rights"] = applicable_rights
 
-        # @app.route('/results/2/', methods=['GET', 'POST'])
-        # def navigate_forward():
-        #     search_form = SearchForm()
-        #     query = search_form.data
-        #     page = request.args.get('page', 1, type=int)
-        #     case = Color.query.paginate(page=page, per_page=5)
-        #     return render_template('paginated.html', form=search_form, searched=case, query=query)
+            return render_template('questionnaire_results.html', applicable_rights=applicable_rights,
+                                   remaining_rights=remaining_rights)
+
+        @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
+        def questionnaire_cases():
+            query = "Questionnaire Results"
+            search_rights = session.get("search_rights", None)
+            case = ecli_results(search_rights)
+            return render_template('questionnaire_cases.html', searched=case, query=query)
 
 
         #Importing Dash Application
