@@ -1,8 +1,10 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, request
 from webforms import SearchForm, QuestionnaireForm
 from search import text_search
 from questionnaire_analysis import return_results
-from questionnaire_cases import ecli_results
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.automap import automap_base
+
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -10,9 +12,20 @@ def init_app():
 
     app.config['SECRET_KEY'] = 'any secret string'
 
+    app.config[
+        "SQLALCHEMY_DATABASE_URI"] = 'postgresql://doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/defaultdb'
+
     app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
+
     with app.app_context():
+
+
+        db = SQLAlchemy(app)
+        Base = automap_base()
+        Base.prepare(db.engine, reflect=True)
+        English_Search = Base.classes.english_search
+
         # Importing Routes
         @app.route('/')
         def index():
@@ -63,16 +76,32 @@ def init_app():
             return render_template('questionnaire_results.html', applicable_rights=applicable_rights,
                                    remaining_rights=remaining_rights)
 
-        @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
-        def questionnaire_cases():
-            query = "Questionnaire Results"
-            search_rights = session.get("search_rights", None)
-            case = ecli_results(search_rights)
-            return render_template('questionnaire_cases.html', searched=case, query=query)
+        # @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
+        # def questionnaire_cases():
+        #     query = "Questionnaire Results"
+        #     search_rights = session.get("search_rights", None)
+        #     case = ecli_results(search_rights)
+        #     return render_template('questionnaire_cases.html', searched=case, query=query)
 
 
         #Importing Dash Application
         from plotly_dash.__init__ import init_dashboard
         app = init_dashboard(app)
+
+
+        #Pagination of questionnaire case results
+        @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
+        def questionnaire_cases():
+            # Session = sessionmaker(bind=engine)
+            # session = Session()
+            ROWS_PER_PAGE = 5
+            page = request.args.get('page', 1, type=int)
+            cases = db.session.query(English_Search).paginate(page=page, per_page=ROWS_PER_PAGE )
+            paginated_cases = (cases.items)
+
+            return render_template('test.html', cases=paginated_cases)
+            session.close()
+
+
 
         return app
