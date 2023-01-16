@@ -92,11 +92,9 @@ def init_app():
         #Pagination of questionnaire case results
         @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
         def questionnaire_cases():
-            # Session = sessionmaker(bind=engine)
-            # session = Session()
-            ROWS_PER_PAGE = 5
+            rows_per_page = 5
             page = request.args.get('page', 1, type=int)
-            cases = db.session.query(English_Search).paginate(page=page, per_page=ROWS_PER_PAGE )
+            cases = db.session.query(English_Search).paginate(page=page, per_page=rows_per_page)
             paginated_cases = (cases.items)
 
             return render_template('test.html', cases=paginated_cases)

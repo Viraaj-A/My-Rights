@@ -4,7 +4,9 @@
   <div class="row">
     <div class="col-xs-12">
         <div class="section-container-spacer text-center">
-            <p>{{cases}}</p>
+              {% for case in cases %}
+                <li>{{ case.ecli }}
+              {% endfor %}
         </div>
     </div>
   </div>
