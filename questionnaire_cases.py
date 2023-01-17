@@ -81,15 +81,7 @@ def ecli_results(search_rights):
     df_1 = df[df.unnest.isin(article_number_list)]
     ecli_results = df_1.groupby(['ecli']).size().to_frame('count').reset_index().sort_values('count', ascending=False)
     ecli_list = ecli_results['ecli'].to_list()
-    sql_query = """
-        SELECT url, case_title, importance_number, judgment_date, facts, conclusion
-        FROM english_search
-        WHERE ecli in %s
-        limit 100;
-        """
-    cursor.execute(sql_query, (tuple(ecli_list),))
-    results = cursor.fetchall()
-    return results
+    return ecli_list
 
 test_results()
 

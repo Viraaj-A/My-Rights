@@ -2,9 +2,11 @@ from flask import Flask, render_template, session, request
 from webforms import SearchForm, QuestionnaireForm
 from search import text_search
 from questionnaire_analysis import return_results
+from questionnaire_cases import ecli_results
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
-
+from sqlalchemy.sql.expression import case
+from sqlalchemy import text
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -38,9 +40,7 @@ def init_app():
         @app.route('/search/')
         def search():
             form = SearchForm()
-
             search_rights = f'Enter search, for example, "protection against torture"'
-
             return render_template('search.html', form=form, input_search=search_rights)
 
         @app.route('/results/', methods=['GET', 'POST'])
@@ -92,11 +92,13 @@ def init_app():
         #Pagination of questionnaire case results
         @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
         def questionnaire_cases():
+            search_rights = session.get("search_rights", None)
+            ecli_list = ecli_results(search_rights)
             rows_per_page = 5
             page = request.args.get('page', 1, type=int)
-            cases = db.session.query(English_Search).paginate(page=page, per_page=rows_per_page)
-            paginated_cases = (cases.items)
-
+            stmt = case(value=English_Search.ecli, whens={ecli: i for i, ecli in enumerate(ecli_list)})
+            cases = db.session.query(English_Search, stmt).paginate(page=page, per_page=rows_per_page)
+            paginated_cases = cases.items
             return render_template('test.html', cases=paginated_cases)
             session.close()
 
