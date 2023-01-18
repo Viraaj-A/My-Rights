@@ -17,72 +17,72 @@ else:
 
 engine = create_engine(f'postgresql+psycopg2://{connection_string}',poolclass=NullPool)
 
-# ********************* DATA IMPORT *********************
-
-# Function to initialise the main dataframe containing relevant judgment details
-def discrete_data_df():
-    df_english_raw = pd.read_sql('Select * from processed_english_case_detail', engine,
-                                 parse_dates=["judgment_date"])
-    df_french_raw = pd.read_sql('Select * from processed_french_case_detail', engine, parse_dates=["judgment_date"])
-    df = pd.concat([df_french_raw, df_english_raw]).drop_duplicates(subset='ecli', keep="first")
-    del df_french_raw, df_english_raw
-    #Associate country iso codes to the respondent information
-    df_country_codes = pd.read_csv('data/map/country_iso_codes.csv')
-    df_country_group = pd.merge(df, df_country_codes, on='respondent', how='inner')
-    del df
-    df_country_group = df_country_group.drop(columns=['strasbourg', 'keywords', 'application_number', 'item_id', 'id'])
-    #Retain only the year information of the cases
-    df_country_group['judgment_date'] = df_country_group['judgment_date'].dt.year
-    df_country_group['articles_considered'] = df_country_group['articles_considered'].str.replace(';', ',',
-                                                                                                  regex=False)
-    df_country_group['articles_considered'] = df_country_group.articles_considered.replace(regex=['-.'], value='')
-    df_country_group['articles_considered'] = df_country_group.articles_considered.replace(regex=['more…'],
-                                                                                           value='')
-    df_country_group['articles_considered'] = df_country_group.articles_considered.replace(r'[^a-zA-Z0-9]', ',',
-                                                                                           regex=True)
-    df_country_group['articles_considered'] = df_country_group.articles_considered.replace(r',,', ',', regex=True)
-    df_country_group['articles_considered'] = df_country_group.articles_considered.str.rstrip(',')
-    del df_country_codes
-    return df_country_group
-
-# Retrieves geojson 3 digit location information
-def geojson_data():
-    # loading GeoJSON
-    handle = open('data/map/europe.geojson')
-    geojson = json.load(handle)
-    return geojson
-
-# Helper functions for dropdowns and slider
-def create_dropdown_options(series):
-    options = [{'label': i, 'value': i} for i in series.sort_values().unique()]
-    return options
-
-def create_dropdown_value(series):
-    value = series.sort_values().unique().tolist()
-    return value
-
-#List of all convention articles
-def create_article_list():
-    articles = []
-    for i in range(1, 57):
-        articles.append(str(i))
-    for j in range(1, 13):
-        articles.append(f'P{j}')
-    return articles
-
-
-df_country_group = discrete_data_df()
-geojson = geojson_data()
-article_list = create_article_list()
 
 # ********************* DASH APP *********************
 def init_dashboard(server):
+    # ********************* DATA IMPORT *********************
+    # Function to initialise the main dataframe containing relevant judgment details
+    def discrete_data_df():
+        df_english_raw = pd.read_sql('Select * from processed_english_case_detail', engine,
+                                     parse_dates=["judgment_date"])
+        df_french_raw = pd.read_sql('Select * from processed_french_case_detail', engine, parse_dates=["judgment_date"])
+        df = pd.concat([df_french_raw, df_english_raw]).drop_duplicates(subset='ecli', keep="first")
+        del df_french_raw, df_english_raw
+        # Associate country iso codes to the respondent information
+        df_country_codes = pd.read_csv('data/map/country_iso_codes.csv')
+        df_country_group = pd.merge(df, df_country_codes, on='respondent', how='inner')
+        del df
+        df_country_group = df_country_group.drop(
+            columns=['strasbourg', 'keywords', 'application_number', 'item_id', 'id'])
+        # Retain only the year information of the cases
+        df_country_group['judgment_date'] = df_country_group['judgment_date'].dt.year
+        df_country_group['articles_considered'] = df_country_group['articles_considered'].str.replace(';', ',',
+                                                                                                      regex=False)
+        df_country_group['articles_considered'] = df_country_group.articles_considered.replace(regex=['-.'], value='')
+        df_country_group['articles_considered'] = df_country_group.articles_considered.replace(regex=['more…'],
+                                                                                               value='')
+        df_country_group['articles_considered'] = df_country_group.articles_considered.replace(r'[^a-zA-Z0-9]', ',',
+                                                                                               regex=True)
+        df_country_group['articles_considered'] = df_country_group.articles_considered.replace(r',,', ',', regex=True)
+        df_country_group['articles_considered'] = df_country_group.articles_considered.str.rstrip(',')
+        del df_country_codes
+        return df_country_group
+
+    # Retrieves geojson 3 digit location information
+    def geojson_data():
+        # loading GeoJSON
+        handle = open('data/map/europe.geojson')
+        geojson = json.load(handle)
+        return geojson
+
+    # Helper functions for dropdowns and slider
+    def create_dropdown_options(series):
+        options = [{'label': i, 'value': i} for i in series.sort_values().unique()]
+        return options
+
+    def create_dropdown_value(series):
+        value = series.sort_values().unique().tolist()
+        return value
+
+    # List of all convention articles
+    def create_article_list():
+        articles = []
+        for i in range(1, 57):
+            articles.append(str(i))
+        for j in range(1, 13):
+            articles.append(f'P{j}')
+        return articles
+
+    df_country_group = discrete_data_df()
+    geojson = geojson_data()
+    article_list = create_article_list()
 
     #Dash App initilisation
     dash_app = Dash(server=server,
         routes_pathname_prefix="/visualisation/",)
 
     dash_app.index_string = html_layout
+
 
     # App layout
     dash_app.layout = html.Div(className='container',
@@ -213,16 +213,19 @@ def init_dashboard(server):
                                                id='filtered_cases')])
                                ]),
                                html.Div(className='row', children=[
+                                   dcc.Loading([
                                    dcc.Graph(id='world_map',
                                              config={
-                                                 'displayModeBar': False}),
+                                                 'displayModeBar': False})]),
+                                   dcc.Loading([
                                    dcc.Graph(id='importance_graph',
                                              config={
-                                                 'displayModeBar': False}),
+                                                 'displayModeBar': False})]),
                                    html.Br(),
+                                   dcc.Loading([
                                    dcc.Graph(id='article_line',
                                              config={
-                                                 'displayModeBar': False})
+                                                 'displayModeBar': False})])
                                ])
                            ])
               ]),
@@ -338,7 +341,8 @@ def init_dashboard(server):
         article_line = px.line(df_time_series, x="judgment_date", y="Count", color='articles_considered',
                                labels={"articles_considered": "Articles Considered"})
 
-        article_line.update_layout(transition_duration=50, margin=dict(t=0, b=70), height=400, xaxis_title='Judgment Date')
+        article_line.update_layout(transition_duration=50, margin=dict(t=0, b=70), height=400,
+                                   xaxis_title='Judgment Date', yaxis_title="Number of Cases")
 
         # Data Table
         # Concatening two columns to create a hyperlinkable case column - 'case_link'

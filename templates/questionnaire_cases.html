@@ -21,28 +21,33 @@
   </div>
   <div class="row">
     <h3>Results:</h3>
-        {% for result in searched %}
+        {% for case in cases %}
         <div class="container">
             <div class="row border">
                 <div class = "col-md-11">
                     <div class="row">
                         <div class = "col-md-12">
                             <ul id="result_list">
-                                <li class="horizontal"><a href="{{result[0]}}"><b>{{result[1]}}</b>
+                                <li class="horizontal"><a href="{{case[6]}}"><b>{{case[0]}}</b>
                                         <i class="fa fa-external-link" style="margin-left: 10px;"></i></a></li>
-                                <li class="horizontal">Importance Rating: <b>{{result[2]}} </b></li>
-                                <li class="horizontal first">Delivered On: <b>{{result[3]}} </b></li>
+                                <li class="horizontal">Importance Rating: <b>{{case[2]}} </b></li>
+                                <li class="horizontal first">Delivered On: <b>{{case[5]}} </b></li>
                             </ul>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <h4><u>Judgment's Facts</u></h4>
-                            {{result[4]|truncate(255,false,'...')}}
+                            {{case[3]|truncate(255,false,'...')}}
                         </div>
                         <div class="col-md-4">
                             <h4><u>Judgment's Conclusion</u></h4>
-                            {{result[5]|truncate(255,false,'...')}}
+                            {{case[4]|truncate(255,false,'...')}}
+                        </div>
+                        <div class="col-md-4">
+                            <h4><u>Number of Relevant Human Rights</u></h4>
+                            <p>This case considers 7 rights out of a total 10 that
+                            could be relevant to you</p>
                         </div>
                     </div>
                 </div>
