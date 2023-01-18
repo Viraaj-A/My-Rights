@@ -3,8 +3,7 @@ from webforms import SearchForm, QuestionnaireForm
 from search import text_search
 from questionnaire_analysis import return_results
 from questionnaire_cases import ecli_results
-from sqlalchemy import text, create_engine
-import pandas as pd
+from all_cases import DF_All_Cases
 
 
 def init_app():
@@ -15,26 +14,8 @@ def init_app():
 
     app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
-    connection_string = 'doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/defaultdb'
-
-    engine = create_engine(f'postgresql+psycopg2://{connection_string}')
 
     with app.app_context():
-
-
-        #Saving English.Search table to memory
-        query = text(""" Select
-                        case_title,
-                        ecli,
-                        importance_number,
-                        facts,
-                        conclusion,
-                        judgment_date,
-                        url
-                        From english_search;
-                    """)
-        app.df = pd.read_sql(query, engine, parse_dates=["judgment_date"])
-
 
         # Importing Routes
         @app.route('/')
@@ -95,10 +76,10 @@ def init_app():
         def questionnaire_cases():
             search_rights = session.get("search_rights", None)
             ecli_list = ecli_results(search_rights)
-            app.df = app.df.set_index('ecli').loc[ecli_list].reset_index()
-            app.df = app.df.values.tolist()
-            return render_template('questionnaire_cases.html', cases=app.df)
-            session.close()
-            del app.df
+            all_cases = DF_All_Cases.dataFrameHolder
+            filtered_cases = all_cases.set_index('ecli').loc[ecli_list].reset_index()
+            filtered_cases = filtered_cases.values.tolist()
+            return render_template('questionnaire_cases.html', cases=filtered_cases)
+            del filtered_cases
 
         return app
