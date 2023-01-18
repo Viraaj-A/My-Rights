@@ -84,6 +84,12 @@ def init_app():
             return render_template('questionnaire_results.html', applicable_rights=applicable_rights,
                                    remaining_rights=remaining_rights)
 
+
+        #Importing Dash Application
+        from plotly_dash.__init__ import init_dashboard
+        app = init_dashboard(app)
+
+
         #Pagination of questionnaire case results
         @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
         def questionnaire_cases():
@@ -92,12 +98,7 @@ def init_app():
             app.df = app.df.set_index('ecli').loc[ecli_list].reset_index()
             app.df = app.df.values.tolist()
             return render_template('questionnaire_cases.html', cases=app.df)
+            session.close()
             del app.df
-
-
-        #Importing Dash Application
-        from plotly_dash.__init__ import init_dashboard
-        app = init_dashboard(app)
-
 
         return app
