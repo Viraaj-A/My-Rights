@@ -1,9 +1,11 @@
-from flask import Flask, render_template, session, request
+from flask import Flask, render_template, session
 from webforms import SearchForm, QuestionnaireForm
 from search import text_search
 from questionnaire_analysis import return_results
 from questionnaire_cases import ecli_results
 from all_cases import DF_All_Cases
+from flask_paginate import Pagination, get_page_args
+import time
 
 
 def init_app():
@@ -61,25 +63,51 @@ def init_app():
                                                                  property_q)
 
             session["search_rights"] = applicable_rights
-
             return render_template('questionnaire_results.html', applicable_rights=applicable_rights,
                                    remaining_rights=remaining_rights)
+
+
+
+        @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
+        def questionnaire_cases():
+            #Obtain session data and access empty DF class to load cases
+
+            a = time.time()
+            search_rights = session.get("search_rights", None)
+            b = time.time()
+            total_no = len(search_rights)
+            ecli_list, applicable_numbers = ecli_results(search_rights)
+            c = time.time()
+            applicable_numbers = applicable_numbers['count'].tolist()
+            d = time.time()
+            all_cases = DF_All_Cases.dataFrameHolder
+            e = time.time()
+            filtered_cases = all_cases.set_index('ecli').loc[ecli_list].reset_index()
+            f = time.time()
+            del all_cases
+            filtered_cases = filtered_cases.values.tolist()
+            g = time.time()
+
+            #Pagination
+            page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+            def get_cases(offset=0, per_page=10):
+                return filtered_cases[offset: offset + per_page]
+            pagination_cases = get_cases(offset=offset, per_page=per_page)
+            h = time.time()
+            pagination = Pagination(css_framework='bootstrap3', page=page, per_page=per_page,
+                                    total=len(ecli_list))
+            i = time.time()
+
+            print(i-h, h-g, g-f, f-e, e-d, d-c, c-b, b-a)
+
+            return render_template('questionnaire_paginated_cases.html', cases=pagination_cases, total_no=total_no,
+                                   page=page, per_page=per_page,
+                                   applicable_numbers=applicable_numbers, pagination=pagination)
 
 
         #Importing Dash Application
         from plotly_dash.__init__ import init_dashboard
         app = init_dashboard(app)
 
-
-        #Pagination of questionnaire case results
-        @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
-        def questionnaire_cases():
-            search_rights = session.get("search_rights", None)
-            ecli_list = ecli_results(search_rights)
-            all_cases = DF_All_Cases.dataFrameHolder
-            filtered_cases = all_cases.set_index('ecli').loc[ecli_list].reset_index()
-            filtered_cases = filtered_cases.values.tolist()
-            return render_template('questionnaire_cases.html', cases=filtered_cases)
-            del filtered_cases
 
         return app

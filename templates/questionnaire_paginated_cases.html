@@ -9,6 +9,7 @@
     </div>
   </div>
   <div class="row">
+      <ul class="inline">{{ pagination.links }}</ul>
     <h3>Results:</h3>
         {% for i in cases %}
             {% set case = cases[loop.index-1] %}
@@ -16,6 +17,7 @@
         <div class="container">
             <div class="row border">
                 <div class = "col-md-11">
+                    <div>{{ loop.index + (page - 1) * per_page }}</div>
                     <div class="row">
                         <div class = "col-md-12">
                             <ul id="result_list">
@@ -46,6 +48,7 @@
         <br/>
         </div>
         {% endfor %}
+        {{ pagination.links }}
   </div>
 </div>
 {% endblock %}

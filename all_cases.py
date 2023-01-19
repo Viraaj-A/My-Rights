@@ -18,6 +18,6 @@ class DF_All_Cases:
                     url
                     From english_search;
                 """)
-    dataFrameHolder = pd.read_sql(query, engine, parse_dates=["judgment_date"])
+    dataFrameHolder = pd.read_sql(query, engine)
 
 

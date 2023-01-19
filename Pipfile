@@ -21,6 +21,7 @@ setuptools = "*"
 wheel = "*"
 contextualspellcheck = "*"
 flask-session = "*"
+flask-paginate = "==0.8.1"
 
 [dev-packages]
 
