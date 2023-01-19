@@ -618,8 +618,11 @@ ul ol,
 ul ul {
     margin-bottom: 0;
 }
-pagination {
-    padding-left: 200
+
+ul.inline > ul > li{
+    font-size: 15px;
+    display: inline-block;
+    padding:5px 15px;
 }
 .list-inline,
 .list-unstyled {
@@ -627,11 +630,11 @@ pagination {
     list-style: none;
 }
 .list-inline {
-    margin-left: 200px;
+    margin-left: -5px;
 }
 .list-inline > li {
     display: inline-block;
-    padding-left: 200px;
+    padding-left: 5px;
     padding-right: 5px;
 }
 dl {

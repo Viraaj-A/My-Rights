@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="row">
-      <ul class="inline">{{ pagination.links }}</ul>
+      {{ pagination.info }}
     <h3>Results:</h3>
         {% for i in cases %}
             {% set case = cases[loop.index-1] %}
@@ -48,7 +48,7 @@
         <br/>
         </div>
         {% endfor %}
-        {{ pagination.links }}
+      <ul class="inline">{{ pagination.links }}</ul>
   </div>
 </div>
 {% endblock %}
