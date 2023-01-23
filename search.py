@@ -48,6 +48,7 @@ def text_search(search: str):
     cursor.execute(sql_query, sql_tuple)
     # The result structure is a list of tuples
     results = [cursor.fetchall()]
+    conn.close()
     return results
 
 
