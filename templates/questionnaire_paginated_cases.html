@@ -16,7 +16,7 @@
         <div class="container">
             <div class="row border">
                 <div class = "col-md-11">
-                    <div>{{ loop.index + (page - 1) * per_page }}</div>
+                    <div><b>{{ loop.index + (page - 1) * per_page }}</b></div>
                     <div class="row">
                         <div class = "col-md-12">
                             <ul id="result_list">
@@ -38,8 +38,8 @@
                         </div>
                         <div class="col-md-4">
                             <h4><u>Number of Relevant Human Rights</u></h4>
-                            <p>This case has <b>{{ applicable_no }}</b> right(s) out of a total <b>{{ total_no }}</b> that
-                            could matter to you.</p>
+                            <p>This case has <b>{{ applicable_no }}</b> human right(s) out of a total <b>{{ total_no }}
+                                human rights</b> that could matter to you.</p>
                         </div>
                     </div>
                 </div>
