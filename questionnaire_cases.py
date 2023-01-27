@@ -28,7 +28,8 @@ def connect_psql():
 
 
 def exploded_articles():
-    sql_query= """
+    cursor, conn = connect_psql()
+    sql_query = """
         SELECT * from ecli_articles
     """
     ecli_articles = pd.read_sql_query(sql_query, conn)
@@ -47,11 +48,12 @@ def ecli_results(search_rights):
     A groupby is created and sorted, to prioritise the cases that contain the highest number of relevant rights.
     PostgreSQL query is ran to return all the relevant cases.
     """
+    cursor, conn = connect_psql()
     article_groups = pd.read_csv("data/answers_to_articles.csv")
     # Search_rights are the articles that apply to the user.
     filtered_df = article_groups[article_groups.full_name.isin(search_rights)]
     article_number_list = filtered_df.short_name.values.tolist()
-    df = exploded_articles()
+    df = exploded_articles(conn)
     df_1 = df[df.unnest.isin(article_number_list)]
     ecli_results = df_1.groupby(['ecli']).size().to_frame('count').reset_index().sort_values('count', ascending=False)
     ecli_list = ecli_results['ecli'].to_list()
