@@ -27,8 +27,7 @@ def connect_psql():
         return cursor, conn
 
 
-def exploded_articles():
-    cursor, conn = connect_psql()
+def exploded_articles(conn):
     sql_query = """
         SELECT * from ecli_articles
     """
