@@ -6,8 +6,8 @@ connection_string = 'doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-000
 
 engine = create_engine(f'postgresql+psycopg2://{connection_string}',poolclass=NullPool)
 
+
 class DF_All_Cases:
-    dataFrameHolder = None
     query = text(""" Select
                     case_title,
                     ecli,
@@ -18,6 +18,7 @@ class DF_All_Cases:
                     url
                     From english_search;
                 """)
-    dataFrameHolder = pd.read_sql(query, engine)
+    dataFrameHolder = pd.read_sql(query, engine.connect())
+
 
 
