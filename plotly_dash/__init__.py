@@ -3,7 +3,7 @@ from dash.exceptions import PreventUpdate
 import plotly.express as px
 import pandas as pd
 from plotly_dash.layout import html_layout
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.pool import NullPool
 import json
 
@@ -23,9 +23,8 @@ def init_dashboard(server):
     # ********************* DATA IMPORT *********************
     # Function to initialise the main dataframe containing relevant judgment details
     def discrete_data_df():
-        df_english_raw = pd.read_sql('Select * from processed_english_case_detail', engine,
-                                     parse_dates=["judgment_date"])
-        df_french_raw = pd.read_sql('Select * from processed_french_case_detail', engine, parse_dates=["judgment_date"])
+        df_english_raw = pd.read_sql(text("""Select * from processed_english_case_detail"""), engine.connect(), parse_dates=["judgment_date"])
+        df_french_raw = pd.read_sql(text('Select * from processed_french_case_detail'), engine.connect(), parse_dates=["judgment_date"])
         df = pd.concat([df_french_raw, df_english_raw]).drop_duplicates(subset='ecli', keep="first")
         del df_french_raw, df_english_raw
         # Associate country iso codes to the respondent information
@@ -67,7 +66,7 @@ def init_dashboard(server):
     # List of all convention articles
     def create_article_list():
         articles = []
-        for i in range(1, 57):
+        for i in range(1, 59):
             articles.append(str(i))
         for j in range(1, 13):
             articles.append(f'P{j}')
