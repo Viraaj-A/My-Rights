@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 flask = "*"
 pandas = "*"
-sqlalchemy = "*"
 psycopg2 = "*"
 tqdm = "*"
 flask-wtf = "*"
@@ -22,6 +21,7 @@ wheel = "*"
 contextualspellcheck = "*"
 flask-session = "*"
 flask-paginate = "==0.8.1"
+sqlalchemy = "*"
 
 [dev-packages]
 

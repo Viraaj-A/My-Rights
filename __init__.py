@@ -5,7 +5,6 @@ from questionnaire_analysis import return_results
 from questionnaire_cases import ecli_results
 from all_cases import DF_All_Cases
 from flask_paginate import Pagination, get_page_args
-import time
 
 
 def init_app():

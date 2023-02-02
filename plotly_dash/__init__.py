@@ -65,12 +65,9 @@ def init_dashboard(server):
 
     # List of all convention articles
     def create_article_list():
-        articles = []
-        for i in range(1, 59):
-            articles.append(str(i))
-        for j in range(1, 13):
-            articles.append(f'P{j}')
-        return articles
+        df_articles = pd.read_csv('data/filtered_articles.csv')
+        data = df_articles.to_dict('records')
+        return data
 
     df_country_group = discrete_data_df()
     geojson = geojson_data()
