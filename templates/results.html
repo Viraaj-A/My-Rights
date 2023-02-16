@@ -23,7 +23,13 @@
 </div>
   <div class="row" id="search-results">
       </br>
-    <h3>Displaying {{ (pagination.page-1) * pagination.per_page + 1}} - {{ pagination.page * pagination.per_page }} cases from a total of {{ pagination.total }} cases:</h3>
+        {% if corrected != None %}
+            <span>
+                <h3>You searched for '{{ query }}', did you mean <a href="{{ url_for('results', searched=corrected) }}"> '{{corrected}}'</a> instead?</h3>
+            </span>
+        {% else %}
+        <h3>Displaying {{ (pagination.page-1) * pagination.per_page + 1}} - {{ pagination.page * pagination.per_page }} cases from a total of {{ pagination.total }} cases:</h3>
+        {% endif %}
         {% for result in pagination.items %}
         <div class="container">
             <div class="row border">

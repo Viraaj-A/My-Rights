@@ -11,7 +11,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, Date, text,
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.dialects.postgresql import TSVECTOR
-
+from autocorrect import Speller
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -74,10 +74,15 @@ def init_app():
         @app.route('/results/', methods=['GET', 'POST'])
         def results():
             query = request.args.get('searched')
-            # case = text_search(search_form.searched.data)[0]
+            spell = Speller()
+            corrected = (spell(query))
+            if corrected == query:
+                corrected = None
+            else:
+                corrected = corrected
             page = request.args.get('page', 1, type=int)
             paginate = search_text2(query, db, EnglishSearch).paginate(page=page, per_page=10)
-            return render_template('results.html', pagination=paginate, query=query)
+            return render_template('results.html', pagination=paginate, query=query, corrected=corrected)
 
         @app.route('/questionnaire/')
         def questionnaire():
