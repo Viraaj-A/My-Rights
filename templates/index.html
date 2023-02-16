@@ -3,8 +3,9 @@
 <div class="container">
     <div class="row">
           <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+            <img src="{{ url_for('static', filename='assets/images/primary_logo.svg') }}" alt="" class="img-responsive"
+            width="300" height="30" style="margin-left: auto; margin-right: auto;">
             <div class="text-center">
-              <h1 class="h2">Home</h1>
               <h3>Explore the European Court of Human Right's Judgments Your Way</h3>
             </div>
           </div>
@@ -35,7 +36,7 @@
                         </div>
                       </div>
                       <div class="col-sm-4">
-                        <a href="{{ url_for('questionnaire') }}" title="" class="black-image-project-hover">
+                        <a href="{{ url_for('search') }}" title="" class="black-image-project-hover">
                           <img src="{{ url_for('static', filename='assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
                         </a>
                         <div class="card-container card-container-lg">
@@ -65,10 +66,12 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-          <img src="{{ url_for('static', filename='assets/images/BMBF_logo.jpg') }}" alt="" class="img-responsive"
+          <a href="https://www.bundesregierung.de/breg-en/federal-government/ministries/federal-ministry-of-education">
+              <img src="{{ url_for('static', filename='assets/images/BMBF_logo.jpg') }}" alt="Clickable logo for the German Federal Ministry of Education and Research" class="img-responsive"
           width="300" height="400" style="display: inline">
+          </a>
           <a href="https://prototypefund.de/">
-             <img src="{{ url_for('static', filename='assets/images/pf_logo.svg') }}" alt="" class="img-responsive"
+             <img src="{{ url_for('static', filename='assets/images/pf_logo.svg') }}" alt="Clickable logo for the Prototype Fund" class="img-responsive"
              width="100" height="100" style="display: inline">
           </a>
       </div>

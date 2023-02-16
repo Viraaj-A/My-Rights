@@ -1,10 +1,16 @@
-from flask import Flask, render_template, session
+import flask
+from flask import Flask, render_template, request
 from webforms import SearchForm, QuestionnaireForm
-from search import text_search
+from search import text_search, search_text2
 from questionnaire_analysis import return_results
 from questionnaire_cases import ecli_results
 from all_cases import DF_All_Cases
 from flask_paginate import Pagination, get_page_args
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine, Column, Integer, String, Text, Date, text, case, func
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.dialects.postgresql import TSVECTOR
 
 
 def init_app():
@@ -13,10 +19,42 @@ def init_app():
 
     app.config['SECRET_KEY'] = 'any secret string'
 
+    app.config[
+        "SQLALCHEMY_DATABASE_URI"] = 'postgresql://doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/defaultdb'
+
     app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
 
     with app.app_context():
+
+        db = SQLAlchemy(app)
+        Base = automap_base()
+
+        # The below code allows the reflection of an existing database
+        # Base.prepare(db.engine, reflect=True)
+        # English_Search = Base.classes.english_search
+        # meta_data = db.MetaData(bind=db.engine)
+
+
+        class EnglishSearch(Base):
+            __tablename__ = "english_search"
+            existing = True
+
+            item_id = Column(Text, primary_key=True)
+            url = Column(Text)
+            entire_text = Column(Text)
+            case_title = Column(Text)
+            importance_number = Column(Text)
+            judgment_date = Column(Date)
+            facts = Column(Text)
+            conclusion = Column(Text)
+            ecli = Column(Text)
+            textsearchable_index_col = Column(TSVECTOR)
+
+        Base.metadata.create_all(db.engine)
+        Session = sessionmaker(bind=db.engine)
+        session = Session()
+
 
         # Importing Routes
         @app.route('/')
@@ -35,9 +73,11 @@ def init_app():
 
         @app.route('/results/', methods=['GET', 'POST'])
         def results():
-            search_form = SearchForm()
-            case = text_search(search_form.searched.data)[0]
-            return render_template('results.html', form=search_form, searched=case, query=search_form.searched.data)
+            query = request.args.get('searched')
+            # case = text_search(search_form.searched.data)[0]
+            page = request.args.get('page', 1, type=int)
+            paginate = search_text2(query, db, EnglishSearch).paginate(page=page, per_page=10)
+            return render_template('results.html', pagination=paginate, query=query)
 
         @app.route('/questionnaire/')
         def questionnaire():
@@ -61,7 +101,7 @@ def init_app():
                                                                  gender_q, family_q, community_q, nationality_q,
                                                                  property_q)
 
-            session["search_rights"] = applicable_rights
+            flask.session["search_rights"] = applicable_rights
             return render_template('questionnaire_results.html', applicable_rights=applicable_rights,
                                    remaining_rights=remaining_rights)
 
@@ -70,7 +110,7 @@ def init_app():
         @app.route('/questionnaire_cases/', methods=['GET', 'POST'])
         def questionnaire_cases():
             #Obtain session data and access empty DF class to load cases
-            search_rights = session.get("search_rights", None)
+            search_rights = flask.session.get("search_rights", None)
             total_no = len(search_rights)
             ecli_list, applicable_numbers = ecli_results(search_rights)
             applicable_numbers = applicable_numbers['count'].tolist()

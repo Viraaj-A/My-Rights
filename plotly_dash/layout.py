@@ -17,6 +17,7 @@ html_layout = """
   <link href="./assets/favicon.ico" rel="icon">
   <title>My-Rights</title>
   <link rel="stylesheet" type= "text/css" href="assets/dash.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
 </head>
     
 <body class="">
@@ -57,6 +58,18 @@ html_layout = """
           </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-xs-1">
+          <div class="section-container-spacer text-center">
+                <p style='font-size:1.2em'><b>INSTRUCTIONS:</b></p>
+                <p style="text-align: justify"><b>Use the boxes on the left to select the relevant information you want to
+                filter all cases by. After making your selection click the 'Select' Button. 
+                Scroll down to the bottom of the page where you can see all relevant cases. 
+                Use the 'Export' button to download a file that contains all the relevant cases. 
+                </b></p>
+          </div>
+        </div>
+    </div>    
     {%app_entry%}
   </div>
 </div>

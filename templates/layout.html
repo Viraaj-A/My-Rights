@@ -16,6 +16,7 @@
   <title>My-Rights</title>
   <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/main.css') }}">
   <script src="{{ url_for('static', filename='main.70a66962.js') }}"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
 </head>
 
 <body class="">
@@ -25,7 +26,7 @@
 <div id="site-border-bottom"></div>
  <!-- Add your content of header -->
 <header>
-  <nav class="navbar  navbar-fixed-top navbar-default">
+  <nav class="navbar  navbar-fixed-top navbar-default" aria-label="Main Navigation" role="navigation">
     <div class="container">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
@@ -34,7 +35,7 @@
           <span class="icon-bar"></span>
         </button>
 
-      <div class="collapse navbar-collapse" id="navbar-collapse">
+      <div class="collapse navbar-collapse" id="navbar-collapse" aria-label="Main Navigation" role="navigation">
         <ul class="nav navbar-nav">
           <li><a href="{{ url_for('index') }}" title="">Home</a></li>
           <li><a href="{{ url_for('questionnaire') }}" title="">1 : Questionnaire</a></li>

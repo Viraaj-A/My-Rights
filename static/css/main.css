@@ -5181,5 +5181,16 @@ textarea {
     border-right: 1px solid;
     padding-right: 1.3em;
 }
+.page-number {
+    font-size: 15px;
+    display: inline-block;
+    padding:5px 15px;
+}
+
+.current-page-number {
+    font-size: 15px;
+    display: inline-block;
+    padding:5px 15px;
+}
 
 /*# sourceMappingURL=main.70a66962.map*/

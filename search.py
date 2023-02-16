@@ -1,5 +1,7 @@
 import psycopg2
 from autocorrect import Speller
+from sqlalchemy import create_engine, Column, Integer, String, Text, Date, text, case, func
+
 
 development = False
 
@@ -53,4 +55,43 @@ def text_search(search: str):
     return results
 
 
+def search_text2(search_term, db, EnglishSearch):
+    def connect_psql():
+        if development == True:
+            try:
+                conn = psycopg2.connect(database="restore_Oct_13",
+                                        host="localhost",
+                                        user="postgres",
+                                        password="password")
+                print("connected")
+            except:
+                print("failed")
+            cursor = conn.cursor()
+            return cursor, conn
+
+        if development == False:
+            conn = psycopg2.connect(database="defaultdb",
+                                    host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
+                                    user="doadmin",
+                                    password="AVNS_SbC_UqXYG665R47kxY4",
+                                    port=25060,
+                                    sslmode='require')
+            cursor = conn.cursor()
+            return cursor, conn
+    cursor, conn = connect_psql()
+    squery = func.websearch_to_tsquery('english', search_term)
+    query = db.session.query(
+        EnglishSearch.url,
+        EnglishSearch.case_title, EnglishSearch.importance_number,
+        EnglishSearch.judgment_date, EnglishSearch.facts, EnglishSearch.conclusion,
+        func.ts_headline('english', EnglishSearch.entire_text, squery,
+                         'StartSel = <b>, StopSel = </b>, ShortWord = 3, MinWords = 50, MaxWords = 60').label(
+            'highlighted_text'),
+        func.ts_rank_cd(EnglishSearch.textsearchable_index_col, squery).label('rank')
+    ).where(
+        EnglishSearch.textsearchable_index_col.op('@@')(squery)
+    ).order_by(
+        text('rank DESC')
+    )
+    return query
 
