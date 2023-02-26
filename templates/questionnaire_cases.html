@@ -28,17 +28,17 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
+                            <h4><u>Number of Relevant Human Rights</u></h4>
+                            <p>This case has <b>{{ applicable_no }}</b> right(s) out of a total <b>{{ total_no }}</b> that
+                            could matter to you.</p>
+                        </div>
+                        <div class="col-md-4">
                             <h4><u>Judgment's Facts</u></h4>
                             {{case[3]|truncate(255,false,'...')}}
                         </div>
                         <div class="col-md-4">
                             <h4><u>Judgment's Conclusion</u></h4>
                             {{case[4]|truncate(255,false,'...')}}
-                        </div>
-                        <div class="col-md-4">
-                            <h4><u>Number of Relevant Human Rights</u></h4>
-                            <p>This case has <b>{{ applicable_no }}</b> right(s) out of a total <b>{{ total_no }}</b> that
-                            could matter to you.</p>
                         </div>
                     </div>
                 </div>

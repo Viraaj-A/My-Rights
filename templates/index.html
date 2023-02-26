@@ -3,44 +3,44 @@
 <div class="container">
     <div class="row">
           <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
-            <img src="{{ url_for('static', filename='assets/images/primary_logo.svg') }}" alt="" class="img-responsive"
+            <img src="{{ url_for('static', filename='assets/images/primary_logo.svg') }}"  alt="My Rights Logo" class="img-responsive"
             width="300" height="30" style="margin-left: auto; margin-right: auto;">
-            <div class="text-center">
+            <div class="text-center" style="margin-top:30px;">
               <h3>Explore the European Court of Human Right's Judgments Your Way</h3>
             </div>
           </div>
           <div class="col-md-12">
-          <div id="myCarousel" class="carousel slide projects-carousel">
+          <div id="myCarousel" class="carousel slide projects-carousel" style="margin-top:20px">
             <!-- Carousel items -->
             <div class="carousel-inner">
                 <div class="item active">
                     <div class="row">
                       <div class="col-sm-4">
                         <a href="{{ url_for('questionnaire') }}" title="" class="black-image-project-hover">
-                          <img src="{{ url_for('static', filename='assets/images/work02-hover.jpg') }}" alt="" class="img-responsive">
+                          <img src="{{ url_for('static', filename='assets/images/work02-hover.jpg') }}" alt="Clickable image to the Questionnaire page" class="img-responsive">
                         </a>
                         <div class="card-container card-container-lg">
-                          <h3>1</h3>
+                          <h3>1: Understand Your Rights</h3>
                           <h4>Find what rights and judgments are relevant to you by answering at least 1 yes or no question</h4>
                           <a href="{{ url_for('questionnaire') }}" title="" class="btn btn-default">Questionnaire</a>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <a href="./visualisation" title="" class="black-image-project-hover">
-                          <img src="{{ url_for('static', filename='assets/images/work03-hover.jpg') }}" alt="" class="img-responsive">
+                          <img src="{{ url_for('static', filename='assets/images/work03-hover.jpg') }}" alt="Clickable image to the Data Visualisation page" class="img-responsive">
                         </a>
                         <div class="card-container card-container-lg">
-                          <h3>2</h3>
+                          <h3>2: Conduct Research</h3>
                           <h4>Use data visualisations to identify relevant judgments</h4>
                           <a href="./visualisation" title="" class="btn btn-default" method="post">Data Visualisation</a>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <a href="{{ url_for('search') }}" title="" class="black-image-project-hover">
-                          <img src="{{ url_for('static', filename='assets/images/work01-hover.jpg') }}" alt="" class="img-responsive">
+                          <img src="{{ url_for('static', filename='assets/images/work01-hover.jpg') }}" alt="Clickable image to the Text Search page" class="img-responsive">
                         </a>
                         <div class="card-container card-container-lg">
-                          <h3>3</h3>
+                          <h3>3: Find a Judgment</h3>
                           <h4>Enter search terms to find the judgments that are important to you</h4>
                           <a href="{{ url_for('search') }}" title="" class="btn btn-default">Text Search</a>
                         </div>
@@ -57,10 +57,16 @@
 
 <footer class="footer-container text-center">
   <div class="container">
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
-            <div class="text-center">
-              <h4>My-Rights.info does not collect or store any of your data</h4>
+    <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+        <div class="text-center">
+            <div class="row" style="margin-top:20px;">
+                <h4 class="mt-4">No information in this website constitutes the provision of legal advice or should be construed as legal advice</h4>
+            </div>
+            <div class="row" style="margin-top:20px;">
+                <h4 class="mt-5">My-Rights.info does not collect or store any of your data</h4>
+            </div>
+            <div class="row" style="margin-top:20px; margin-bottom:30px;">
+                <h4>For more information about this website, please click <a href="{{ url_for('about') }}" title="">About</a></h4>
             </div>
         </div>
     </div>

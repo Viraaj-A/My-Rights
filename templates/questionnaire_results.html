@@ -9,36 +9,35 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 10px;">
         <div class="col-xs-10 col-xs-offset-1">
-            <div class="section-container-spacer text-center text-justify">
+            <div class="section-container-spacer">
                 <results_heading>
-                    <p>Thank you for completing the questionnaire.
+                    <p class="text-center text-justify">Thank you for completing the questionnaire.
                         Below, you will find out which human rights may apply to you.
                         If you want further information on what these human rights mean, click the following link:
                         <a href="https://www.coe.int/en/web/compass/european-convention-on-human-rights" target="_blank">
                             <i>Simplified Human Rights Summary</i>
                         </a>
                     </p>
-                    </br>
-                    <p>Based on your 'Yes' answers, you might want to search for the following rights:</p>
+                    <p class="text-center" style="margin-top: 20px;">Based on your <b>'Yes'</b> answers, you might want to search for the following rights:</p>
                 </results_heading>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row border" style="margin-top: 10px;">
         <results_body>
-            <div class="col-md-4 col-md-offset-1">
+            <div class="col-md-5">
                 {% for right in applicable_rights[:10] %}
                     <p>{{right}}</p>
                 {% endfor %}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 {% for right in applicable_rights[10:20] %}
                     <p>{{right}}</p>
                 {% endfor %}
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 {% for right in applicable_rights[21:30] %}
                     <p>{{right}}</p>
                 {% endfor %}
@@ -50,24 +49,24 @@
             <div class="section-container-spacer text-center text-justify">
                 <results_heading>
                         </br>
-                        <p>If you answered 'Yes' to all the questions, then these rights may matter to you:</p>
+                        <p class="text-center">If you answered 'Yes' to all the questions, then these rights may matter to you:</p>
                 </results_heading>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row border">
         <results_body>
-            <div class="col-md-4 col-md-offset-1">
+            <div class="col-md-5">
                 {% for right in remaining_rights[:10] %}
                     <p>{{right}}</p>
                 {% endfor %}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 {% for right in remaining_rights[10:20] %}
                     <p>{{right}}</p>
                 {% endfor %}
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 {% for right in remaining_rights[21:30] %}
                     <p>{{right}}</p>
                 {% endfor %}

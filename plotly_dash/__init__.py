@@ -91,7 +91,7 @@ def init_dashboard(server):
                            children=[
                                html.Div([
                                    html.Label(
-                                       "Choose countries that you are interested in, for example:",
+                                       "Choose countries that you are interested in:",
                                         style={'margin-top': 6, 'margin-bottom': 0}),
                                    dcc.Dropdown(
                                        options=create_dropdown_options(

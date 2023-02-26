@@ -4,110 +4,120 @@
   <div class="row">
     <div class="col-md-12">
       <div class="section-container-spacer text-center">
-        <h1 class="h2">1 : Questionnaire</h1>
+        <h2>1 : Questionnaire</h2>
       </div>
+    </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="section-container-spacer text-center">
+        <h3 class="border-line">Instructions</h3>
+        <p style="text-align: justify">After answering at least one of the questions below, you will be shown a list of human rights articles that
+          could matter to you. You will also be shown all other human rights articles that may not
+            matter to you. Please note that the articles that are shown are only a suggestion of what rights could apply to you.</p>
+        </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-      <div class="section-container-spacer text-center">
-      <p style='font-size:1.2em'><b>INSTRUCTIONS:</b></p>
-        <p style="text-align: justify"><b>After answering at least one of the questions below, you will be shown a list of human rights articles that
-          could matter to you based on your answers. You will also be shown all other human rights articles that may not
-            matter to you. Based on your answers you can also see a list of cases that contain the relevant rights.
-          Please note that these are only suggestions.</b></p>
-      <p style='font-size:1.2em'><b>CONTENT WARNING:</b></p>
-        <p style="text-align: justify"><b>The following questions may make you remember past events that caused you harm.</b></p>
-      <p style='font-size:1.2em'><b>NO DATA COLLECTION:</b></p>
-          <p style="text-align: justify"> <b>We do not collect data from any of your answers.</b></p>
-      </div>
+    <div class="col-md-4 col-md-offset-2">
+        <div class="section-container-spacer text-center">
+        <h3 class="border-line">Content Warning</h3>
+        <p style="text-align: justify">The following questions may make you remember past events that caused you harm.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="section-container-spacer text-center">
+        <h3 class="border-line">No Data Collection</h3>
+        <p style="text-align: justify"> We do not collect data from any of your answers.</p>
+        </div>
     </div>
   </div>
-  <div class="row">
-        <div class="form-group">
-            <form action="/questionnaire/1/" method="post">
-                <div class="row">
-                    <div class="section-container-spacer text-center">
-                    <h3><b>Questions:</b></h3>
+  <div class="row" style="margin-top: 20px;">
+    <div class="form-group">
+        <form action="/questionnaire/1/" method="post">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8 border">
+                <div class="section-container-spacer" style="text-align: left;">
+                    <div style="text-align: center;">
+                        <h3 class="border-line"><b>Questions</b></h3>
                     </div>
-                </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
+                    <div class="col-md-10">
                         <label for="physical_q">Were you physically hurt, touched or harmed?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="physical_q" id="physical_q" value="Yes" display="inline"> Yes</input>
                         <input type="radio" name="physical_q" id="physical_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
-                        <label for="procedural_q">Does your problem link with a legal action?</label>
+                    <div class="col-md-10" style="margin-top: 10px;">
+                        <label for="procedural_q">Is your problem something that has to do with rules or laws?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="procedural_q" id="procedural_q" value="Yes" display="inline"> Yes</input>
                         <input type="radio" name="procedural_q" id="procedural_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
+                    <div class="col-md-10" style="margin-top: 10px;">
                         <label for="mental_q">Were you stopped from doing something like speaking or moving?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="mental_q" id="mental_q" value="Yes" display="inline"> Yes</input>
                         <input type="radio" name="mental_q" id="mental_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
-                        <label for="age_q">Did the harm involve a child, a person under 18 years of age</label>
+                    <div class="col-md-10" style="margin-top: 10px;">
+                        <label for="age_q">Did the harm involve a child, a person under 18 years of age?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="age_q" id="age_q" value="Yes" display="inline"> Yes</input>
                         <input type="radio" name="age_q" id="age_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
+                    <div class="col-md-10" style="margin-top: 10px;">
                         <label for="gender_q">Did the harm relate to your gender?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="gender_q" id="gender_q" value="Yes" display="inline"> Yes</input>
                     <input type="radio" name="gender_q" id="gender_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
-                        <label for="family_q">Did the harm impact a family member (child, parent, sibliing)?</label>
+                    <div class="col-md-10" style="margin-top: 10px;">
+                        <label for="family_q">Did the harm impact a family member (child, parent, sibling)?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="family_q" id="family_q" value="Yes" display="inline"> Yes</input>
                         <input type="radio" name="family_q" id="family_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
+                    <div class="col-md-10" style="margin-top: 10px;">
                         <label for="community_q">Did the harm affect more than you or your family?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="community_q" id="community_q" value="Yes" display="inline"> Yes</input>
                         <input type="radio" name="community_q" id="community_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
+                    <div class="col-md-10" style="margin-top: 10px;">
                         <label for="nationality_q">Does the harm relate to your nationality or legal status?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="nationality_q" id="nationality_q" value="Yes" display="inline"> Yes</input>
                         <input type="radio" name="nationality_q" id="nationality_q" value="No"> No</input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-3">
+                    <div class="col-md-10" style="margin-top: 10px;">
                         <label for="property_q">Does the harm relate to your property?</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <input type="radio" name="property_q" id="property_q" value="Yes"> Yes</input>
                         <input type="radio" name="property_q" id="property_q" value="No"> No</input>
                     </div>
@@ -120,8 +130,22 @@
                       </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="col-md-2">
+            </div>
+        </form>
+    </div>
   </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center" style="margin-top:40px;">
+            <div class="row">
+                Loading the relevant Judgments could take a few seconds due to the sorting algorithm.
+            </div>
+            <div class="row" style="margin-top:20px;">
+                <p>If you would like further information on how the questionnaire works, please go to the
+                <a href="{{ url_for('about')  }}">About</a> page.</p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

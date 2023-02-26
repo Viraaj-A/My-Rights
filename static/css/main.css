@@ -263,7 +263,7 @@ html {
 }
 body {
     font-family: Roboto Mono,Helvetica,Arial,sans-serif;
-    font-size: 11px;
+    font-size: 14px;
     line-height: 1.78;
     color: #000;
     background-color: #fff;
@@ -484,6 +484,7 @@ h6 {
 }
 p {
     margin: 0 0 9.5px;
+    font-size: 14px;
 }
 .lead {
     margin-bottom: 19px;
@@ -1827,6 +1828,7 @@ label {
     max-width: 100%;
     margin-bottom: 5px;
     font-weight: 700;
+    font-size: 14px;
 }
 input[type=search] {
     -webkit-box-sizing: border-box;
@@ -4776,11 +4778,11 @@ body.minimal {
     color: #fff;
 }
 .section-container-spacer {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 @media (min-width:1200px) {
     .section-container-spacer {
-        margin-bottom: 40px;
+        margin-bottom: 10px;
     }
 }
 .section-container {
@@ -5193,4 +5195,36 @@ textarea {
     padding:5px 15px;
 }
 
+/* Hide the collapsible content by default */
+#collapsible {
+  display: none;
+}
+
+.collapsible-trigger:checked + label + .collapsible-content {
+  display: block;
+}
+
+.collapsible-trigger:not(:checked) + label + .collapsible-content {
+  display: none;
+}
+
+/* Hide the checkbox */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.border-line {
+  display: inline-block;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 /*# sourceMappingURL=main.70a66962.map*/

@@ -4161,8 +4161,22 @@ textarea{
 }
  p {
     margin-bottom: 0;
-     text-align : left;
+    text-align : left;
+    font-size: 15px;
 }
  export {
+}
+
+.dash-header {
+    font-size: 15px;
+}
+
+
+.border-line {
+  display: inline-block;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 /*# sourceMappingURL=main.70a66962.map*/
