@@ -620,6 +620,10 @@ ul ul {
     margin-bottom: 0;
 }
 
+li {
+    list-style-type: square;
+}
+
 ul.inline > ul > li{
     font-size: 15px;
     display: inline-block;
