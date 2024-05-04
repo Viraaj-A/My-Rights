@@ -22,6 +22,10 @@ contextualspellcheck = "*"
 flask-session = "*"
 flask-paginate = "==0.8.1"
 sqlalchemy = "*"
+selenium = "*"
+bs4 = "*"
+lingua-language-detector = "*"
+apscheduler = "*"
 
 [dev-packages]
 

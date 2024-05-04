@@ -12,6 +12,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from autocorrect import Speller
+from scraping_files.scheduler import start_scheduler
+
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -24,6 +26,8 @@ def init_app():
 
     app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
+    # Call start_scheduler function to initiate scheduling
+    start_scheduler()
 
     with app.app_context():
 
