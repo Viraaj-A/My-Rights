@@ -1,7 +1,7 @@
 import flask
 from flask import Flask, render_template, request
 from webforms import SearchForm, QuestionnaireForm
-from search import text_search, search_text2
+from search import full_text_search
 from questionnaire_analysis import return_results
 from questionnaire_cases import ecli_results
 from all_cases import DF_All_Cases
@@ -81,7 +81,7 @@ def init_app():
             else:
                 corrected = corrected
             page = request.args.get('page', 1, type=int)
-            paginate = search_text2(query, db, DisplayCases).paginate(page=page, per_page=10)
+            paginate = full_text_search(query, db, DisplayCases).paginate(page=page, per_page=10)
             return render_template('results.html', pagination=paginate, query=query, corrected=corrected)
 
         @app.route('/questionnaire/')
