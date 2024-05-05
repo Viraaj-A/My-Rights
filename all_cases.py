@@ -19,6 +19,3 @@ class DF_All_Cases:
                     From english_search;
                 """)
     dataFrameHolder = pd.read_sql(query, engine.connect())
-
-
-

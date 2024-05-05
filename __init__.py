@@ -22,7 +22,7 @@ def init_app():
     app.config['SECRET_KEY'] = 'any secret string'
 
     app.config[
-        "SQLALCHEMY_DATABASE_URI"] = 'postgresql://doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/defaultdb'
+        "SQLALCHEMY_DATABASE_URI"] = 'postgresql://doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/raw_data_db'
 
     app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
@@ -34,26 +34,22 @@ def init_app():
         db = SQLAlchemy(app)
         Base = automap_base()
 
-        # The below code allows the reflection of an existing database
-        # Base.prepare(db.engine, reflect=True)
-        # English_Search = Base.classes.english_search
-        # meta_data = db.MetaData(bind=db.engine)
 
-
-        class EnglishSearch(Base):
-            __tablename__ = "english_search"
+        class DisplayCases(Base):
+            __tablename__ = "display_cases"
             existing = True
 
-            item_id = Column(Text, primary_key=True)
-            url = Column(Text)
-            entire_text = Column(Text)
-            case_title = Column(Text)
-            importance_number = Column(Text)
+            id = Column(Integer, primary_key=True)
+            title = Column(Text)
+            judgment_url = Column(Text)
+            originating_body = Column(Text)
+            importance_level = Column(Text)
+            respondent_state = Column(Text)
             judgment_date = Column(Date)
-            facts = Column(Text)
-            conclusion = Column(Text)
-            ecli = Column(Text)
-            textsearchable_index_col = Column(TSVECTOR)
+            judgment_facts = Column(Text)
+            judgment_conclusion = Column(Text)
+            judgment_full_text = Column(Text)
+            search_vector = Column(TSVECTOR)
 
         Base.metadata.create_all(db.engine)
         Session = sessionmaker(bind=db.engine)
@@ -85,7 +81,7 @@ def init_app():
             else:
                 corrected = corrected
             page = request.args.get('page', 1, type=int)
-            paginate = search_text2(query, db, EnglishSearch).paginate(page=page, per_page=10)
+            paginate = search_text2(query, db, DisplayCases).paginate(page=page, per_page=10)
             return render_template('results.html', pagination=paginate, query=query, corrected=corrected)
 
         @app.route('/questionnaire/')
