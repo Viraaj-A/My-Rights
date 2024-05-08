@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, SelectMultipleField, SubmitField, SelectField, BooleanField
 from wtforms.validators import DataRequired, InputRequired, Optional
 
-#Need to replace below with all respondent States, currently for testing
 respondent_state_choices = [
     ("Andorra", "Andorra"),
     ("Germany", "Germany"),
@@ -53,19 +52,19 @@ respondent_state_choices = [
 ]
 
 originating_body_choices = [
-    ('plenary', 'Court (Plenary)'),
-    ('chamber', 'Court (Chamber)'),
-    ('sec2', 'Court (Second Section)'),
-    ('sec4', 'Court (Fourth Section)'),
-    ('com1', 'Court (First Section Committee)'),
-    ('com5', 'Court (Fifth Section Committee)'),
-    ('sec3', 'Court (Third Section)'),
-    ('sec1', 'Court (First Section)'),
-    ('sec5', 'Court (Fifth Section)'),
-    ('com4', 'Court (Fourth Section Committee)'),
-    ('com3', 'Court (Third Section Committee)'),
-    ('grand_chamber', 'Court (Grand Chamber)'),
-    ('com2', 'Court (Second Section Committee)')
+    ('Court (Plenary)', 'Court (Plenary)'),
+    ('Court (Chamber)', 'Court (Chamber)'),
+    ('Court (Second Section)', 'Court (Second Section)'),
+    ('Court (Fourth Section)', 'Court (Fourth Section)'),
+    ('Court (First Section Committee)', 'Court (First Section Committee)'),
+    ('Court (Fifth Section Committee)', 'Court (Fifth Section Committee)'),
+    ('Court (Third Section)', 'Court (Third Section)'),
+    ('Court (First Section)', 'Court (First Section)'),
+    ('Court (Fifth Section)', 'Court (Fifth Section)'),
+    ('Court (Fourth Section Committee)', 'Court (Fourth Section Committee)'),
+    ('Court (Third Section Committee)', 'Court (Third Section Committee)'),
+    ('Court (Grand Chamber)', 'Court (Grand Chamber)'),
+    ('Court (Second Section Committee)', 'Court (Second Section Committee)')
 ]
 
 importance_level_choices = [
@@ -88,7 +87,7 @@ property_string = "Does the harm relate to property?"
 
 #Search form
 class SearchForm(FlaskForm):
-    searched = StringField("Searched", validators=[InputRequired()])
+    searched = StringField("Searched", validators=[Optional()])
     originating_body = SelectMultipleField("Originating Body", choices=originating_body_choices, validators=[Optional()])
     importance_level = SelectMultipleField("Importance Level", choices=importance_level_choices, validators=[Optional()])
     respondent_state = SelectMultipleField("Respondent State", choices=respondent_state_choices, validators=[Optional()])

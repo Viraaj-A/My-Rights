@@ -73,16 +73,36 @@ def init_app():
 
         @app.route('/results/', methods=['GET', 'POST'])
         def results():
-            query = request.args.get('searched')
+            # Create an instance of the form
+            form = SearchForm(request.args, meta={
+                'csrf': False})  # Assuming CSRF protection is handled globally or not needed for GET requests
+
+            page = request.args.get('page', 1, type=int) or 1
+
+            # Fetch the basic text search query
+            query = form.searched.data
             spell = Speller()
-            corrected = (spell(query))
+            corrected = spell(query)
             if corrected == query:
                 corrected = None
-            else:
-                corrected = corrected
-            page = request.args.get('page', 1, type=int)
-            paginate = full_text_search(query, db, DisplayCases).paginate(page=page, per_page=10)
-            return render_template('results.html', pagination=paginate, query=query, corrected=corrected)
+
+            # Fetch multiple select field data
+            originating_bodies = [x for x in form.originating_body.data if x]
+            importance_levels = [x for x in form.importance_level.data if x]
+            respondent_states = [x for x in form.respondent_state.data if x]
+            date_from = form.date_from.data
+            date_to = form.date_to.data
+            print(query)
+            print(originating_bodies, importance_levels, respondent_states, date_from, date_to)
+
+            # Execute the full text search with all parameters
+            paginate = full_text_search(query, db, DisplayCases, date_from, date_to, originating_bodies,
+                                        importance_levels, respondent_states).paginate(
+                page=page, per_page=10)  # Ensure your full_text_search handles these parameters correctly
+
+            return render_template('results.html', pagination=paginate, query=query, corrected=corrected,
+                                   form=form)
+
 
         @app.route('/questionnaire/')
         def questionnaire():

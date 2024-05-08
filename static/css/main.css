@@ -5231,4 +5231,54 @@ textarea {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+/* General styles for jqxComboBox input and list items to match the site's font settings */
+.jqx-widget .jqx-input,
+.jqx-widget .jqx-dropdownlist-content,
+.jqx-widget .jqx-listitem {
+    font-family: 'Roboto Mono', Helvetica, Arial, sans-serif; /* Set the font family */
+    font-size: 14px; /* Set the font size */
+    line-height: 1.78; /* Set the line height */
+    color: #000; /* Ensure text color is black */
+}
+
+/* Specific styles to ensure jqxComboBox input width */
+.jqx-combobox-input {
+    min-width: 200px; /* Ensure input is fully visible */
+}
+
+/* Overriding placeholder color for jqxComboBox with increased specificity */
+.jqx-widget-content.jqx-widget.jqx-dropdownlist.jqx-rc-all.jqx-fill-state-normal.jqx-combobox-state-normal.jqx-rc-all.jqx-combobox-state-normal .jqx-input::placeholder,
+/* General catch for browsers using the placeholder pseudo-element */
+input::placeholder {
+    color: black !important;
+    opacity: 1; /* Ensures the placeholder is fully opaque */
+}
+
+/* Specific overrides for Microsoft browsers */
+input:-ms-input-placeholder, /* Internet Explorer 10-11 */
+input::-ms-input-placeholder { /* Microsoft Edge */
+    color: black !important;
+}
+
+.date-input-container {
+    display: flex;
+    align-items: center; /* This ensures vertical alignment is centered */
+    justify-content: start; /* Aligns content to the left */
+    gap: 10px; /* Adds space between elements */
+}
+
+.date-input-container .jqx-widget {
+    display: inline-block;
+    vertical-align: middle; /* Helps align widgets if flex isn't fully supported */
+}
+
+.date-input-label {
+    margin-right: 5px; /* Optional: Adjust spacing between label and input */
+}
+
+/* Additional CSS for spacing around 'to' */
+.date-input-container span {
+    margin: 0 10px; /* Adds more space before and after 'to' */
+}
 /*# sourceMappingURL=main.70a66962.map*/
