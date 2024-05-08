@@ -13,6 +13,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from autocorrect import Speller
 from scraping_files.scheduler import start_scheduler
+from turbo_flask import Turbo
 
 
 def init_app():
@@ -33,7 +34,7 @@ def init_app():
 
         db = SQLAlchemy(app)
         Base = automap_base()
-
+        turbo = Turbo(app)
 
         class DisplayCases(Base):
             __tablename__ = "display_cases"
@@ -100,8 +101,10 @@ def init_app():
                                         importance_levels, respondent_states).paginate(
                 page=page, per_page=10)  # Ensure your full_text_search handles these parameters correctly
 
-            return render_template('results.html', pagination=paginate, query=query, corrected=corrected,
-                                   form=form)
+            return render_template('results_fragment.html', pagination=paginate, query=query, corrected=corrected,
+                                   form=form, originating_bodies=originating_bodies,
+                                   importance_levels=importance_levels,
+                                   respondent_states=respondent_states, date_from=date_from, date_to=date_to)
 
 
         @app.route('/questionnaire/')

@@ -25,7 +25,8 @@ bs4 = "*"
 lingua-language-detector = "*"
 apscheduler = "*"
 pandas = "*"
-sqlalchemy = "*"
+sqlalchemy = "==2.0.30"
+turbo-flask = "*"
 
 [dev-packages]
 

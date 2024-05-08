@@ -10,7 +10,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/jqxcombobox.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/jqxcalendar.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/globalization/globalize.js"></script>
 </head>
@@ -23,56 +23,63 @@
           </div>
         </div>
     </div>
-    <form action="{{ url_for('results') }}" method="get">
-        <div class="row" style="margin-top: 20px;">
-            <div class="col-md-8 col-md-offset-2 border">
-                <div class="form-group">
-                    <input type="search" id="form1" name="searched" class="form-control" placeholder="{{ input_search }}">
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="col-md-4">
-                            <div id='jqxcombobox_importance'></div>
-                            <input type="hidden" id="hiddenImportanceLevel" name="importance_level">
-                        </div>
-                        <div class="col-md-4">
-                            <div id='jqxcombobox_state'></div>
-                            <input type="hidden" id="hiddenRespondentState" name="respondent_state">
-                        </div>
-                        <div class="col-md-4">
-                            <div id='jqxcombobox_originating'></div>
-                            <input type="hidden" id="hiddenOriginatingBody" name="originating_body">
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="col-md-12">
-                            <div class="date-input-container">
-                                <label class="date-input-label">Date Range:</label>
-                                <div id='jqxdatetimeinput_from'></div>
-                                <input type="hidden" id="hiddenDateTimeInput_from" name="date_from" />
-                                <span style="font-weight: 500;">to</span>
-                                <div id='jqxdatetimeinput_to'></div>
-                                <input type="hidden" id="hiddenDateTimeInput_to" name="date_to" />
+</div>
+
+<div class="container">
+    <div class="row">
+        <form action="{{ url_for('results') }}" method="get" data-turbo-frame="results">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-8 col-md-offset-2 border">
+                    <div class="form-group">
+                        <input type="search" id="form1" name="searched" class="form-control" placeholder="{{ input_search }}">
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-md-4">
+                                <div id='jqxcombobox_importance'></div>
+                                <input type="hidden" id="hiddenImportanceLevel" name="importance_level">
+                            </div>
+                            <div class="col-md-4">
+                                <div id='jqxcombobox_state'></div>
+                                <input type="hidden" id="hiddenRespondentState" name="respondent_state">
+                            </div>
+                            <div class="col-md-4">
+                                <div id='jqxcombobox_originating'></div>
+                                <input type="hidden" id="hiddenOriginatingBody" name="originating_body">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="pull-right">
-                                <div class="form-inline" style="margin-top:20px">
-                                    <input type="submit" id="submit" class="btn btn-default" value="Search">
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-md-12">
+                                <div class="date-input-container">
+                                    <label class="date-input-label">Date Range:</label>
+                                    <div id='jqxdatetimeinput_from'></div>
+                                    <input type="hidden" id="hiddenDateTimeInput_from" name="date_from" />
+                                    <span style="font-weight: 500;">to</span>
+                                    <div id='jqxdatetimeinput_to'></div>
+                                    <input type="hidden" id="hiddenDateTimeInput_to" name="date_to" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <div class="form-inline" style="margin-top:20px">
+                                        <input type="submit" id="submit" class="btn btn-default" value="Search">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <div class="row" style="margin-top:40px;">
-        <div class="col-md-8 col-md-offset-2 text-center">
-            <p>The search could <b>take a few seconds</b> due to the ranking algorithm.</p>
-            <p>If you would like further information on how the ranking algorithm works, please go to the <a href="{{ url_for('about') }}">About</a> page.</p>
-        </div>
+        </form>
     </div>
+    <turbo-frame id="results">
+        <div class="row" style="margin-top:40px;">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <p>The search could <b>take a few seconds</b> due to the ranking algorithm.</p>
+                <p>If you would like further information on how the ranking algorithm works, please go to the <a href="{{ url_for('about') }}">About</a> page.</p>
+            </div>
+        </div>
+    </turbo-frame>
 </div>
 
 <script type="text/javascript">
