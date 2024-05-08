@@ -16,13 +16,15 @@
 </head>
 
 <div class="container">
-<div class="row">
+    <div class="row">
         <div class="col-xs-12">
           <div class="section-container-spacer text-center">
             <h1 class="h2">3 : Text Search</h1>
           </div>
         </div>
     </div>
+</div>
+<div class="container">
     <form action="{{ url_for('results') }}" method="get">
         <div class="row" style="margin-top: 20px;">
             <div class="col-md-8 col-md-offset-2 border">
@@ -67,7 +69,7 @@
             </div>
         </div>
     </form>
-  <div class="row" id="search-results">
+    <div class="row" id="search-results">
       </br>
         {% if corrected != None %}
             <span>
@@ -109,48 +111,44 @@
         <br/>
         </div>
         {% endfor %}
-  </div>
+    </div>
     <div class="pagination">
-        <row>
-        <div class="col-xs-3">
-        </div>
-        <div class="col-xs-6">
-            {% if pagination.has_prev %}
-                <span>
-                    <a class='page-number' href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
-                        {{ '<<' }}
-                    </a>
-                </span>
-            {% endif %}
-            {% for number in pagination.iter_pages() %}
-                {% if number %}
-                    {% if pagination.page != number %}
-                        <span>
-                                <a class='page-number'
-                                    href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
-                                {{ number }}
-                                </a>
-                        </span>
-                    {% else %}
-                        <span class='current-page-number'>{{ number }}</span>
-                    {% endif %}
-                {% else %}
-                    <span class=ellipsis> . . . </span>
+        <div class="row">
+            <div class="col-xs-7 col-xs-offset-3">
+                {% if pagination.has_prev %}
+                    <span>
+                        <a class='page-number' href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
+                            {{ '<<' }}
+                        </a>
+                    </span>
                 {% endif %}
-            {% endfor %}
+                {% for number in pagination.iter_pages() %}
+                    {% if number %}
+                        {% if pagination.page != number %}
+                            <span>
+                                    <a class='page-number'
+                                        href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
+                                    {{ number }}
+                                    </a>
+                            </span>
+                        {% else %}
+                            <span class='current-page-number'>{{ number }}</span>
+                        {% endif %}
+                    {% else %}
+                        <span class=ellipsis> . . . </span>
+                    {% endif %}
+                {% endfor %}
 
-            {% if pagination.has_next %}
-                <span>
-                    <a class='page-number'
-                        href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
-                        {{ '>>' }}
-                    </a>
-                </span>
-            {% endif %}
+                {% if pagination.has_next %}
+                    <span>
+                        <a class='page-number'
+                            href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
+                            {{ '>>' }}
+                        </a>
+                    </span>
+                {% endif %}
+            </div>
         </div>
-        <div class="col-xs-3">
-        </div>
-        </row>
     </div>
 </div>
 
