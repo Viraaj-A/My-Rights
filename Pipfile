@@ -3,6 +3,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[[source]]
+url = "https://download.pytorch.org/whl/cpu"
+verify_ssl = true
+name = "downloadpytorch"
+
 [packages]
 flask = "*"
 psycopg2 = "*"
@@ -28,12 +33,12 @@ pandas = "*"
 sqlalchemy = "==2.0.30"
 turbo-flask = "*"
 faiss-cpu = "*"
-torch = "*"
 transformers = "*"
 numpy = "*"
 nltk = "*"
 dash-core-components = "*"
 dash-html-components = "*"
+torch = {version = "==2.4.0", index = "downloadpytorch"}
 
 [dev-packages]
 

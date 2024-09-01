@@ -31,6 +31,7 @@ def init_app():
     app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
     os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
     # Loads the relevant models for FAISS
     index_with_ids = faiss.read_index('models/index_with_ids.index')
