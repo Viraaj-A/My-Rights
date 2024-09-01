@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+        <div class="text-center" style="margin-top:30px;">
+            <h2>Find out if your human rights have been violated</h2>
+            <h3><small>This predictor tool will take you from your harm in your own words to finding out your human rights
+                violation then to the most relevant cases to your problem</small></h3>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+           <h3 style="margin:10px auto 0;">Describe what happened to you that you think was unfair or hurt your rights</h3>
+           <h3><small>For example enter into the search box: "A cop hit me I don't know why"</small></h3>
+           <form action="{{ url_for('generate_text') }}" method="post" class="text-center" data-turbo-frame="generate_text">
+               <textarea name="prompt" class="form-control" style="margin: 20px auto 0; font-weight: bold;"></textarea>
+               <input type="submit" value="Convert to legal writing" class="btn btn-secondary" style="display: block; margin: 10px auto;">
+           </form>
+        </div>
+    </div>
+    <div class="row" style="margin-top:0px;">
+        <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+            <turbo-frame id="generate_text">
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <p>The search could <b>take a few seconds</b> due to the ranking algorithm.</p>
+                    <p>If you would like further information on how the ranking algorithm works, please go to the <a href="{{ url_for('about') }}">About</a> page.</p>
+                </div>
+            </turbo-frame>
+        </div>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+            <turbo-frame id="mlc_predict">
+            </turbo-frame>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:10px;">
+    <turbo-frame id="prediction_cases">
+    </turbo-frame>
+</div>
+
+
+<footer class="footer-container text-center">
+  <div class="container">
+    <div class="col-sm-8 col-sm-offset-2 section-container-spacer">
+
+    </div>
+  </div>
+</footer>
+{% endblock %}

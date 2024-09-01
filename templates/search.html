@@ -27,16 +27,12 @@
 
 <div class="container">
     <div class="row">
-        <form action="{{ url_for('results') }}" method="get" data-turbo-frame="results">
+        <form action="{{ url_for('results') }}" method="post" data-turbo-frame="results">
             <div class="row" style="margin-top: 20px;">
                 <div class="col-md-8 col-md-offset-2 border">
                     <div class="form-group">
                         <input type="search" id="form1" name="searched" class="form-control" placeholder="{{ input_search }}">
                         <div class="row" style="margin-top: 15px;">
-                            <div class="col-md-4">
-                                <div id='jqxcombobox_importance'></div>
-                                <input type="hidden" id="hiddenImportanceLevel" name="importance_level">
-                            </div>
                             <div class="col-md-4">
                                 <div id='jqxcombobox_state'></div>
                                 <input type="hidden" id="hiddenRespondentState" name="respondent_state">
@@ -44,6 +40,10 @@
                             <div class="col-md-4">
                                 <div id='jqxcombobox_originating'></div>
                                 <input type="hidden" id="hiddenOriginatingBody" name="originating_body">
+                            </div>
+                            <div class="col-md-4">
+                                <div id='jqxcombobox_importance'></div>
+                                <input type="hidden" id="hiddenImportanceLevel" name="importance_level">
                             </div>
                         </div>
                         <div class="row" style="margin-top: 15px;">
@@ -58,13 +58,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="pull-right">
-                                    <div class="form-inline" style="margin-top:20px">
-                                        <input type="submit" id="submit" class="btn btn-default" value="Search">
-                                    </div>
-                                </div>
+                        <!-- Row for the buttons -->
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-md-4 col-md-offset-2 text-right">
+                                <button type="submit" id="semantic_submit" name="semantic_submit" value="Concept Search" class="btn btn-secondary">Concept Search</button>
+                            </div>
+                            <div class="col-md-4 text-left">
+                                <button type="submit" id="submit" name="submit" value="Normal Search" class="btn btn-secondary">Normal Search</button>
                             </div>
                         </div>
                     </div>
@@ -94,6 +94,7 @@
             multiSelect: true,
             checkboxes: false,
             placeHolder: "Importance Level",
+            autoComplete: true,
             autoDropDownHeight: true
         }).on('change', function () {
         var items = $("#jqxcombobox_importance").jqxComboBox('getSelectedItems');
@@ -108,10 +109,11 @@
         });
         $("#jqxcombobox_state").jqxComboBox({
             source: data,
-            width: '200px',
+            width: '230px',
             multiSelect: true,
             checkboxes: false,
             placeHolder: "Respondent State",
+            autoComplete: true,
             autoDropDownHeight: true
         }).on('change', function () {
         var items = $("#jqxcombobox_state").jqxComboBox('getSelectedItems');
@@ -126,10 +128,11 @@
         });
         $("#jqxcombobox_originating").jqxComboBox({
             source: data,
-            width: '200px',
+            width: '240px',
             multiSelect: true,
             checkboxes: false,
             placeHolder: "Originating Body",
+            autoComplete: true,
             autoDropDownHeight: true
         }).on('change', function () {
         var items = $("#jqxcombobox_originating").jqxComboBox('getSelectedItems');

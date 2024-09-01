@@ -5,8 +5,11 @@
         <span>
             <h3>You searched for '{{ query }}', did you mean <a href="{{ url_for('results', searched=corrected) }}"> '{{corrected}}'</a> instead?</h3>
         </span>
+    {% endif %}
+    {% if pagination.total == 0 %}
+        <h3>No Cases Found</h3>
     {% else %}
-    <h3>Displaying {{ (pagination.page-1) * pagination.per_page + 1}} - {{ pagination.page * pagination.per_page }} cases from a total of {{ pagination.total }} cases:</h3>
+        <h3>Displaying {{ (pagination.page-1) * pagination.per_page + 1}} - {{ pagination.page * pagination.per_page }} cases from a total of {{ pagination.total }} cases:</h3>
     {% endif %}
     {% for result in pagination.items %}
     <div class="container">

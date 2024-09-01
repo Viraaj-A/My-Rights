@@ -27,6 +27,13 @@ apscheduler = "*"
 pandas = "*"
 sqlalchemy = "==2.0.30"
 turbo-flask = "*"
+faiss-cpu = "*"
+torch = "*"
+transformers = "*"
+numpy = "*"
+nltk = "*"
+dash-core-components = "*"
+dash-html-components = "*"
 
 [dev-packages]
 

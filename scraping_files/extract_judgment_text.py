@@ -6,6 +6,7 @@ import queue  # imported for using queue.Empty exception
 from multiprocessing import Process, Queue, current_process
 
 
+
 def connect_psql():
     try:
         conn = psycopg2.connect(database="raw_data_db",

@@ -52,25 +52,24 @@ respondent_state_choices = [
 ]
 
 originating_body_choices = [
-    ('Court (Plenary)', 'Court (Plenary)'),
-    ('Court (Chamber)', 'Court (Chamber)'),
-    ('Court (Second Section)', 'Court (Second Section)'),
-    ('Court (Fourth Section)', 'Court (Fourth Section)'),
-    ('Court (First Section Committee)', 'Court (First Section Committee)'),
-    ('Court (Fifth Section Committee)', 'Court (Fifth Section Committee)'),
-    ('Court (Third Section)', 'Court (Third Section)'),
-    ('Court (First Section)', 'Court (First Section)'),
-    ('Court (Fifth Section)', 'Court (Fifth Section)'),
-    ('Court (Fourth Section Committee)', 'Court (Fourth Section Committee)'),
-    ('Court (Third Section Committee)', 'Court (Third Section Committee)'),
-    ('Court (Grand Chamber)', 'Court (Grand Chamber)'),
-    ('Court (Second Section Committee)', 'Court (Second Section Committee)')
+    ('Court (Plenary)', 'Plenary'),
+    ('Court (Chamber)', 'Chamber'),
+    ('Court (First Section)', 'First Section'),
+    ('Court (Second Section)', 'Second Section'),
+    ('Court (Third Section)', 'Third Section'),
+    ('Court (Fourth Section)', 'Fourth Section'),
+    ('Court (Fifth Section)', 'Fifth Section'),
+    ('Court (First Section Committee)', 'First Section Committee'),
+    ('Court (Second Section Committee)', 'Second Section Committee'),
+    ('Court (Fourth Section Committee)', 'Fourth Section Committee'),
+    ('Court (Third Section Committee)', 'Third Section Committee'),
+    ('Court (Fifth Section Committee)', 'Fifth Section Committee')
 ]
 
 importance_level_choices = [
     ('3', '3'),
     ('2', '2'),
-    ('key_cases', 'Key cases'),
+    ('Key cases', 'Key cases'),
     ('1', '1')
 ]
 
@@ -93,6 +92,7 @@ class SearchForm(FlaskForm):
     respondent_state = SelectMultipleField("Respondent State", choices=respondent_state_choices, validators=[Optional()])
     date_from = DateField("Date From", format='%Y-%m-%d', validators=[Optional()])
     date_to = DateField("Date To", format='%Y-%m-%d', validators=[Optional()])
+    semantic_submit = SubmitField("Semantic Submit")
     submit = SubmitField("Submit")
 
 
@@ -109,4 +109,7 @@ class QuestionnaireForm(FlaskForm):
     property_q = SelectField(f"{property_string}", choices=["Yes", "No"], validators=[DataRequired()])
     q_submit = SubmitField("Submit")
 
-
+class PredictorForm(FlaskForm):
+    predictor_query = StringField("Original Query", validators=[Optional()])
+    legal_transformer = SubmitField("Legal Transformer")
+    final_submit = SubmitField("Final Submit")

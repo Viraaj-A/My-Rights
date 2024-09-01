@@ -39,7 +39,7 @@ html_layout = """
       <div class="collapse navbar-collapse" id="navbar-collapse" aria-label="Main">
         <ul class="nav navbar-nav">
           <li><a href="/" title="">Home</a></li>
-          <li><a href="/questionnaire" title="">1 : Questionnaire</a></li>
+          <li><a href="/prediction" title="">1 : Questionnaire</a></li>
           <li><a href="/visualisation" title="">2 : Data Visualisation</a></li>
           <li><a href="/search" title="">3 : Text Search</a></li>
           <li><a href="/about" title="">About</a></li>

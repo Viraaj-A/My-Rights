@@ -1,0 +1,114 @@
+<turbo-frame id="mlc_predict">
+  <script>
+    // Clear the previous prediction cases when new violations are predicted
+    document.getElementById('prediction_cases').innerHTML = '';
+  </script>
+
+  {% set predicted_labels_sorted = predicted_violations | sort(reverse=true, attribute='3') %}
+
+  {% set high_violations = [] %}
+  {% set shown_labels = [] %}
+  {% set all_other_labels = [] %}
+  {% set minimum_violations = [] %}
+  {% set no_violation_label = None %}
+
+  {% for label in predicted_labels_sorted %}
+      {% if label[2] == "No violation" %}
+          {% set no_violation_label = label %}
+      {% else %}
+          {% set _ = all_other_labels.append(label) %}
+      {% endif %}
+  {% endfor %}
+
+  {% for label in all_other_labels %}
+    {% if label[3] > 0.05 and label[3] < 0.20 %}
+      {% set _ = minimum_violations.append(label) %}
+      {% set _ = shown_labels.append(label) %}
+    {% elif label[3] > 0.20 %}
+      {% set _ = high_violations.append(label) %}
+      {% set _ = shown_labels.append(label) %}
+    {% endif %}
+  {% endfor %}
+
+  {# Now include no_violation_label back into the lists if needed #}
+  {% if no_violation_label %}
+      {% set _ = shown_labels.append(no_violation_label) %}
+  {% endif %}
+
+  {% if high_violations %}
+    <h3 style="margin:5px auto 0; text-align: justify;">
+      The rights that are most likely affected with their probability of violation include:
+    </h3>
+    <div id="label-no-probability-listed" style="margin:10px auto 0; font-size: 1.2em;">
+      <ul>
+        {% for label in high_violations %}
+          <li>
+            {{ label[2] }} - {{ "{:.0f}%".format(label[3] * 100) }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="all-labels" style="display: none; margin-top: 10px; font-size: 1.2em;">
+      <ul>
+        {% for label in predicted_labels_sorted %}
+            {% if label not in shown_labels %}
+                <li>
+                    {{ label[2] }} - {{ "{:.0f}%".format(label[3] * 100) }}
+                </li>
+            {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="row text-center">
+      <div class="col-xs-4 col-xs-offset-2">
+        <button id="toggle-labels" class="btn btn-secondary" onclick="toggleLabels()">Show all rights violations</button>
+      </div>
+      <div class="col-xs-4">
+        <form method="POST" action="/prediction_cases" data-turbo-frame="prediction_cases">
+            <input type="hidden" name="legal_prompt" value="{{ legal_prompt }}">
+            <button class="btn btn-secondary">View similar cases</button>
+        </form>
+      </div>
+    </div>
+  {% elif minimum_violations %}
+    <h3 style="margin:5px auto 0; text-align: justify;">
+      The rights that are most likely affected include:
+    </h3>
+    <div id="label-list" style="margin:10px auto 0; font-size: 1.2em;">
+      <ul>
+        {% for label in minimum_violations %}
+          <li>
+            {{ label[2] }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="row text-center">
+      <div class="col-xs-6 col-xs-offset-3">
+        <form method="POST" action="/prediction_cases" data-turbo-frame="prediction_cases">
+            <input type="hidden" name="legal_prompt" value="{{ legal_prompt }}">
+            <button class="btn btn-secondary">View similar cases</button>
+        </form>
+      </div>
+    </div>
+  {% elif no_violation_label and no_violation_label[3] > 0.20 and not (all_other_labels | selectattr('3', 'ge', 0.10) | first) %}
+    <h3 style="margin:5px auto 0; text-align: justify;">
+      The information you have entered is not being accurately processed by the system. You might want to enter your situation in different words. However, if you do not, you can still click the button below to find all cases that are similar to the underlying concept of your situation.
+    </h3>
+  {% endif %}
+
+  <script>
+    function toggleLabels() {
+      var toggleButton = document.getElementById("toggle-labels");
+      var allLabels = document.getElementById("all-labels");
+
+      if (allLabels.style.display === "none") {
+        toggleButton.textContent = "Hide all rights violations";
+        allLabels.style.display = "block";
+      } else {
+        toggleButton.textContent = "Show all rights violations";
+        allLabels.style.display = "none";
+      }
+    }
+  </script>
+</turbo-frame>

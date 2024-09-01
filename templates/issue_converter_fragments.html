@@ -1,0 +1,12 @@
+<turbo-frame id="generate_text">
+    <h3 style="margin: 5px auto 0; text-align: justify;">
+        The following is your description in the European Court of Human Rights's language:
+    </h3>
+    <!-- Form to submit the edited or original legal prompt to mlc_predict -->
+    <form action="{{ url_for('mlc_predict') }}" method="post" data-turbo-frame="mlc_predict" class="text-center">
+        <!-- Editable Textarea for the generated text -->
+        <textarea name="legal_prompt" class="form-control" style="margin: 20px auto 0; font-weight: bold;">{{ legal_prompt }}</textarea>
+        <!-- Submit button -->
+        <input type="submit" style="display: block; margin: 10px auto;" value="Click here to find out which of your human rights are violated" class="btn btn-secondary">
+    </form>
+</turbo-frame>

@@ -1,0 +1,82 @@
+<turbo-frame id="results">
+<div class="row" id="search-results">
+  </br>
+    {% if corrected != None %}
+        <span>
+            <h3>You searched for '{{ query }}', did you mean <a href="{{ url_for('results', searched=corrected) }}"> '{{corrected}}'</a> instead?</h3>
+        </span>
+    {% endif %}
+    {% if pagination.total == 0 %}
+        <h3>No Cases Found</h3>
+    {% else %}
+        <h3>Displaying {{ (pagination.page-1) * pagination.per_page + 1}} - {{ pagination.page * pagination.per_page }} cases from a total of {{ pagination.total }} cases:</h3>
+    {% endif %}
+    {% for result in pagination.items %}
+    <div class="container">
+        <div class="row border">
+            <div class = "col-md-11">
+                <div class="row">
+                    <div class = "col-md-12">
+                        <ul id="result_list">
+                            <li class="horizontal"><a href="{{result[0]}}"><b>{{result[1]}}</b>
+                                    <i class="fa fa-external-link" style="margin-left: 10px;"></i></a></li>
+                            <li class="horizontal">Importance Rating: <b>{{result[2]}} </b></li>
+                            <li class="horizontal first">Delivered On: <b>{{result[3]}} </b></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4><u>JUDGMENT FACTS</u></h4>
+                        {{result[4]|truncate(255,false,'...')}}
+                    </div>
+                    <div class="col-md-6">
+                        <h4><u>JUDGMENT CONCLUSION</u></h4>
+                        {{result[5]|truncate(255,false,'...')}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    <br/>
+    </div>
+    {% endfor %}
+</div>
+<div class="pagination">
+    <div class="row">
+        <div class="col-xs-7 col-xs-offset-3">
+            {% if pagination.has_prev %}
+                <span>
+                    <a class='page-number' href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
+                        {{ '<<' }}
+                    </a>
+                </span>
+            {% endif %}
+            {% for number in pagination.iter_pages() %}
+                {% if number %}
+                    {% if pagination.page != number %}
+                        <span>
+                                <a class='page-number'
+                                    href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
+                                {{ number }}
+                                </a>
+                        </span>
+                    {% else %}
+                        <span class='current-page-number'>{{ number }}</span>
+                    {% endif %}
+                {% else %}
+                    <span class=ellipsis> . . . </span>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                <span>
+                    <a class='page-number'
+                        href="{{ url_for('results', page=number, searched=query, importance_level=importance_levels, respondent_state=respondent_states, originating_body=originating_bodies, date_from=date_from, date_to=date_to) }}">
+                        {{ '>>' }}
+                    </a>
+                </span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</turbo-frame>
