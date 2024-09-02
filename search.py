@@ -1,10 +1,5 @@
 from sqlalchemy import text, func, or_
 import numpy as np
-from model_loader import get_search_model_and_tokenizer, get_torch
-
-model, tokenizer = get_search_model_and_tokenizer()
-torch = get_torch()
-
 
 def full_text_search(search_term, db, DisplayCases, date_from=None, date_to=None, originating_bodies=[], importance_levels=[], respondent_states=[]):
     # Start by building the base query with possible filters
@@ -44,7 +39,7 @@ def full_text_search(search_term, db, DisplayCases, date_from=None, date_to=None
 
 
 
-def semantic_query_normalisation(query):
+def semantic_query_normalisation(query, model, tokenizer, torch):
     def generate_embedding(query):
         inputs = tokenizer(query, return_tensors="pt", padding=True, truncation=True)
         with torch.no_grad():
@@ -65,16 +60,17 @@ def semantic_query_normalisation(query):
 
     return normalized_query_embedding
 
-def semantic_search(query, index_with_ids, k):
-    query_to_process = semantic_query_normalisation(query)
+
+def semantic_search(query, index_with_ids, k, model, tokenizer, torch):
+    query_to_process = semantic_query_normalisation(query, model, tokenizer, torch)
     distances, indices = index_with_ids.search(query_to_process[np.newaxis, :], k)
     nearest_ids = indices[0]
     return nearest_ids
 
 
-def semantic_search_with_filters(query, db, DisplayCases, date_from=None, date_to=None, originating_bodies=[], importance_levels=[], respondent_states=[], index_with_ids=None):
+def semantic_search_with_filters(query, db, DisplayCases, date_from=None, date_to=None, originating_bodies=[], importance_levels=[], respondent_states=[], index_with_ids=None, model=None, tokenizer=None, torch=None):
     # Perform the semantic search
-    nearest_ids = semantic_search(query, index_with_ids, k=50)
+    nearest_ids = semantic_search(query, index_with_ids, k=50, model=model, tokenizer=tokenizer, torch=torch)
 
     # Start building the base query
     query = db.session.query(
@@ -104,9 +100,10 @@ def semantic_search_with_filters(query, db, DisplayCases, date_from=None, date_t
 
     return query
 
-def prediction_semantic(query, db, DisplayCases, index_with_ids=None):
+
+def prediction_semantic(query, db, DisplayCases, index_with_ids=None, model=None, tokenizer=None, torch=None):
     # Perform the semantic search
-    nearest_ids = semantic_search(query, index_with_ids, k=5)
+    nearest_ids = semantic_search(query, index_with_ids, k=5, model=model, tokenizer=tokenizer, torch=torch)
 
     # Start building the base query
     query = db.session.query(

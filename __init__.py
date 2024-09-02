@@ -15,6 +15,7 @@ from sqlalchemy.dialects.postgresql import TSVECTOR
 from autocorrect import Speller
 from scraping_files.scheduler import start_scheduler
 from turbo_flask import Turbo
+from model_loader import get_search_model_and_tokenizer, get_classifier_model_and_tokenizer, get_torch
 import faiss
 import os
 
@@ -35,6 +36,9 @@ def init_app():
 
     # Loads the relevant models for FAISS
     index_with_ids = faiss.read_index('models/index_with_ids.index')
+    search_model, search_tokenizer = get_search_model_and_tokenizer()
+    classifier_model, classifier_tokenizer = get_classifier_model_and_tokenizer()
+    torch = get_torch()
 
     def run_nltk():
         nltk_data_path = os.path.join(os.getcwd(), 'models', 'nltk_files')
@@ -121,7 +125,7 @@ def init_app():
 
             if form.semantic_submit.data or request.args.get('semantic_submit'):
                 paginate = semantic_search_with_filters(query, db, DisplayCases, date_from, date_to, originating_bodies,
-                                                        importance_levels, respondent_states, index_with_ids).paginate(
+                                                        importance_levels, respondent_states, index_with_ids, search_model, search_tokenizer, torch).paginate(
                     page=page, per_page=10)
             else:
                 paginate = full_text_search(query, db, DisplayCases, date_from, date_to, originating_bodies,
@@ -170,14 +174,14 @@ def init_app():
         @app.route('/mlc_predict', methods=['POST'])
         def mlc_predict():
             legal_prompt = request.form.get('edited_text') or request.form['legal_prompt']  # This comes from the hidden input field
-            predicted_violations= list(mlc_prediction(legal_prompt))
+            predicted_violations= list(mlc_prediction(legal_prompt,classifier_model, classifier_tokenizer,torch))
 
             return render_template('mlc_prediction_fragment.html', predicted_violations=predicted_violations, legal_prompt=legal_prompt)
 
         @app.route('/prediction_cases', methods=['POST'])
         def prediction_cases():
             legal_prompt = request.form.get('edited_text') or request.form['legal_prompt']
-            paginate = prediction_semantic(legal_prompt, db, DisplayCases, index_with_ids).paginate(
+            paginate = prediction_semantic(legal_prompt, db, DisplayCases, index_with_ids, search_model, search_tokenizer, torch).paginate(
                 page=1, per_page=5)
             print(paginate)
             return render_template('prediction_semantic_fragments.html', pagination=paginate)

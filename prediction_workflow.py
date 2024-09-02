@@ -1,10 +1,5 @@
-from model_loader import get_classifier_model_and_tokenizer, get_torch
 import requests
 from nltk.tokenize import sent_tokenize
-import json
-
-model, tokenizer = get_classifier_model_and_tokenizer()
-torch = get_torch()
 
 def issue_translator(predictor_query):
     def create_llm_prompt(simplified_text):
@@ -76,16 +71,12 @@ def issue_translator(predictor_query):
         return complete_sentences
 
 
-def mlc_prediction(predictor_query):
+def mlc_prediction(predictor_query, model, tokenizer, torch):
     def generate_labels():
         label_mapping = {'': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
                          '11': 11, '12': 12, '13': 13, '14': 14, '15': 15, '18': 16, 'P1-1': 17, 'P1-2': 18, 'P1-3': 19,
                          'P4-2': 20, 'P4-4': 21, 'P6-1': 22, 'P7-1': 23, 'P7-2': 24, 'P7-3': 25, 'P7-4': 26}
 
-
-
-
-        
         reverse_label_mapping = {v: k for k, v in label_mapping.items()}
 
         label_summaries = {
@@ -122,7 +113,7 @@ def mlc_prediction(predictor_query):
         }
 
         return reverse_label_mapping, label_summaries
-    
+
     reverse_label_mapping, label_summaries = generate_labels()
     inputs = tokenizer(predictor_query, padding=True, truncation=True, return_tensors="pt")
 
@@ -132,8 +123,9 @@ def mlc_prediction(predictor_query):
         probabilities = torch.sigmoid(logits)
 
     # Convert predictions to labels with classifier index, article, summary, and probability
-    predicted_labels = [(i, reverse_label_mapping[i], label_summaries[reverse_label_mapping[i]], probabilities[0, i].item())
-                        for i in range(probabilities.size(1))]
+    predicted_labels = [
+        (i, reverse_label_mapping[i], label_summaries[reverse_label_mapping[i]], probabilities[0, i].item())
+        for i in range(probabilities.size(1))]
 
     print(f"Predicted Labels: {predicted_labels}")
     return predicted_labels
