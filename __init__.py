@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, g
 from webforms import SearchForm, QuestionnaireForm, PredictorForm
 from search import full_text_search, semantic_search_with_filters, prediction_semantic
 from questionnaire_analysis import return_results
@@ -19,6 +19,12 @@ from model_loader import get_search_model_and_tokenizer, get_classifier_model_an
 import faiss
 import os
 
+index_with_ids = None
+search_model = None
+search_tokenizer = None
+classifier_model = None
+classifier_tokenizer = None
+torch = None
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -34,11 +40,19 @@ def init_app():
     os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
     os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-    # Loads the relevant models for FAISS
-    index_with_ids = faiss.read_index('models/index_with_ids.index')
-    search_model, search_tokenizer = get_search_model_and_tokenizer()
-    classifier_model, classifier_tokenizer = get_classifier_model_and_tokenizer()
-    torch = get_torch()
+    # Loads the relevant models
+    def load_models():
+        global index_with_ids, search_model, search_tokenizer, classifier_model, classifier_tokenizer, torch
+        if not index_with_ids:
+            index_with_ids = faiss.read_index('models/index_with_ids.index')
+        if not search_model:
+            search_model, search_tokenizer = get_search_model_and_tokenizer()
+        if not classifier_model:
+            classifier_model, classifier_tokenizer = get_classifier_model_and_tokenizer()
+        if not torch:
+            torch = get_torch()
+
+    load_models()  # Load the models when the application starts
 
     def run_nltk():
         nltk_data_path = os.path.join(os.getcwd(), 'models', 'nltk_files')
