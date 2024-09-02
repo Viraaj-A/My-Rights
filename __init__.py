@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request
 from webforms import SearchForm, QuestionnaireForm, PredictorForm
 from search import full_text_search, semantic_search_with_filters, prediction_semantic
 from questionnaire_analysis import return_results
@@ -15,16 +15,11 @@ from sqlalchemy.dialects.postgresql import TSVECTOR
 from autocorrect import Speller
 from scraping_files.scheduler import start_scheduler
 from turbo_flask import Turbo
-from model_loader import get_search_model_and_tokenizer, get_classifier_model_and_tokenizer, get_torch
 import faiss
 import os
+import faiss
+from model_loader import get_search_model_and_tokenizer, get_classifier_model_and_tokenizer, get_torch
 
-index_with_ids = None
-search_model = None
-search_tokenizer = None
-classifier_model = None
-classifier_tokenizer = None
-torch = None
 
 def init_app():
     """Construct core Flask application with embedded Dash app."""
@@ -39,20 +34,6 @@ def init_app():
 
     os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
     os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-
-    # Loads the relevant models
-    def load_models():
-        global index_with_ids, search_model, search_tokenizer, classifier_model, classifier_tokenizer, torch
-        if not index_with_ids:
-            index_with_ids = faiss.read_index('models/index_with_ids.index')
-        if not search_model:
-            search_model, search_tokenizer = get_search_model_and_tokenizer()
-        if not classifier_model:
-            classifier_model, classifier_tokenizer = get_classifier_model_and_tokenizer()
-        if not torch:
-            torch = get_torch()
-
-    load_models()  # Load the models when the application starts
 
     def run_nltk():
         nltk_data_path = os.path.join(os.getcwd(), 'models', 'nltk_files')
@@ -188,7 +169,7 @@ def init_app():
         @app.route('/mlc_predict', methods=['POST'])
         def mlc_predict():
             legal_prompt = request.form.get('edited_text') or request.form['legal_prompt']  # This comes from the hidden input field
-            predicted_violations= list(mlc_prediction(legal_prompt,classifier_model, classifier_tokenizer,torch))
+            predicted_violations= list(mlc_prediction(legal_prompt, classifier_model, classifier_tokenizer, torch))
 
             return render_template('mlc_prediction_fragment.html', predicted_violations=predicted_violations, legal_prompt=legal_prompt)
 
@@ -260,3 +241,24 @@ def init_app():
 
 
         return app
+
+
+app = init_app()
+
+Development = True
+
+
+if Development == False:
+    if __name__ == "__main__":
+        app.run(debug=False)
+else:
+    if __name__ == "__main__":
+        def load_models():
+            index_with_ids = faiss.read_index('models/index_with_ids.index')
+            search_model, search_tokenizer = get_search_model_and_tokenizer()
+            classifier_model, classifier_tokenizer = get_classifier_model_and_tokenizer()
+            torch = get_torch()
+
+            return index_with_ids, search_model, search_tokenizer, classifier_model, classifier_tokenizer, torch
+        index_with_ids, search_model, search_tokenizer, classifier_model, classifier_tokenizer, torch = load_models()
+        app.run(debug=True)
