@@ -37,7 +37,19 @@ def create_app():
     # Initialize NLTK and models
     with app.app_context():
         run_nltk()
-        load_models_to_app()
+        print("Loading FAISS index and models...")
+        index_with_ids = faiss.read_index('models/index_with_ids.index')
+        search_model, search_tokenizer = get_search_model_and_tokenizer()
+        classifier_model, classifier_tokenizer = get_classifier_model_and_tokenizer()
+        torch = get_torch()
+
+        current_app.index_with_ids = index_with_ids
+        current_app.search_model = search_model
+        current_app.search_tokenizer = search_tokenizer
+        current_app.classifier_model = classifier_model
+        current_app.classifier_tokenizer = classifier_tokenizer
+        current_app.torch = torch
+        print("Models loaded successfully.")
 
     # Importing and initializing the Dash application
     from plotly_dash import init_dashboard
@@ -55,21 +67,6 @@ def run_nltk():
     nltk.data.path.append(nltk_data_path)
     nltk.download('punkt', download_dir=nltk_data_path)
     nltk.download('punkt_tab', download_dir=nltk_data_path)
-
-
-def load_models_to_app():
-    """Load models into the application context."""
-    index_with_ids = faiss.read_index('models/index_with_ids.index')
-    search_model, search_tokenizer = get_search_model_and_tokenizer()
-    classifier_model, classifier_tokenizer = get_classifier_model_and_tokenizer()
-    torch = get_torch()
-
-    current_app.index_with_ids = index_with_ids
-    current_app.search_model = search_model
-    current_app.search_tokenizer = search_tokenizer
-    current_app.classifier_model = classifier_model
-    current_app.classifier_tokenizer = classifier_tokenizer
-    current_app.torch = torch
 
 
 app = create_app()
