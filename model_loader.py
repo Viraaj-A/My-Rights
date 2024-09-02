@@ -2,8 +2,8 @@ from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassific
 import torch
 
 # Define the paths where the models and tokenizers are saved
-search_model_path = "C:/Users/Vj/Documents/coding_projects/My-Rights/models/all-MiniLM-L6-v2"
-classifier_model_path = "C:/Users/Vj/Documents/coding_projects/My-Rights/models/roberta_echr_truncated_facts_all_labels"
+search_model_path = "models/all-MiniLM-L6-v2"
+classifier_model_path = "models/roberta_echr_truncated_facts_all_labels"
 
 # Load the search model and tokenizer from the local directory
 search_tokenizer = AutoTokenizer.from_pretrained(search_model_path)
