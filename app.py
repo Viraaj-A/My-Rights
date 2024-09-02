@@ -187,9 +187,10 @@ def generate_text():
     user_prompt = request.form['prompt']
     spell = Speller()
     corrected = spell(user_prompt)
-
+    print(user_prompt)
     legal_prompt = issue_translator(corrected if corrected != user_prompt else user_prompt)
-    return render_template('issue_converter_fragments.html', corrected=corrected, legal_prompt=legal_prompt)
+    print(legal_prompt)
+    return render_template('issue_converter_fragments.html', legal_prompt=legal_prompt)
 
 
 @app.route('/mlc_predict', methods=['POST'])

@@ -60,13 +60,13 @@
       </ul>
     </div>
     <div class="row text-center">
-      <div class="col-xs-4 col-xs-offset-2">
-        <button id="toggle-labels" class="btn btn-secondary" onclick="toggleLabels()">Show all rights violations</button>
+      <div class="col-xs-12 col-md-4 col-md-offset-2">
+        <button id="toggle-labels" class="btn btn-secondary btn-block" onclick="toggleLabels()">Show all rights </button>
       </div>
-      <div class="col-xs-4">
+      <div class="col-xs-12 col-md-4">
         <form method="POST" action="/prediction_cases" data-turbo-frame="prediction_cases">
-            <input type="hidden" name="legal_prompt" value="{{ legal_prompt }}">
-            <button class="btn btn-secondary">View similar cases</button>
+          <input type="hidden" name="legal_prompt" value="{{ legal_prompt }}">
+          <button class="btn btn-secondary btn-block stacked-button">View similar cases</button>
         </form>
       </div>
     </div>

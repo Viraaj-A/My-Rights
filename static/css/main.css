@@ -5282,3 +5282,9 @@ input::-ms-input-placeholder { /* Microsoft Edge */
     margin: 0 10px; /* Adds more space before and after 'to' */
 }
 /*# sourceMappingURL=main.70a66962.map*/
+
+@media (max-width: 767px) { /* Adjust for small screens */
+  .row.text-center .col-xs-12:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
