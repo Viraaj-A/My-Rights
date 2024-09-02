@@ -95,6 +95,14 @@
     <h3 style="margin:5px auto 0; text-align: justify;">
       The information you have entered is not being accurately processed by the system. You might want to enter your situation in different words. However, if you do not, you can still click the button below to find all cases that are similar to the underlying concept of your situation.
     </h3>
+    <div class="row text-center">
+      <div class="col-xs-6 col-xs-offset-3">
+        <form method="POST" action="/prediction_cases" data-turbo-frame="prediction_cases">
+            <input type="hidden" name="legal_prompt" value="{{ legal_prompt }}">
+            <button class="btn btn-secondary">View similar cases</button>
+        </form>
+      </div>
+    </div>
   {% endif %}
 
   <script>
