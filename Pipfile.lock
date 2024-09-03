@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9469f9022f33211df56aa5e3f9562b6c09e7e7b871defebb94756f383e150eb6"
+            "sha256": "f0d55d48753f1f7cd74f2c0469b86e8e317cf1c9f8c017addab57dc7570c0333"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1820,12 +1820,12 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:0274581a0037b638b9fc1c6883cc71c0210865aaa76073f7882376b641b84e8f",
-                "sha256:a85e96b8be2b906f3e3e789adec6a9323abf79758ecfa3065bd740d81158b11e"
+                "sha256:bea195a800f510ba3a2bc65645c88b7e016fe36709fefc58a880c4ae8a0138d7",
+                "sha256:cee604bd76cc092355a4e43ec17aee5369095974f41f088676724dc6bc2c9ef8"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==74.0.0"
+            "version": "==74.1.0"
         },
         "shellingham": {
             "hashes": [
@@ -2285,6 +2285,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.2.2"
+        },
+        "waitress": {
+            "hashes": [
+                "sha256:005da479b04134cdd9dd602d1ee7c49d79de0537610d653674cc6cbde222b8a1",
+                "sha256:2a06f242f4ba0cc563444ca3d1998959447477363a2d7e9b8b4d75d35cfd1669"
+            ],
+            "index": "pypi",
+            "markers": "python_full_version >= '3.8.0'",
+            "version": "==3.0.0"
         },
         "wasabi": {
             "hashes": [

@@ -103,7 +103,8 @@ with app.app_context():
 # Importing Routes
 @app.route('/')
 def index():
-    return render_template('index.html')
+    form = PredictorForm()
+    return render_template('prediction.html', form=form)
 
 
 @app.route('/about/')
@@ -209,6 +210,7 @@ def prediction_cases():
     ).paginate(page=1, per_page=5)
 
     return render_template('prediction_semantic_fragments.html', pagination=paginate)
+
 
 Development = False
 
