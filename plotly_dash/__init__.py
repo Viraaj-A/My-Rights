@@ -343,7 +343,7 @@ def init_dashboard(server):
         # Data Table
         # Concatening two columns to create a hyperlinkable case column - 'case_link'
         filtered_df['case_link'] = '['+filtered_df['case_title']+']'+'('+filtered_df['document_url']+')'
-        data = filtered_df.to_dict('rows')
+        data = filtered_df.to_dict('records')
         columns = [{"name": 'Case Name', "id": 'case_link', 'presentation': 'markdown'},
                    {"name": 'Importance', "id": 'importance_number'},
                    {"name": 'Articles Considered', "id": 'articles_considered'},
