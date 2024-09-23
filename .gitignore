@@ -1,2 +1,3 @@
 /models/all-MiniLM-L6-v2/
 /models/roberta_echr_truncated_facts_all_labels/
+/.env

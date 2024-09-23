@@ -19,17 +19,18 @@ import faiss
 import os
 import faiss
 from model_loader import get_search_model_and_tokenizer, get_classifier_model_and_tokenizer, get_torch
-
+from dotenv import load_dotenv
 
 def create_app():
+    load_dotenv()
     """Construct core Flask application with embedded Dash app and loaded ML models."""
     app = Flask(__name__, instance_relative_config=False)
 
     # Configure the app
-    app.config['SECRET_KEY'] = 'any secret string'
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config[
-        "SQLALCHEMY_DATABASE_URI"] = 'postgresql://doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/raw_data_db'
-    app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
+        "SQLALCHEMY_DATABASE_URI"] = os.getenv('SQLALCHEMY_DATABASE_URI')
+    app.secret_key = os.getenv('SECRET_KEY')
 
     os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
     os.environ['CUDA_VISIBLE_DEVICES'] = '-1'

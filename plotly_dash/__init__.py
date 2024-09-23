@@ -6,6 +6,10 @@ from plotly_dash.layout import html_layout
 from sqlalchemy import create_engine, text
 from sqlalchemy.pool import NullPool
 import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 development = False
 
@@ -13,7 +17,7 @@ development = False
 if development == True:
     connection_string = 'postgres:password@localhost/restore_Oct_13'
 else:
-    connection_string = 'doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/defaultdb'
+    connection_string = os.getenv('CONNECTION_STRING')
 
 engine = create_engine(f'postgresql+psycopg2://{connection_string}',poolclass=NullPool)
 

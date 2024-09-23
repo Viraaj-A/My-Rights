@@ -1,3 +1,5 @@
+import os
+
 import requests
 from nltk.tokenize import sent_tokenize
 
@@ -41,7 +43,7 @@ def issue_translator(predictor_query):
 
         headers = {
             "Content-Type": "application/json",
-            "Authorization": "Bearer pb_ik19emsOXxWxqbKTOJaZZg"
+            "Authorization": os.getenv('PREDIBASE_AUTHORIZATION')
         }
 
         # Make the POST request
