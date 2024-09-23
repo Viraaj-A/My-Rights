@@ -34,22 +34,8 @@ def create_app():
     os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
     os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-    db = SQLAlchemy(app)
-    Base = automap_base()
-    turbo = Turbo(app)
-
-
     # Initialize NLTK and models
     with app.app_context():
-        def run_nltk():
-            """Initialize NLTK resources."""
-            nltk_data_path = os.path.join(os.getcwd(), 'models', 'nltk_files')
-            os.environ["NLTK_DATA"] = nltk_data_path
-            import nltk
-            os.makedirs(nltk_data_path, exist_ok=True)
-            nltk.data.path.append(nltk_data_path)
-            nltk.download('punkt', download_dir=nltk_data_path)
-            nltk.download('punkt_tab', download_dir=nltk_data_path)
         run_nltk()
         print("Loading FAISS index and models...")
         index_with_ids = faiss.read_index('models/index_with_ids.index')
@@ -65,34 +51,53 @@ def create_app():
         current_app.torch = torch
         print("Models loaded successfully.")
 
-        class DisplayCases(Base):
-            __tablename__ = "display_cases"
-            existing = True
-
-            id = Column(Integer, primary_key=True)
-            title = Column(Text)
-            judgment_url = Column(Text)
-            originating_body = Column(Text)
-            importance_level = Column(Text)
-            respondent_state = Column(Text)
-            judgment_date = Column(Date)
-            judgment_facts = Column(Text)
-            judgment_conclusion = Column(Text)
-            judgment_full_text = Column(Text)
-            search_vector = Column(TSVECTOR)
-
-
-        Base.metadata.create_all(db.engine)
-        Session = sessionmaker(bind=db.engine)
-        session = Session()
-
     # Importing and initializing the Dash application
     from plotly_dash import init_dashboard
     app = init_dashboard(app)
 
     return app
 
+
+def run_nltk():
+    """Initialize NLTK resources."""
+    nltk_data_path = os.path.join(os.getcwd(), 'models', 'nltk_files')
+    os.environ["NLTK_DATA"] = nltk_data_path
+    import nltk
+    os.makedirs(nltk_data_path, exist_ok=True)
+    nltk.data.path.append(nltk_data_path)
+    nltk.download('punkt', download_dir=nltk_data_path)
+    nltk.download('punkt_tab', download_dir=nltk_data_path)
+
+
 app = create_app()
+
+# Initialize database and other components within the app context
+with app.app_context():
+    db = SQLAlchemy(app)
+    Base = automap_base()
+    turbo = Turbo(app)
+
+
+    class DisplayCases(Base):
+        __tablename__ = "display_cases"
+        existing = True
+
+        id = Column(Integer, primary_key=True)
+        title = Column(Text)
+        judgment_url = Column(Text)
+        originating_body = Column(Text)
+        importance_level = Column(Text)
+        respondent_state = Column(Text)
+        judgment_date = Column(Date)
+        judgment_facts = Column(Text)
+        judgment_conclusion = Column(Text)
+        judgment_full_text = Column(Text)
+        search_vector = Column(TSVECTOR)
+
+
+    Base.metadata.create_all(db.engine)
+    Session = sessionmaker(bind=db.engine)
+    session = Session()
 
 # Importing Routes
 @app.route('/')

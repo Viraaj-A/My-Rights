@@ -39,7 +39,7 @@ nltk = "*"
 dash-core-components = "*"
 dash-html-components = "*"
 torch = {version = "==2.4.0", index = "downloadpytorch"}
-waitress = "*"
+flask-caching = "*"
 
 [dev-packages]
 
