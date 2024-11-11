@@ -212,7 +212,7 @@ def prediction_cases():
     return render_template('prediction_semantic_fragments.html', pagination=paginate)
 
 
-Development = True
+Development = False
 
 
 if Development == False:
