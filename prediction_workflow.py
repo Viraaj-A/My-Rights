@@ -100,16 +100,14 @@ def issue_translator(translation_query):
         }
 
         response = requests.post(url, json=data, headers=headers)
+        response_json = response.json()
 
-        try:
-            response_json = response.json()
-        except ValueError:
-            response_json = {}
+        # Get generated text
+        generated_text = response_json.get('generated_text', '')
 
-        generated_text = response_json.get('generated_text', 'No generated_text found in response.')
-
-        if isinstance(generated_text, list):
-            generated_text = ' '.join(generated_text)
+        # Convert to string if it's a list or dict
+        if isinstance(generated_text, (list, dict)):
+            generated_text = str(generated_text)
 
         return response_json, generated_text
 

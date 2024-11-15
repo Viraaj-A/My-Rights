@@ -1,16 +1,16 @@
 <turbo-frame id="prediction_cases">
     <div class="row" id="prediction-cases-header">
-        <div class="col-md-12">
-            <h3 style="margin: 20px 0px 30px 0px; text-align: center;">These 5 cases are the most similar cases to your human rights violation:</h3>
+        <div class="col-xs-12">
+            <h3 style="text-align: center;">These 5 cases are the most similar cases to your human rights violation:</h3>
         </div>
     </div>
     <div class="row" id="prediction-cases-container">
         {% for result in pagination.items %}
         <div class="container">
-            <div class="row border">
-                <div class="col-md-12">
+            <div class="row" style="border: 1px solid grey; margin: 0 0 20px 0; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <div class="col-xs-12">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-xs-12">
                             <ul id="result_list">
                                 <li class="horizontal"><a href="{{result[0]}}"><b>{{result[1]}}</b>
                                         <i class="fa fa-external-link" style="margin-left: 10px;"></i></a></li>
@@ -19,18 +19,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-12 col-md-6">
                             <h4><u>JUDGMENT FACTS</u></h4>
                             {{result[4]|truncate(255,false,'...')}}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-12 col-md-6">
                             <h4><u>JUDGMENT CONCLUSION</u></h4>
                             {{result[5]|truncate(255,false,'...')}}
                         </div>
                     </div>
                 </div>
             </div>
-        <br/>
         </div>
         {% endfor %}
     </div>
