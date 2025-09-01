@@ -122,7 +122,7 @@ def issue_translator(translation_query):
     validation_result = validation_result.strip().upper()
 
     if validation_result != "VALID":
-        return "Your prompt is unlikely to be a legal problem - if you do think it is a legal problem, enter it here again and press the button for the next step"
+        return "What happened to you might not be a human rights problem  - if you do think it is a legal problem, enter it here again and press the 'Find your human rights violation' button to continue"
 
     # If valid, process the legal query with the adapter
     processing_prompt = create_llm_prompt(cleaned_query, prompt_type="process")
