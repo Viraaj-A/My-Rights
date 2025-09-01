@@ -21,7 +21,7 @@ def issue_translator(translation_query):
 
         # Remove any ending punctuation
         if text.endswith(('!', '?')):
-            text = text[:-1]
+            text = text.rstrip('!?')
         elif text.endswith('.'):
             return text  # Already has a period, return as is
 
@@ -30,6 +30,40 @@ def issue_translator(translation_query):
             text += '.'
 
         return text
+
+    def summarize_if_long(text, max_input_words=25, target_words=20):
+        """
+        Summarize text if it exceeds max_input_words to target_words or fewer
+        
+        Args:
+            text (str): Input text to potentially summarize
+            max_input_words (int): Threshold for summarization
+            target_words (int): Target word count for summary
+            
+        Returns:
+            str: Original text if under threshold, otherwise summarized text
+        """
+        word_count = len(text.split())
+        
+        if word_count <= max_input_words:
+            return text
+            
+        # Create summarization prompt
+        summary_prompt = (
+            f"Summarize the following legal issue or problem in {target_words} words or fewer. "
+            f"Keep the core legal problem and key details. Do not add extra information.\n\n"
+            f"Text to summarize: {text}"
+        )
+        
+        formatted_prompt = (
+            f"<|im_start|>user\n{summary_prompt}<|im_end|>\n"
+            f"<|im_start|>assistant"
+        )
+        
+        # Call API without adapter for summarization
+        _, summarized_text = predibase_llm_api(formatted_prompt, use_adapter=False)
+        
+        return summarized_text.strip()
 
     def create_llm_prompt(simplified_text, prompt_type="process"):
         """
@@ -47,32 +81,22 @@ def issue_translator(translation_query):
             )
 
             return (
-                "<|begin_of_text|><|start_header_id|>system<|end_header_id|>"
-                "You are a helpful, detailed, and polite artificial intelligence assistant. "
-                "Your answers are clear and suitable for a professional environment. "
-                "If context is provided, answer using only the provided contextual information."
-                "<|eot_id|><|start_header_id|>user<|end_header_id|>"
-                f"{user_prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+                "<|im_start|>user\n"
+                f"{user_prompt}<|im_end|>\n"
+                "<|im_start|>assistant"
             )
         else:  # process - keeping your original format
-            system_message = (
-                "\\n\\n Below is an instruction that describes a task, paired with an input that provides further context."
-                "Write a response that appropriately completes the request."
-            )
-
             prompt = (
-                "Instruction:\n Strictly adhere to the following instructions when converting any informal non-legal terminology to formal legal language in the user input: "
+                "Strictly adhere to the following instructions when converting any informal non-legal terminology to formal legal language in the user input: "
                 "- Do not add any extra detail that detracts from the original meaning. "
                 "- The output must be as close to the original meaning of the input. "
                 "- The output must be as close to the original input length as possible.\\n\\n###"
-                " Input:\\n"
-                f"{simplified_text}\\n\\n### Response:\n"
+                f"{simplified_text}"
             )
 
             return (
-                f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>{system_message}<|eot_id|>"
-                f"<|start_header_id|>user<|end_header_id|>{prompt}<|eot_id|>"
-                f"<|start_header_id|>assistant<|end_header_id|>\\n\\n"
+                f"<|im_start|>user\n{prompt}<|im_end|>\n"
+                f"<|im_start|>assistant"
             )
 
     def predibase_llm_api(llm_prompt, use_adapter=True):
@@ -80,7 +104,7 @@ def issue_translator(translation_query):
         data = {
             "inputs": llm_prompt,
             "parameters": {
-                "max_new_tokens": 30,
+                "max_new_tokens": 50,
                 "temperature": 0.0
             }
         }
@@ -88,7 +112,7 @@ def issue_translator(translation_query):
         # Only add adapter parameters if we're using the adapter
         if use_adapter:
             data["parameters"].update({
-                "adapter_id": "issue_identifier/1",
+                "adapter_id": "issue_identifier_qwen/2",
                 "adapter_source": "pbase"
             })
 
@@ -114,14 +138,17 @@ def issue_translator(translation_query):
     #Clean prompt for periods and empty spaces
     cleaned_query = clean_text(translation_query)
 
+    # Summarize if too long
+    processed_query = summarize_if_long(cleaned_query)
+
     # First, validate using the base model (no adapter)
-    validation_prompt = create_llm_prompt(cleaned_query, prompt_type="validate")
+    validation_prompt = create_llm_prompt(processed_query, prompt_type="validate")
     _, validation_result = predibase_llm_api(validation_prompt, use_adapter=False)
 
     # Clean up the validation result
     validation_result = validation_result.strip().upper()
 
-    if validation_result != "VALID":
+    if "VALID" not in validation_result.upper():
         return "What happened to you might not be a human rights problem  - if you do think it is a legal problem, enter it here again and press the 'Find your human rights violation' button to continue"
 
     # If valid, process the legal query with the adapter
@@ -131,10 +158,10 @@ def issue_translator(translation_query):
     sentences = sent_tokenize(legal_converted_query)
     complete_sentences = [sentence for sentence in sentences if sentence.endswith(('.', '?', '!'))]
     # If complete_sentences is a list with one element, return that element
-    if len(complete_sentences) == 1:
-        return complete_sentences[0]
+    if complete_sentences:
+        return ' '.join(complete_sentences)  # This automatically removes trailing fragments
     else:
-        return complete_sentences
+        return legal_converted_query.strip()  # Fallback if no complete sentences found
 
 
 def mlc_prediction(predictor_query, model, tokenizer, torch):
