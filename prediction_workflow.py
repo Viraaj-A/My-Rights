@@ -1,7 +1,8 @@
 import os
-
+from pydantic import BaseModel
 import requests
 from nltk.tokenize import sent_tokenize
+from mistralai import Mistral
 
 def issue_translator(translation_query):
     def clean_text(text):
@@ -55,13 +56,8 @@ def issue_translator(translation_query):
             f"Text to summarize: {text}"
         )
         
-        formatted_prompt = (
-            f"<|im_start|>user\n{summary_prompt}<|im_end|>\n"
-            f"<|im_start|>assistant"
-        )
-        
         # Call API without adapter for summarization
-        _, summarized_text = predibase_llm_api(formatted_prompt, use_adapter=False)
+        summarized_text = llm_api(summary_prompt)
         
         return summarized_text.strip()
 
@@ -80,11 +76,8 @@ def issue_translator(translation_query):
                 f"Text to evaluate: {simplified_text}"
             )
 
-            return (
-                "<|im_start|>user\n"
-                f"{user_prompt}<|im_end|>\n"
-                "<|im_start|>assistant"
-            )
+            return user_prompt
+        
         else:  # process - keeping your original format
             prompt = (
                 "Strictly adhere to the following instructions when converting any informal non-legal terminology to formal legal language in the user input: "
@@ -94,46 +87,39 @@ def issue_translator(translation_query):
                 f"{simplified_text}"
             )
 
-            return (
-                f"<|im_start|>user\n{prompt}<|im_end|>\n"
-                f"<|im_start|>assistant"
-            )
+            return prompt
 
-    def predibase_llm_api(llm_prompt, use_adapter=True):
+    def llm_api(llm_prompt):
         # Base parameters
-        data = {
-            "inputs": llm_prompt,
-            "parameters": {
-                "max_new_tokens": 50,
-                "temperature": 0.0
+        class LegalConversion(BaseModel):
+            conversion: str
+        
+        client = Mistral(api_key="DOj6AfFc0tIY39TMFfdyx727HeVdcDpJ")
+
+        response = client.chat.parse(
+        model="mistral-large-2402",
+        messages=[
+            {
+                "role": "system",
+                "content": "Follow the user's instructions exactly."
+            },
+            {
+                "role": "user",
+                "content": llm_prompt
             }
-        }
-
-        # Only add adapter parameters if we're using the adapter
-        if use_adapter:
-            data["parameters"].update({
-                "adapter_id": "issue_identifier_qwen/2",
-                "adapter_source": "pbase"
-            })
-
-        url = "https://serving.app.predibase.com/363ca091/deployments/v2/llms/llama-3-1-8b-instruct/generate"
-
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": os.getenv('PREDIBASE_AUTHORIZATION')
-        }
-
-        response = requests.post(url, json=data, headers=headers)
-        response_json = response.json()
+        ],
+        response_format=LegalConversion,
+        temperature=0.0
+        )
 
         # Get generated text
-        generated_text = response_json.get('generated_text', '')
+        generated_text = response.choices[0].message.parsed.conversion
 
         # Convert to string if it's a list or dict
         if isinstance(generated_text, (list, dict)):
             generated_text = str(generated_text)
 
-        return response_json, generated_text
+        return generated_text
 
     #Clean prompt for periods and empty spaces
     cleaned_query = clean_text(translation_query)
@@ -141,9 +127,9 @@ def issue_translator(translation_query):
     # Summarize if too long
     processed_query = summarize_if_long(cleaned_query)
 
-    # First, validate using the base model (no adapter)
+    # First, validate using the base model 
     validation_prompt = create_llm_prompt(processed_query, prompt_type="validate")
-    _, validation_result = predibase_llm_api(validation_prompt, use_adapter=False)
+    validation_result = llm_api(validation_prompt)
 
     # Clean up the validation result
     validation_result = validation_result.strip().upper()
@@ -153,7 +139,7 @@ def issue_translator(translation_query):
 
     # If valid, process the legal query with the adapter
     processing_prompt = create_llm_prompt(cleaned_query, prompt_type="process")
-    _, legal_converted_query = predibase_llm_api(processing_prompt, use_adapter=True)
+    legal_converted_query = llm_api(processing_prompt)
 
     sentences = sent_tokenize(legal_converted_query)
     complete_sentences = [sentence for sentence in sentences if sentence.endswith(('.', '?', '!'))]

@@ -33,7 +33,6 @@ pandas = "*"
 sqlalchemy = "==2.0.30"
 turbo-flask = "*"
 faiss-cpu = "*"
-transformers = "*"
 numpy = "*"
 nltk = "*"
 dash-core-components = "*"
@@ -41,6 +40,7 @@ dash-html-components = "*"
 torch = {version = "==2.4.0", index = "downloadpytorch"}
 flask-caching = "*"
 python-dotenv = "*"
+mistralai = "*"
 
 [dev-packages]
 
