@@ -94,7 +94,7 @@ def issue_translator(translation_query):
         class LegalConversion(BaseModel):
             conversion: str
         
-        client = Mistral(api_key="DOj6AfFc0tIY39TMFfdyx727HeVdcDpJ")
+        client = Mistral(api_key=os.getenv('MISTRAL_API_KEY'))
 
         response = client.chat.parse(
         model="mistral-large-2402",
