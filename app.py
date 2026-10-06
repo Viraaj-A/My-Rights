@@ -76,6 +76,10 @@ app = create_app()
 with app.app_context():
     db = SQLAlchemy(app)
     Base = automap_base()
+    # The app never pushes Turbo Streams, so do not open a WebSocket per page view:
+    # each open socket pins one of the (few) sync gunicorn workers and two open browser
+    # tabs were enough to stall every other request. Turbo Frames do not need it.
+    app.config['TURBO_WEBSOCKET_ROUTE'] = None
     turbo = Turbo(app)
 
 
