@@ -97,7 +97,7 @@ def issue_translator(translation_query):
         client = Mistral(api_key=os.getenv('MISTRAL_API_KEY'))
 
         response = client.chat.parse(
-        model="mistral-large-2402",
+        model="ministral-14b-latest",
         messages=[
             {
                 "role": "system",

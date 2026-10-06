@@ -1,0 +1,6 @@
+.git
+.env
+__pycache__
+*.pyc
+scraping_files/monthly_soup_temp
+scraping_files/error_files

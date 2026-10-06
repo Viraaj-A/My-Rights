@@ -1,6 +1,9 @@
 import time
 import os
 import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
 from bs4 import BeautifulSoup
 import re
 
@@ -16,9 +19,11 @@ def existing_cases():
     def connect_psql():
         try:
             conn = psycopg2.connect(database="raw_data_db",
-                                    host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                    user="doadmin", password="AVNS_SbC_UqXYG665R47kxY4", port=25060,
-                                    sslmode='require')
+                                    host=os.environ["SCRAPER_DB_HOST"],
+                                    user=os.environ["SCRAPER_DB_USER"],
+                                    password=os.environ["SCRAPER_DB_PASSWORD"],
+                                    port=int(os.getenv("SCRAPER_DB_PORT", "5432")),
+                                    sslmode=os.getenv("SCRAPER_DB_SSLMODE", "require"))
             print("Connected to the database")
             cursor = conn.cursor()
             return conn, cursor

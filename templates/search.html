@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
-{% block content %}
-<head>
+{% block head %}
+    <!-- Turbo Drive re-runs body scripts asynchronously, so the jqWidgets init below could run
+         before jQuery had loaded. Force a full page load for this page and never serve it from the
+         Turbo snapshot cache, so scripts always execute in document order. -->
+    <meta name="turbo-visit-control" content="reload">
+    <meta name="turbo-cache-control" content="no-cache">
     <!-- jqxWidgets CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/styles/jqx.base.css" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/12.1.0/jqwidgets/styles/jqx.shinyblack.css" type="text/css"/>
@@ -11,7 +15,9 @@
             font-size: inherit !important;
         }
     </style>
-</head>
+{% endblock %}
+
+{% block content %}
 
 <div class="container">
     <div class="row">

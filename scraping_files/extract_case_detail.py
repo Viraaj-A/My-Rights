@@ -1,4 +1,8 @@
 import psycopg2
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 from bs4 import BeautifulSoup
 from psycopg2.extras import RealDictCursor
 from multiprocessing import Process, Queue, current_process
@@ -7,9 +11,11 @@ import queue  # imported for using queue.Empty exception
 def connect_psql():
     try:
         conn = psycopg2.connect(database="raw_data_db",
-                                host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                user="doadmin", password="AVNS_SbC_UqXYG665R47kxY4", port=25060,
-                                sslmode='require')
+                                host=os.environ["SCRAPER_DB_HOST"],
+                                user=os.environ["SCRAPER_DB_USER"],
+                                password=os.environ["SCRAPER_DB_PASSWORD"],
+                                port=int(os.getenv("SCRAPER_DB_PORT", "5432")),
+                                sslmode=os.getenv("SCRAPER_DB_SSLMODE", "require"))
         return conn
     except Exception as e:
         print(f"Failed to connect to the database: {e}")

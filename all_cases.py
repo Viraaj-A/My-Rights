@@ -1,8 +1,12 @@
 from sqlalchemy import text, create_engine
 from sqlalchemy.pool import NullPool
 import pandas as pd
+import os
+from dotenv import load_dotenv
 
-connection_string = 'doadmin:AVNS_SbC_UqXYG665R47kxY4@db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com:25060/defaultdb'
+load_dotenv()
+
+connection_string = os.getenv('CONNECTION_STRING')
 
 engine = create_engine(f'postgresql+psycopg2://{connection_string}',poolclass=NullPool)
 

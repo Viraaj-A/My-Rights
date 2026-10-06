@@ -5,6 +5,9 @@ noticed that the headline texts, url that takes you to the case does not always 
 as sometimes the cases are not in the language of the headline - these are roughly 24473 headline items
 '''
 import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -35,9 +38,11 @@ options.add_argument('--headless')
 # Connection to Postgres Database
 def connect_psql():
     return psycopg2.connect(database="raw_data_db",
-                                host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                user="doadmin", password="AVNS_SbC_UqXYG665R47kxY4", port=25060,
-                                sslmode='require')
+                                host=os.environ["SCRAPER_DB_HOST"],
+                                user=os.environ["SCRAPER_DB_USER"],
+                                password=os.environ["SCRAPER_DB_PASSWORD"],
+                                port=int(os.getenv("SCRAPER_DB_PORT", "5432")),
+                                sslmode=os.getenv("SCRAPER_DB_SSLMODE", "require"))
 
 
 def explicit_wait_title(driver):
@@ -336,9 +341,11 @@ if __name__ == "__main__":
     def connect_psql():
         try:
             conn = psycopg2.connect(database="raw_data_db",
-                                    host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                    user="doadmin", password="AVNS_SbC_UqXYG665R47kxY4", port=25060,
-                                    sslmode='require')
+                                    host=os.environ["SCRAPER_DB_HOST"],
+                                    user=os.environ["SCRAPER_DB_USER"],
+                                    password=os.environ["SCRAPER_DB_PASSWORD"],
+                                    port=int(os.getenv("SCRAPER_DB_PORT", "5432")),
+                                    sslmode=os.getenv("SCRAPER_DB_SSLMODE", "require"))
             print("Connected to the database")
             cursor = conn.cursor()
             return conn, cursor

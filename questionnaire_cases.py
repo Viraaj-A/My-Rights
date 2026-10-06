@@ -1,5 +1,9 @@
+import os
 import psycopg2
 import pandas as pd
+from dotenv import load_dotenv
+
+load_dotenv()
 
 development = False
 
@@ -17,12 +21,9 @@ def connect_psql():
         return cursor, conn
 
     if development == False:
-        conn = psycopg2.connect(database="defaultdb",
-                                host="db-postgresql-fra1-kyr-0001-do-user-12476250-0.b.db.ondigitalocean.com",
-                                user="doadmin",
-                                password="AVNS_SbC_UqXYG665R47kxY4",
-                                port=25060,
-                                sslmode='require')
+        # CONNECTION_STRING is "user:password@host:port/dbname" (see .env.example)
+        conn = psycopg2.connect(f"postgresql://{os.environ['CONNECTION_STRING']}",
+                                sslmode=os.getenv("DB_SSLMODE", "prefer"))
         cursor = conn.cursor()
         return cursor, conn
 
