@@ -42,7 +42,7 @@ def connect_psql():
                                 user=os.environ["SCRAPER_DB_USER"],
                                 password=os.environ["SCRAPER_DB_PASSWORD"],
                                 port=int(os.getenv("SCRAPER_DB_PORT", "5432")),
-                                sslmode=os.getenv("SCRAPER_DB_SSLMODE", "prefer"))
+                                sslmode=os.getenv("SCRAPER_DB_SSLMODE", "require"))
 
 
 def explicit_wait_title(driver):
@@ -345,7 +345,7 @@ if __name__ == "__main__":
                                     user=os.environ["SCRAPER_DB_USER"],
                                     password=os.environ["SCRAPER_DB_PASSWORD"],
                                     port=int(os.getenv("SCRAPER_DB_PORT", "5432")),
-                                    sslmode=os.getenv("SCRAPER_DB_SSLMODE", "prefer"))
+                                    sslmode=os.getenv("SCRAPER_DB_SSLMODE", "require"))
             print("Connected to the database")
             cursor = conn.cursor()
             return conn, cursor

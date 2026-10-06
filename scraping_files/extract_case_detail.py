@@ -15,7 +15,7 @@ def connect_psql():
                                 user=os.environ["SCRAPER_DB_USER"],
                                 password=os.environ["SCRAPER_DB_PASSWORD"],
                                 port=int(os.getenv("SCRAPER_DB_PORT", "5432")),
-                                sslmode=os.getenv("SCRAPER_DB_SSLMODE", "prefer"))
+                                sslmode=os.getenv("SCRAPER_DB_SSLMODE", "require"))
         return conn
     except Exception as e:
         print(f"Failed to connect to the database: {e}")
