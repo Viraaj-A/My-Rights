@@ -41,8 +41,10 @@ docker logs -f myrights-web-1  # wait for gunicorn workers to boot
    site offline, so this must come first. At Squarespace Domains switch the domain to Squarespace's own
    nameservers (or to Hetzner DNS at dns.hetzner.com, free with the Hetzner account) and create:
    - `A     @    167.233.22.165`
-   - `AAAA  @    2a01:4f8:c015:7292::1` (optional; the server's IPv6 is on the Hetzner overview page)
    - `CNAME www  my-rights.info`
+   Hold off on an AAAA (IPv6) record until HTTPS is confirmed working over IPv4: Let's Encrypt prefers
+   IPv6 when an AAAA exists and only IPv4 reachability of ports 80/443 has been verified so far.
+   The server's IPv6 is 2a01:4f8:c015:7292::1 if you add it later.
    Do not add a proxy/CDN in front: Caddy on the box issues its own Let's Encrypt certificate and needs
    ports 80/443 to reach it directly.
 3. **Wait for the nameserver change to propagate** (minutes to a few hours; check with
