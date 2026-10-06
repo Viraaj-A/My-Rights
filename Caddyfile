@@ -1,11 +1,6 @@
-# Production: automatic HTTPS once DNS points my-rights.info at this box.
+# Production: my-rights.info points at this box; Caddy manages the Let's Encrypt certificate.
 my-rights.info, www.my-rights.info {
 	reverse_proxy web:8080
 	encode gzip
 }
 
-# Temporary: view the Hetzner box directly by IP over plain HTTP (pre-cutover preview).
-http://167.233.22.165 {
-	reverse_proxy web:8080
-	encode gzip
-}
